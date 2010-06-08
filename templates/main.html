@@ -1,0 +1,37 @@
+<html>
+  <body onload="document.getElementById('temp').innerHTML = access_token;">
+    <script>
+      //@@GP: need to change this stuff to jquery. had all this code already...
+      function get_cookie(cookie_name)
+      {
+      var results = document.cookie.match ( '(^|;) ?' + cookie_name + '=([^;]*)(;|$)' );
+      if ( results )
+      return ( unescape ( results[2] ) );
+      else
+      return null;
+      }
+
+      //@@GP: no real validation here
+      var hash_loc = window.location.href.indexOf("#");
+      if(hash_loc >= 0)
+      {
+      // Gather the access token
+      var hr = window.location.href;
+      var rec_string = "access_token=";
+      var loc = hr.indexOf(rec_string);
+      var access_token = hr.substr(loc+rec_string.length);
+      document.cookie = "access_token="+access_token+";"; 
+      // Navigate to remove the token from url
+      window.location.href = window.location.href.substr(0, loc-1);
+      }
+      else
+      {
+      access_token = get_cookie("access_token");
+      if(!access_token) window.location.href = "{{ cfg.direct_url }}";
+      }
+    </script>
+
+    Placeholder for first app page post auth.<br/>
+    access_token: <span id="temp"></span>
+    </body>
+  </html>

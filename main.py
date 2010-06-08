@@ -18,6 +18,10 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
+# *** Controller imports
+from controllers.admin import AdminHandler
+from controllers.logging import LoggingHandler
+
 # *** Helpers
 import helpers as h
 
@@ -40,7 +44,12 @@ class Auth2Handler(webapp.RequestHandler):
         h.render_out(self, 'main.html', c)
 
 # *** Globals - Need to fix this to find handlers by string
-routing = [('/', MainHandler),('/auth2',Auth2Handler)]
+routing =[
+    ('/', MainHandler),
+    ('/auth2',Auth2Handler),
+    ('/admin',AdminHandler),
+    ('/logging',LoggingHandler)
+    ]
 
 # *** Init code
 def main():

@@ -7,6 +7,9 @@ cfg = None # holds variables for config of fb app, etc.
 def render_out(handler, filename, c):
     return handler.response.out.write(template.render('templates/'+filename, c))
 
+def output(handler, data):
+    return handler.response.out.write(data)
+
 def context():
     c = dict()
     c['cfg'] = cfg

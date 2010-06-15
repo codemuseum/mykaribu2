@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>{{page_title}} - myKaribu.com</title>
+  <link rel="stylesheet" type="text/css"
+	href="{{cfg.direct_url}}/public/css/framed_result.css" />
+</head>
+<body class="" scroll='auto'>
+  
+  <div id="full_body_span">&nbsp;</div>
+
+  <div id="content">
+    {% block content %}
+    {% endblock %}
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+  
+  <div id="fb-root"></div>
+  <div id="mock-fb-root" class="fb_reset"></div>
+  <div id="facebook-user-id" style="display:none">{{current_user_fb_id}}</div>
+  
+  <script src="http://connect.facebook.net/en_US/all.js"></script>
+  <script type="text/javascript">
+  FB.init({appId: '{{cfg.app_id}}', status: true, cookie: true, xfbml: true}, "/xd_receiver.htm");
+  FB.Event.subscribe('auth.sessionChange', function(response) {
+    if (response.session) {
+      window.location.reload();
+      console.log("Logged in"); // A user has logged in, and a new cookie has been saved
+    }
+    else {
+      window.location.reload();
+      console.log("Not logged in"); // The user has logged out, and the cookie has been cleared
+    }
+  });  
+
+  </script>
+  
+  <!--
+  <script src="http://ah8.facebook.com/js/conversions/tracking.js"></script>
+  <script type="text/javascript">
+  try { FB.Insights.impression({ 'id' : 6002527528992, 'h' : 'c0ee4bf906' }); } catch (e) {}
+  </script>
+  -->
+  
+  <div id="data-gcsek" style="display:none">{{cfg.gs_api_key}}</div>
+  
+<script src="{{cfg.direct_url}}/public/js/home.js"></script>
+<script src="{{cfg.direct_url}}/public/js/header.js"></script>
+<script src="{{cfg.direct_url}}/public/js/results.js"></script>
+<script src="{{cfg.direct_url}}/public/js/profile.js"></script>
+<script src="{{cfg.direct_url}}/public/js/framed_result.js"></script>
+<!--  <%= javascript_include_tag 'home', 'header', 'results', 'profile', 'framed_result' %>-->
+  
+<!--  <%= yield :page_javascripts %>-->
+
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+  </script>
+  
+<!--  <% if RAILS_ENV != 'development' && (!current_user || !current_user.admin?) %>-->
+  <script type="text/javascript">
+    _gaq.push(['_setAccount', 'UA-13245981-1']);
+    _gaq.push(['_setCustomVar', 1, 'logged-in', {{logged_in}}, 3]);
+    {% if logged_in %}
+      _gaq.push(['_setCustomVar', 1, 'user-id', {{current_user_user_id}}, 1]);
+      _gaq.push(['_setCustomVar', 2, 'user-fb-id', {{current_user_fb_user_id}}, 1]); 
+    {% endif %}
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript';
+      ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+  </script>
+<!--  <% end %>-->
+</body>
+</html>

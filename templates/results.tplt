@@ -1,0 +1,127 @@
+<html>
+<head>
+  <link href="/public/results.css" media="screen" 
+	rel="stylesheet" type="text/css">
+</head>
+<body style="margin:0; overflow:hidden" >
+  {% include "fb_init.tplt" %}
+  <style>
+    .mi_row 
+    {
+      width:758px; 
+      height:{{row_height}}px; 
+      border-bottom:3px solid white; 
+      background-color:black
+    }
+    .mi_div { float:left; }
+    .mi { border: 0px; }
+
+    {% for r in mini_imgs %}
+    {% for i in r %}
+
+    #mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}} 
+    {
+      border-top:{{i.top_border}}px solid #333333; 
+      border-bottom:{{i.bot_border}}px solid #333333; 
+      margin-right:{{i.right_margin}}px; 
+      border-right:{{i.right_border}}px solid #333333;
+      border-left:{{i.left_border}}px solid #333333;
+    }
+    #mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}
+    {
+      width:{{i.tbWidth}}px;
+      height:{{i.tbHeight}}px;
+    }
+
+    {% endfor %}
+    {% endfor %}
+
+  </style>
+
+  <!-- top box -->
+
+ <div id="header">
+    <div id="bg_top">
+      <div class="top-left">&nbsp;</div>
+      <a href="http://bzz.heroku.com/facebook/"><img id="top_title" 
+src="/public/srp_title.png"></a>
+      <div class="top-right">&nbsp;</div>
+
+      <!-- Score Box -->      
+      <div style="display: block;" id="score_frame">
+        <img id="score_glare" src="/public/glare.png">
+        <div id="n2" class="number">
+          <div id="n2-value" style="display: none;">3</div>
+          <img src="/public/numbers_small.png">
+        </div>
+        <div id="n1" class="number">
+          <div id="n1-value" style="display: none;">1</div>
+          <img src="/public/numbers_small.png">
+        </div>
+        <div id="n0" class="number">
+          <div id="n0-value" style="display: none;">0</div>
+          <img src="/public/numbers_small.png">
+        </div>
+      </div>
+      <div id="score_text" class="top_emboss shadow">
+        Points:
+      </div>
+      <img src="/public/srp_top_line.png" class="top_line">
+      <!-- Profile Link -->
+      <div id="profile_link" class="top_emboss shadow">
+        
+        <a href="http://bzz.heroku.com/facebook/profiles/736134199">George's
+ Profile</a>
+        
+      </div>
+      <img src="/public/srp_top_line.png" class="top_line">
+    </div>
+  </div>
+
+  <style>
+.search-form-box {position:relative;width:500px; height:100px; margin: 0px auto;}
+#search-form {background:#3f3f3f url(/public/srp_top_channel.png) repeat-x 0 -53px; width:100%; height:107px; font-size:15px; padding:0px; border:0px; margin:0px; overflow:hidden; }
+#find_entry_label { position:absolute; left:115px; top:15px; }
+#q { position:absolute; top:43px;left:5px; width:387px; border:none; font-size:16px; text-align:center; z-index:1; }
+#find_entry_bg { position:absolute; top:38px; left:0px; width:401px; z-index:0; }
+#find_btn { position:absolute; top:38px; left:423px; width:94px; height:37px; line-height:32px; color:white; text-align:center;background-image:url(/public/srp_find_btn.png); text-shadow:#404040 -1px -1px 0px }
+#find_trans_submit { position:absolute;top:38px;left:423px;width:97px;height:37px; }
+.form_emboss { font-size:16px; text-shadow:#000 -1px -1px 1px; color:white; }
+</style>
+
+<div id="search-form">
+  <div class="search-form-box">
+    <label id="find_entry_label" class="form_emboss shadow" 
+for="find_entry">Find things you like.</label>
+
+    <form target="_top" action="{{cfg.fb_url}}/results" method="get">
+      <input name="src" value="srp" id="query_src" type="hidden">
+      <input name="q" value="{{query}}" id="q" type="text">
+      <img id="find_entry_bg" src="/public/srp_search_entry.png">
+
+
+      <div id="find_btn" class="shadow" value="find">Find</div>
+      <input id="find_trans_submit" src="/public/transparent.gif" 
+value="find" type="image">
+
+    </form>      
+  </div>
+</div>
+
+ <!-- images -->
+  {% for r in mini_imgs %}
+  <div class="mi_row">
+    {% for i in r %}
+    <a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true">
+      <div id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi_div">
+	<img src="{{i.tbUrl}}" id="mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi"/>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+  <br/>
+  <!--{{content}}-->
+  <iframe style='border:10px solid black;width:738px;height:100px' src='http://www.google.com/uds/GafsAds?q={{ue_query}}&hl=en&ad=w2&source=gcsc&qid=12821e3abd4855884&cx=004221970179818813180:lomxfldenpg' />
+</body>
+</html>

@@ -1,0 +1,62 @@
+.comment_profile_pic img {
+    width: 32px;
+    height: 32px;
+}
+
+.comment_profile_pic {
+    float: left;
+    margin-right: 8px;
+}
+
+.comment_author {
+    display:inline;
+}
+
+.comment_author a.FB_Link {
+    color:#3B5998;
+}
+
+.comment_author a.FB_Link:hover {
+    color:#3B5998;
+    text-decoration: underline;
+}
+
+.pagination, .gsc-cursor-box {
+    text-align:center;
+    font-size: 13px;
+    font-weight: normal;
+    color: #333333;
+}
+
+.search_box_grey {
+    color: #777777;
+}
+
+.search_box {
+  font:17px arial,sans-serif;
+}
+
+.status_bar_hover {
+    background-color: #676767;
+    color: #92C233;
+}
+
+.hover_x{
+  font-size: 12pt;
+  color: red;
+  font-weight: bold;
+}
+
+.searchText{
+    position:absolute;
+    z-index:10;
+    color:#666666;
+    top:5px;
+    right:0px;
+    font-size:11pt;
+}
+
+.query_hover
+{
+    background-color: #D4DDF0;
+}

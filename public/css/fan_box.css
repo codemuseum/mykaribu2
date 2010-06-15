@@ -1,0 +1,13 @@
+.fan_box .profileimage
+{
+  width:16px !important;
+  height:16px !important;
+}
+
+.fan_box .connect_span, .fan_box .connect_span a, .fan_box .connect_action, .name_block a, .fan_box .connect_action .name
+{
+  color:white !important;
+  font-size:8pt !important;
+}
+
+.fan_box .connect_top { padding: 0px; }

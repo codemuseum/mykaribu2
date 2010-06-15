@@ -21,6 +21,8 @@ from google.appengine.ext.webapp import template
 # *** Controller imports
 from controllers.admin import AdminHandler
 from controllers.logging import LoggingHandler
+from controllers.framed_result import FramedResultHandler, ShareCountsHandler
+from controllers.results import ResultsHandler
 
 # *** Helpers
 import helpers as h
@@ -48,7 +50,10 @@ routing =[
     ('/', MainHandler),
     ('/auth2',Auth2Handler),
     ('/admin',AdminHandler),
-    ('/logging',LoggingHandler)
+    ('/logging',LoggingHandler),
+    ('/t',FramedResultHandler),
+    ('/share_counts',ShareCountsHandler),
+    ('/results',ResultsHandler)
     ]
 
 # *** Init code

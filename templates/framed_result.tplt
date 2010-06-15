@@ -1,0 +1,68 @@
+{% extends "framed_result_base.tplt" %}
+{% block content %}
+<style>
+  .toolbar {height:79px;}
+  .toolbar {background-color:#dddddd;width:100%; background-image:url({{direct_url}}/public/images/results-frame/toolbar_dark_channel.png);background-repeat:repeat-x}
+  .toolbar .share-box {float:left; position:absolute;top:10px; left:700px;}
+  .toolbar .like-box {float:left; position:absolute; left:305px;top:10px;}
+  .toolbar a#next-url {position:absolute;top:7px;left:840px;width:75px;height:64px;}
+  .toolbar a#back-url {position:absolute;top:7px;left:30px;width:64px;height:64px;}
+  .toolbar a img {border:0;}
+  
+  .fb-share-box {  }
+  .fb-share-widget {float:left; position:relative; width:60px; height:61px;}
+  .fb-share-nub {background-image:url({{direct_url}}/public/images/facebook/fb-share-nub-bottom.png); background-repeat:no-repeat; border:medium none; display:block;
+  height:7px; left:7px; margin:0; padding:0; position:absolute; top:35px; width:6px;}
+  .fb-share-count-box {border:1px solid #B0B9EC; display:block; font-size:22px; letter-spacing:-1px; line-height:34px; margin-bottom:7px; background:none repeat scroll 0 0 #B0B9EC; color:#333333; text-align:center; }
+  .fb-share-count { background:none repeat scroll 0 0 #E8EBF2; display:block; }
+  .fb-share-widget a { text-decoration:none; font-size:10px; line-height:10px; text-decoration:none; background:url({{direct_url}}/public/images/facebook/fb-icons.png) no-repeat scroll 0 0 #29447E; cursor:pointer; display:inline-block; outline:medium none; padding:0 0 0 1px; text-decoration:none; background-position:left -232px;  }
+  .fb-share-widget a span { padding:2px 6px 3px; background:url({{direct_url}}/public/images/facebook/fb-icons.png) repeat scroll 0 0 #5F78AB; border-bottom:1px solid #1A356E; border-top:1px solid #879AC0; color:#FFFFFF; display:block; font-weight:bold; margin:1px 1px 0 21px; margin-left:17px; text-shadow:none; text-decoration:none; font-size:10px; line-height:10px; cursor:pointer; }
+  .fb-share-widget a:active span {background:none repeat scroll 0 0 #4F6AA3; border-bottom:1px solid #29447E; border-top:1px solid #45619D; text-shadow:none;}
+
+</style>
+
+<div id="data" style="display:none">
+  <div id="data-result-url">{{ this_result_url }}</div>
+  <div id="data-query">{{ query }}</div>
+  <div id="data-url">{{ url }}</div>
+</div>
+
+  <div class="toolbar" style="position:relative; overflow:hidden;">
+    <div id="toolbar_base" style="float:left">
+      <img src="{{direct_url}}/public/images/results-frame/toolbar_base.png" width="973" height="79" />
+      <a id="next-url" href="{{ next_step_href }}"><img src="{{direct_url}}/public/images/search-results/transparent.gif" width="75" height="64" /></a>
+      <a id="back-url" href="{{ back_to_results_href }}"><img src="{{direct_url}}/public/images/search-results/transparent.gif" width="64" height="64" /></a>
+    </div>
+    <div class="left-pad"></div>
+    <div class="like-box">
+      <iframe src="http://www.facebook.com/widgets/like.php?href={{this_result_url|escape}}"
+                  scrolling="no" frameborder="0" allowTransparency="true"
+                  style="border:none; width:350px; height:65px"></iframe>
+    </div>
+    <div class="share-box">
+      
+      <div class="fb-share-widget">
+        <div class="fb-share-nub">&nbsp;</div>
+        <div class="fb-share-count-box">
+          <div class="fb-share-count">--</div>
+        </div>
+        <a target="_blank" href="http://www.facebook.com/sharer.php?u={{this_result_url|escape}}">
+          <span>Share</span>
+        </a>
+      </div>
+      
+    </div>
+  </div>
+  <iframe 
+     id="target_frame"
+     name="target_frame"
+     src="{{ url }}"
+     scrolling="auto" 
+     frameborder="0" 
+     marginwidth="0" 
+     marginheight="0" 
+     allowtransparency="true"
+     width='100%'
+     height='100%'></iframe> <!-- this is altered by js later -->
+</div>
+{% endblock %}

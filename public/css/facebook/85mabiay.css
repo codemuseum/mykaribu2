@@ -1,0 +1,425 @@
+/*    HTTP Host:  b.static.ak.fbcdn.net                                        */
+/*    Generated:  February 24th 2010 5:23:04 PM PST                            */
+/*      Machine:  10.16.140.103                                                */
+/*       Source:  Global Cache                                                 */
+/*     Location:  css/b5kl90om6fsco4wg.pkg.css h:85mabiay                      */
+/*       Locale:  nu_ll                                                        */
+/*         Path:  css/b5kl90om6fsco4wg.pkg.css                                 */
+
+.UIComposer{margin-bottom:10px;position:relative;z-index:11}
+#home_stream .UIComposer{border-bottom:1px solid #eee;margin-bottom:8px;padding-bottom:9px}
+.home .UIComposer{margin-top:-9px}
+.fbx .UIComposer{margin-top:0}
+.UIComposer_Upload_Iframe{height:1px;position:absolute;left:-1000px;width:1px}
+.UIComposer_Pic, .UIComposer_PicRounded{left:0;position:absolute}
+.UIComposer_Prompt{color:#696969;display:block;font-size:13px;font-weight:bold;margin-bottom:5px;padding-left:1px}
+.UIComposer .UIComposer_Box{background-color:#f2f2f2;border-color:#b5b5b5;border-bottom-color:#cbcbcb;border-top:2px solid #919191;padding:7px 0}
+.UIComposer_Content{padding:0 7px}
+.NewHighLight .UIComposer_Content{padding:0}
+.UIComposer_InputArea_Base{background:#fff;display:block;position:relative}
+.UIComposer_InputArea{border:1px solid #bbb;border-top-color:#aeaeae}
+.UIComposer_InputShadow{border-top:1px solid #e8e8e8;padding:2px 5px 3px}
+.NewHighLight .UIComposer_InputShadow{padding:2px 5px 3px}
+.UIComposer_InputShadow .DOMControl_placeholder{line-height:21px}
+.UIComposer .UIComposer_TextArea{border:none;font-size:13px;height:21px;margin:0;outline:none;overflow:hidden;padding:0;resize:none;vertical-align:bottom;width:100%}
+.UIComposer_AttachmentTitle{color:#666;font-weight:bold;padding-left:22px;background:no-repeat left center}
+.UIComposer_AttachmentArea{display:none;background:#fff;border:1px solid #bbb;border-top-color:#aeaeae;margin-top:6px}
+.UIComposer_AttachmentArea .app_content{overflow:auto;overflow-y:hidden}
+.UIComposer_AttachmentArea_Shadow{overflow:hidden;border-top:1px solid #e8e8e8;padding:3px 4px 4px 4px}
+.UIComposer_AttachmentArea_Header{line-height:18px;overflow:hidden;padding-bottom:4px;border-bottom:1px solid #dfdfdf;zoom:1}
+.UIComposer_AttachmentArea_CloseButton{background:no-repeat -150px -83px;float:right;height:18px;width:18px}
+.UIComposer_AttachmentArea_CloseButton:hover{background-position:-168px -83px}
+.UIComposer_AttachmentArea_Cache{overflow:hidden;padding-top:4px}
+.UIComposer .UIShareStage{padding:9px}
+.UIComposer_AttachmentArea_Loader{padding:6px 0;text-align:center}
+.UIComposer_Attachment_Cached{zoom:1;display:none}
+.UIComposer_ButtonArea{height:24px;margin-bottom:0;padding-top:7px}
+.UIComposer_ButtonArea ul{display:block}
+.UIComposer_Buttons li{float:right}
+.UIComposer_SubmitButton{margin-left:5px}
+.UIComposer_Attachments li{float:left}
+.UIComposer_AttachmentPrompt{color:#777;font-weight:bold;line-height:24px;padding-right:4px}
+.UIComposer_ButtonArea .UIButton_Text{font-size:13px;line-height:16px}
+.UIComposer_Buttons .UIActionMenu .uiTooltipWrap{background-position:right bottom;bottom:25px}
+.UIComposer_ButtonArea .UIActionMenu_Wrap{height:22px}
+.UIComposer_ButtonArea .UIActionMenu_Menu{top:24px}
+.UIComposer_More .UIActionMenu_Wrap{padding-left:5px}
+.UIComposer_More .uiTooltipWrap{bottom:25px;left:2px}
+.UIComposer_More .UIActionMenu_Menu{border:1px solid #444;background:#eee;display:block;padding:3px 0;width:150px}
+.UIComposer_MoreItem{color:#111;cursor:pointer;display:block;height:22px;line-height:22px;overflow:hidden;padding:0 10px 0 28px;position:relative}
+.UIComposer_MoreItem:hover{background-color:#333;color:#fff}
+.UIComposer_MoreIcon{background:no-repeat -16px center;display:block;height:16px;left:0;margin:3px 0 0 6px;position:absolute;top:0;width:16px}
+.UIComposer_MoreItem:hover .UIComposer_MoreIcon{background-position:0 center}
+.UIComposer_AttachmentArea_CloseButton{background-image:url(/rsrc.php/zA89H/hash/6w95fo9x.png)}
+.UIComposer_STATE_PIC_OUTSIDE .UIComposer_UIContentBox{margin-left:60px}
+.UIComposer_STATE_PIC_INSIDE .UIComposer_Pic{padding:0}
+.UIComposer_STATE_PIC_INSIDE .UIComposer_InputArea{padding-left:60px}
+.UIComposer_STATE_INPUT_DISABLED .Mentions_Input,
+.UIComposer_STATE_INPUT_DISABLED .UIComposer_InputArea,
+.UIComposer_STATE_INPUT_DISABLED .UIComposer_InputShadow,
+.UIComposer_STATE_INPUT_DISABLED .UIComposer_TextArea{background-color:#ddd}
+.UIComposer_STATE_INPUT_EXPANDED .Mentions_Input,
+.UIComposer_STATE_INPUT_FOCUSED .Mentions_Input{min-height:36px}
+.ie6 .UIComposer_STATE_INPUT_EXPANDED .Mentions_Input,
+.ie6 .UIComposer_STATE_INPUT_FOCUSED .Mentions_Input{height:36px;overflow:visible}
+.UIComposer_STATE_INPUT_EXPANDED .UIComposer_TextArea,
+.UIComposer_STATE_INPUT_FOCUSED .UIComposer_TextArea{height:36px}
+.UIComposer_STATE_ATTACHMENT_AREA .UIComposer_AttachmentList,
+.UIComposer_STATE_ATTACHMENT_LOADED .UIComposer_AttachmentArea_Loader{display:none}
+.UIComposer_STATE_ATTACHMENT_AREA .UIComposer_AttachmentArea,
+.UIComposer_STATE_ATTACHMENT_LOADED .UIComposer_Attachment_Visible{display:block}
+.UIComposer_Buttons .UIComposer_PrivacyEtc{width:150px}
+.UIComposer_Buttons .UIComposer_PrivacyEtc .UIComposer_PrivacyEtcButton{float:right}
+.Mentions_Input{width:100%;margin:0;padding:0;font-size:13px;min-height:20px;max-height:200px;cursor:text;border:none;outline:none;overflow:auto;overflow-x:hidden;background-color:#fff;-webkit-user-modify:read-write-plaintext-only}
+.Mentions_Input a{cursor:default}
+.Mentions_Input a span{outline:none}
+.Mentions_Input a:hover{text-decoration:none}
+.UIComposer_PrivacyWidgetConfirmationBody{overflow:hidden}
+.UIComposer_PrivacyWidgetConfirmationBody p{margin:0 0 10px 0}
+.UIComposer_PrivacyWidgetConfirmationImage{float:right;margin-left:5px}
+.UIComposer_PrivacyCallout{background-color:transparent;margin-top:-5px;position:absolute;right:38px;width:180px;z-index:100}
+.UIComposer_PrivacyCallout_Title,
+.UIComposer_PrivacyCallout_Text{border:1px solid #467c2c}
+.UIComposer_PrivacyCallout_Arrow{background:url(/rsrc.php/z4KLS/hash/6nuj81lw.png) no-repeat scroll right top;height:7px;margin-right:40px;position:relative;top:1px}
+.UIComposer_PrivacyCallout_Arrow span{display:none}
+.UIComposer_PrivacyCallout_Title{background-color:#67a54b;border-bottom:medium none;color:#fff;font-size:11px;margin:0;padding:3px 6px}
+.UIComposer_PrivacyCallout_Text{background-color:#fff;color:#666;margin:0;padding:6px 12px}
+.UIComposer_PrivacyCallout_Text a{display:block}
+.UIComposer_PrivacyCallout_CloseLink{float:right;padding:4px 6px}
+.UIComposer_PrivacyCallout_CloseLink a{color:#fff}
+.UIComposer_PrivacyWidget .uiTooltipWrap,
+.UIComposer_TargetedPrivacyWidget .uiTooltipWrap{bottom:23px;margin-left:4px;right:16px}
+.UIComposer_LocationButton .UIActionButton{background-position:3px -286px;background-image:url(/rsrc.php/z1V2B/hash/apfsevhg.png);background-repeat:no-repeat}
+.UIComposer_LocationButton .UIActionButton:active{background-image:url(/rsrc.php/z1V2B/hash/apfsevhg.png)}
+.UIComposer_LocationButton .UIButton_Depressed{background-position:3px -310px}
+.UIComposer_LocationButton .UIButton_Text{width:20px}
+.UIComposer_LocationButton .uiTooltipWrap{background-position:right bottom;right:3px}
+div.pop_dialog .UIComposer{margin-bottom:0}
+div.pop_dialog .UIComposer .UIComposer_ButtonArea{display:none}
+.UIComposer_MentionsCallout{background-color:transparent;position:absolute;width:180px;left:-1px;margin-top:-4px;z-index:100}
+.UIComposer_MentionsCallout_Arrow{margin-right:150px}
+.dialog_body .dialog_option{padding:14px 0 7px 0}
+.dialog_body .dialog_option input{width:13px;height:13px;padding:0;margin:0;vertical-align:bottom;position:relative;top:0;*overflow:hidden}
+.dialog_body .dialog_option .dialog_option_text{padding-left:5px;text-indent:-15px}
+.dialog_buttons{background:#f2f2f2;padding:8px;text-align:right}
+.dialog_buttons .UIButton{margin-left:5px}
+.iframe_error_dialog{background:#f2f2f2;overflow:hidden}
+.iframe_error_dialog_button{float:right;margin:0 8px 8px 8px}
+.nile_profile .minifeedwall{padding-top:6px}
+.fbpage .extra_media .fbpage_pic{float:left;padding:0 0 0}
+.fbpage .extra_media .fbpage_info{float:left;width:250px;padding:3px 0 3px 7px}
+.minifeedwall .loading_layer{background:white url(/rsrc.php/z5R48/hash/ejut8v2y.gif) no-repeat center;filter:alpha(opacity=5);opacity:.5;position:absolute}
+.minifeedwall .loading_placeholder{background:white url(/rsrc.php/z5R48/hash/ejut8v2y.gif) no-repeat center;height:200px}
+#feedwall_with_composer{padding-top:14px}
+#feedwall_controls_wrapper{clear:both;position:relative;z-index:10}
+#feedwall_controls_wrapper .options_icon{left:0;margin-left:5px;position:absolute}
+#feedwall_controls_wrapper .advanced_controls_link{background:#fff;display:none;padding:0 6px 3px 25px;position:absolute;right:0;top:-2px}
+#feedwall_controls_wrapper.show_advanced_options_link .advanced_controls_link{display:block}
+#feedwall_controls{padding:1px 0 3px 0}
+#feedwall_controls_wrapper.show_advanced_options_link #feedwall_controls{display:none}
+#feedwall_controls ul.Tabset_tabset li{float:left}
+.minifeedwall .empty_wall .status{background:#f5f5f5;border:none;border-top:1px solid #eaeaea;margin:45px 0 20px}
+.minifeedwall .status{overflow:hidden}
+#feedwall_controls ul.Tabset_tabset #profile_stream_filters_settings,
+#feedwall_controls ul.Tabset_tabset .walltowall{float:right}
+#profile_stream_filters_settings span.settings{background:transparent url(/rsrc.php/z6UCP/hash/6vkuk0vc.gif) no-repeat scroll left 3px;padding-left:14px;display:inline-block}
+#profile_stream_filters_settings.Tabset_selected span.settings{background-position:left -10px}
+#profile_pager_container .page_loading{display:block}
+.story_ff .comment_box{margin-left:57px}
+.story_ff .size_1 .comment_box{margin-left:0}
+.share_media h3{color:#777;font-size:11px;font-weight:bold;margin:0}
+.share_media .owner_comment,
+.share_media div.story_comment{padding:4px 0 2px 0;width:auto;font-size:11px;clear:left}
+.share_media .owner_comment .direction_ltr .start_quote,
+.share_media .direction_ltr .start_quote{background:url(/rsrc.php/zEFRE/hash/e6scjvwz.png) no-repeat top}
+.share_media .owner_comment .direction_rtl .start_quote,
+.share_media .direction_rtl .start_quote{background:url(/rsrc.php/zF20K/hash/10xjyw4y.png) no-repeat top}
+.share_media .owner_comment span.q,
+.share_media span.story_comment{color:#555;padding:0 5px 0 4px}
+.share_media .owner_comment .direction_ltr .end_quote,
+.share_media .direction_ltr .end_quote{background:url(/rsrc.php/zD62E/hash/7eag4qdy.png) no-repeat bottom}
+.share_media .owner_comment .direction_rtl .end_quote,
+.share_media .direction_rtl .end_quote{background:url(/rsrc.php/zD9YR/hash/70ilg9l6.png) no-repeat bottom}
+.share_media .owner_comment .add_comment_link{padding:5px 0 0 0}
+.share_media.hidden .textual{color:#808080;margin:0 0 10px 0}
+.share_media .profile_photo{float:left;padding:0 8px 0 0}
+.share_media .profile_info{float:left;width:200px}
+.share_media .profile_name{font-weight:bold}
+.share_media .profile ul{padding:3px 0 0}
+.share_media .profile .owner_comment{clear:both;float:none}
+.share_media .photo .photo_thumb{float:left;padding:0 8px 0 0}
+.message .share_media.photo .photo_thumb img,
+.message .share_media.share_ext_photo .share_thumb img{_width:360px}
+.share_media .photo .parent_label{font-weight:bold}
+.share_media .photo .parent_name{font-weight:bold}
+.share_media .photo .photo_owner{color:#666;font-size:10px}
+.share_media .photo_album .album_title{font-weight:bold;padding:0 0 2px 0}
+.share_media .photo_album .album_count{color:#666;font-size:9px;padding:0 0 1px 0}
+.share_media .photo_album .album_owner{color:#666}
+.share_media .photo_album .description{padding:8px 0}
+.share_media .note_with_thumb .thumb{float:left;padding:2px 8px 10px 0}
+.share_media .note_with_thumb .thumb a{padding-top:1px;background:white;display:block;text-decoration:none}
+.share_media .note_with_thumb .thumb a:hover{border-color:#6d84b4}
+.share_media .note_with_thumb .thumb img{display:block}
+.share_media .note h3{font-weight:bold;padding:0 0 3px;font-size:11px}
+.share_media .note h3 .note_byline{font-weight:normal}
+.share_media .note .excerpt .textual{color:#000;width:auto;padding:0 0 10px 0}
+.share_media .note_with_thumb .excerpt .textual{float:left;width:auto}
+.share_media .note .continue{float:none;padding:5px 0 0 0}
+.home .share_media .note .continue{padding-bottom:8px}
+.share_media .note .owner_comment{clear:both;float:none;width:auto}
+.share_media .group_photo{float:left;padding:0 8px 8px 0}
+.share_media .group_info{padding:0 0 3px 0}
+.share_media .no_photo .group_info{float:none;width:auto}
+.share_media .has_photo .group_info{float:left;width:220px}
+.share_media .group_title{font-weight:bold;padding:0 0 5px 0}
+.share_media .fbpage_title{font-weight:bold;padding:0 0 0 0}
+.share_media .group_description{padding:0 0 5px 0}
+.share_media .group_description label{color:#808080;font-weight:normal}
+.share_media .group .owner_comment{clear:both}
+.share_media .fbpage_photo{float:left;margin:0 8px 8px 0}
+.share_media .fbpage_info{padding:0 0 5px 0;float:left;width:235px}
+.share_media .no_photo .fbpage_info{float:none;width:auto}
+.share_media .fbpage_title{font-weight:bold;padding:0 0 0 0}
+.share_media .fbpage_type{padding:0 0 0 0;color:#808080;font-size:11px}
+.share_media .fbpage_fans_count{color:#000}
+.share_media .fbpage .owner_comment{clear:both}
+.share_media .event_photo{padding:0 8px 8px 0;float:left}
+.share_media .event_title{font-weight:bold;padding:0 0 5px 0}
+.share_media .event_tagline{color:#666;font-size:10px;font-weight:normal;padding:1px 0 0 0}
+.share_media .event_description{padding:0 0 10px 0}
+.share_media.event .owner_comment{clear:both}
+.share_media .event_has_photo .event_info{float:left;width:220px}
+.sharebox_wide .event_has_photo .event_info{width:275px}
+.sharefeed_item .event_has_photo .event_info{width:245px}
+.share_media .classified_photo{float:left;padding:0 0 8px 0;width:108px}
+.share_media .feed_title{font-size:11px;font-weight:bold;padding:0 0 4px 0}
+.share_media .feed_summary{color:#000;padding:0 0 5px 0}
+.share_media .feed_image{margin:0 8px 8px 0;float:left}
+.share_media .external .external_url{font-size:9px}
+.large .share_thumb{width:200px}
+.home .sharefeed_item .share_thumb{width:100px;text-align:right}
+.share_thumb{width:100px}
+.has_thumb .extra,
+.home .has_thumb .extra{float:right;padding:0 0 5px 8px}
+.home .has_thumb .extra{float:left;padding-right:10px;padding-left:0}
+.share_ext_photo .has_thumb .extra{float:left;padding:0 8px 5px 0}
+.home .share_ext_photo .has_thumb .extra .share_thumb{text-align:left}
+.share_ext_photo .has_thumb .textual{float:left;width:320px}
+.textual{float:none}
+.has_extra .textual{float:left;float:none}
+.no_extra .textual,
+.has_thumb .textual{float:none;width:auto}
+.textual .summary{padding:0 0 8px}
+.textual .has_thumb .summary{margin-left:110px}
+.share_media a .video_fallback{background:#eee url(/rsrc.php/z467T/hash/1fjg6c8h.png) no-repeat bottom left;color:#808080;display:block;float:left;font-size:11px;font-weight:bold;margin:0;padding:73px 0 12px 0;width:130px;text-align:center;text-indent:20px}
+.ie6 .share_media a .video_fallback{background:#eee url(/rsrc.php/zBC48/hash/er3wusbq.png) no-repeat bottom left}
+.share_media a:hover .video_fallback{color:#3b5998;text-decoration:none}
+a .video_thumb{display:block;float:left;margin:0}
+.share_media .video_thumb img{width:90px}
+.sharefeed_item_medium .fb_video .timestamp{display:none}
+.sharefeed_item_medium .fb_video .subtitle{font-size:9px;margin-bottom:4px}
+.sharefeed_item_large .fb_video .subtitle{margin-bottom:3px}
+.sharefeed_item_large .fb_video .timestamp{margin-bottom:4px}
+.video_thumb img.decoy{display:inline;visibility:hidden;_display:none}
+.video_thumb span.thumb{background-image:url(/rsrc.php/z467T/hash/1fjg6c8h.png);background-position:left bottom;background-repeat:no-repeat;cursor:pointer;position:absolute;z-index:9;_background-image:url(/rsrc.php/zBC48/hash/er3wusbq.png);_position:relative}
+.share_media .external .video_thumb a span.thumb img{_visibility:hidden}
+.video_thumb span.play img{visibility:hidden}
+.video_thumb span.play{background-image:url(/rsrc.php/z467T/hash/1fjg6c8h.png);background-position:bottom left;background-repeat:no-repeat;display:inline;position:absolute;z-index:10}
+.share_media .external .video_thumb a span.play{_background-image:url(/rsrc.php/zEZ3G/hash/6zpt5gvf.png);_display:none;_position:relative}
+.ie6 .video_thumb span.play{background-image:url(/rsrc.php/zBC48/hash/er3wusbq.png)}
+.ad_capsule .share_media .video_thumb span.thumb{background-image:url(/rsrc.php/zCK6C/hash/ar2u0whl.png)}
+.ad_capsule .share_media .video_thumb span.play{background-image:url(/rsrc.php/zCK6C/hash/ar2u0whl.png)}
+.ie6 .ad_capsule .share_media .video_thumb span.thumb{background-image:url(/rsrc.php/zC7C3/hash/dzlhtn0c.png)}
+.ie6 .ad_capsule .share_media .video_thumb span.play{background-image:url(/rsrc.php/zC7C3/hash/dzlhtn0c.png)}
+.share_media .lexicon .thumb{float:left;padding:0 6px 6px 0}
+.share_media .lexicon .thumb a{display:block;float:left;line-height:1px;padding:0;text-decoration:none}
+.share_media .lexicon .info{clear:none;float:left;padding:10px 10px 0 0;width:133px}
+.share_media .lexicon .comment{clear:both;float:none;margin-top:8px;width:auto}
+.lexicon_title{color:#111;font-size:11px;font-weight:bold}
+.mp3player .extra{float:none;padding:0 0 4px 0;width:auto}
+.mp3player .owner_comment{clear:both}
+.album_art{float:left;margin-bottom:5px;margin-right:7px}
+.has_artwork .info{padding:4px 0 5px 0}
+.mp3player .summary,
+.mp3player .title,
+.mp3player .url{display:none}
+.share_media .mp3player .mp3player_holder{padding:0 0 0 0}
+.share_media .mp3player .info_field{float:left;padding:2px 0;width:300px;float:left}
+.share_media .mp3player .info_field strong{color:#808080;display:block;float:left;font-weight:normal;width:50px}
+.share_media .mp3player .info_field span{float:left}
+.sharebox_narrow .mp3player .has_artwork .info_field span{width:170px}
+.sharebox_wide .mp3player .has_artwork .info_field span{width:225px}
+.sharebox_narrow .mp3player .no_artwork .info_field span{width:280px}
+.sharebox_wide .mp3player .no_artwork .info_field span{width:335px}
+.share_media .mp3player .info_field a{font-weight:bold}
+.swfvideo .extra{float:left;padding:0 8px 5px 0}
+.swfvideo .story_posted_item .extra{padding-bottom:0}
+.swfvideo .textual .metadata{float:left}
+.sharebox_narrow .swfvideo .textual .metadata{width:197px}
+.sharebox_wide .swfvideo .textual .metadata{width:252px}
+.profilebox_wide .swfvideo .textual .metadata{width:216px}
+.sharefeed_item .swfvideo .textual .metadata{width:350px}
+.home .sharefeed_item .swfvideo .textual .metadata{width:auto;float:none}
+.home .swfvideo .story_comment_quote,
+.swfvideo .textual .owner_comment{clear:both}
+.share_media .url{color:#555;font-size:9px;padding:1px 0 6px 0}
+.sharefeed_item_large .url{padding:2px 0 0 0}
+.share_media .title{font-weight:bold}
+.sharefeed_item_large .title{padding:0 7px 0 0;margin:0}
+.playing .extra{padding:0 8px 0 0;margin-right:10px;float:none}
+.playing .textual .metadata{clear:both;float:none;width:auto !important}
+.share_footer{border-top:1px solid #ddd;clear:both;padding:5px 0 0 6px}
+.share_footer.show_comments .share_other_comments{display:block}
+.share_footer.hide_comments .share_other_comments{display:none}
+.share_footer .share_actions{color:#808080;padding:0 0 10px 0}
+.share_footer .share_comment_actions{float:left}
+.share_footer .share_report{float:right}
+.share_footer.show_comments .share_actions{display:none}
+.share_footer .share_other_comments{padding:5px 0 0 0}
+.share_other_comment{clear:both}
+.share_item_actions{color:#666;padding:2px 0 5px 0}
+.share_item_actions span{color:#808080}
+.ad_capsule a .video_fallback{float:right;width:100px}
+.ad_capsule a .video_thumb{float:right;width:100px}
+.ad_capsule a .video_thumb img{width:100px}
+.ad_capsule .video_ad_body{float:left;width:70%}
+.fb_video .thumb{float:left;padding:0 6px 6px 0}
+.fb_video .thumb a{border:1px solid #aaa;display:block;float:left;line-height:1px;padding:1px;text-decoration:none}
+.fb_video .thumb a:hover{border:1px solid #3b5998}
+.fb_video .info{clear:none;float:left;padding:5px 0 10px 0;width:180px}
+.fb_video .story_posted_item .timestamp,
+.fb_video .info .timestamp{color:#808080;font-size:9px;padding:1px 0 0 0}
+.fb_video .story_posted_item .timestamp strong,
+.fb_video .info .timestamp strong{font-weight:bold}
+.fb_video .owner_comment{clear:both;float:none;margin-top:8px;width:auto}
+.fb_video .fb_video_holder{background:black;float:left;line-height:1px;margin:0 8px 5px 0}
+.fb_video .story_title{font-weight:bold}
+.fb_video a .video_thumb{width:auto}
+.fb_video .video_thumb img{width:auto}
+.playing .fb_video .info{clear:both;float:none;width:auto}
+.fb_video_stage div.video_thumb{float:left;line-height:1px;margin:0 8px 0 0}
+.fb_video_stage div.video_metadata{float:left;width:200px}
+.fb_video_stage div.video_metadata h3.video_title{color:#111;font-size:11px;font-weight:bold}
+.fb_video_stage div.video_metadata div.video_timestamp{color:#666;font-size:9px;padding:1px 0 0 0}
+.fb_video_stage div.video_metadata div.video_timestamp strong{font-weight:bold}
+.share_media .fb_videomsg{background:#0c0d0d;float:left;line-height:1px;padding:0}
+.share_media .fb_videomsg a{background:transparent url(/rsrc.php/z467T/hash/1fjg6c8h.png) no-repeat bottom left;display:block;line-height:1px}
+.share_media .fb_videomsg a img{visibility:hidden}
+.share_media .fb_videomsg .video_player object,
+.share_media .fb_videomsg .video_player embed{background:black}
+.share_media .extapp .thumb{float:left;padding:2px 8px 10px 0}
+.share_media .extapp .thumb a{padding-top:1px;background:white;display:block;text-decoration:none}
+.share_media .extapp .thumb a:hover{border-color:#6d84b4}
+.share_media .extapp h3{font-weight:bold;padding:0 0 3px;font-size:11px}
+.share_media .extapp .summary{color:#000;padding:0 0 10px 0;float:left;width:240px}
+.share_media .extapp .owner_comment{clear:both}
+.UIStory{*background-color:#fff;*zoom:1}
+.UIStory_Hide{display:block;float:right;margin-top:-2px}
+.UIStory_Hide a{opacity:0;-moz-opacity:0;*filter:alpha(opacity=0);_filter:alpha(opacity=20)}
+.UIStory_Hide a:hover{_filter:alpha(opacity=100)}
+.UIStory:hover .UIStory_Hide a{opacity:1;-moz-opacity:1;*filter:alpha(opacity=100)}
+.stream_participants_not_expanded .stream_participants_long,
+.stream_participants_expanded .stream_participants_short{display:none}
+.UIStory_Privacy a{padding:0 5px;line-height:12px;display:inline-block;background:url(/rsrc.php/zTG3I/hash/5rzjfw6v.gif) no-repeat center right}
+.UIStory_Privacy.UIStory_TargetedPrivacy a{background-image:url(/rsrc.php/zAYK1/hash/6pj5fpic.gif);padding:0 7px;line-height:14px}
+.UIStory_Privacy .uiTooltip .uiTooltipWrap{left:-1px;bottom:14px}
+.UIStory .text_exposed_link{display:block;padding-top:4px;font-size:11px}
+.UIIntentionalStory{background-color:#fff;border-top:1px solid #eee;margin-bottom:7px;min-height:50px;padding:7px 0 0 60px;position:relative}
+.ie6 .UIIntentionalStory{height:50px;overflow:visible;border-top:none}
+.UIStory:first-child{border-top:none;margin-top:0}
+.story_preview_nile .UIIntentionalStory{border:none}
+.UIIntentionalStory_Location,
+.UIIntentionalStory_Time,
+.UIIntentionalStory_Time a{color:#777;font-size:11px}
+.UIIntentionalStory_BottomAttribution{color:#777}
+.UIIntentionalStory_BottomAttribution a{color:#777}
+.UIIntentionalStory_Pic{left:0;position:absolute}
+.UIIntentionalStory_Image{display:block;position:absolute;vertical-align:middle}
+.UIIntentionalStory_Message,
+.UIIntentionalStory .location{font-size:13px;font-weight:normal;overflow:hidden}
+.UIIntentionalStory_Message_CheckinText{color:#777}
+.UIFeedFormStory_Prompt{color:#777;font-size:13px;padding-right:25px}
+.UIFeedFormStory_Prompt .UIFeedFormStory_Lead{font-weight:bold}
+.UIFeedFormStory_Prompt textarea{font-size:13px;font-weight:normal;margin-top:7px;overflow:hidden;width:100%}
+.UIIntentionalStory_Arrow{padding:0 1px}
+.UIIntentionalStory_Names{color:#808080}
+.UIIntentionalStory_Names a{font-weight:bold}
+.UIIntentionalStory_Attribution{color:#808080}
+.UIIntentionalStory .UIStoryAttachment_MediaSingle{padding-right:10px}
+.UIIntentionalStory_PhotoExtra{padding-left:8px}
+.UIIntentionalStory_MediaExtra{display:none;padding-left:8px}
+.text_exposed .UIIntentionalStory_MediaExtra{display:block}
+.UIIntentionalStory_Info{clear:left;margin-top:3px;min-height:16px;display:block}
+.ie6 .UIIntentionalStory_Info{height:16px;overflow:visible}
+.UIActionLinks .UIIntentionalStory_Mobile{margin-top:-2px}
+.UIIntentionalStory_InfoText{color:#777;min-height:16px;padding:2px 0 0 0}
+.ie6 .UIIntentionalStory_InfoText{height:16px}
+.UIIntentionalStory_InfoTextIndented{padding-left:22px}
+.UIIntentionalStory_Tagged{background:url(/rsrc.php/z3O30/hash/3wq3vjh4.png) no-repeat;background-position:0 -395px;padding-left:16px;width:0;display:inline-block}
+.story_hide_menu{text-align:center}
+.UIIntentionalStory_hover{background:#eee}
+.UIIntentionalStory .swfvideo .extra{padding-bottom:0;padding-right:0}
+.UIIntentionalStory .UIMediaItem_video{padding-bottom:0}
+.UIIntentionalStory_CollapsedStories{background-color:#fff;border-top:1px solid #eee;display:block;font-size:9px;font-weight:bold;margin-bottom:7px;padding-top:7px;margin-top:7px;position:relative}
+.UIIntentionalStory_CollapsedStoriesLoading{background:#fff url(/rsrc.php/z4YAB/hash/7hwy7at6.png) 6px right no-repeat}
+.UIMediaItem_ManyItems{float:left}
+.UIMediaItem img{display:block}
+.UIMediaItem .uiVideoThumb{display:block}
+.UIMediaItem_Wrapper{overflow:hidden}
+.UIMediaItem_Photo .UIMediaItem_Wrapper{border:1px solid #ccc;padding:3px}
+.UIMediaItem_Photo .UIMediaItem_PhotoBorder{border:1px solid #ccc}
+.UIMediaItem_Photo a:hover .UIMediaItem_Wrapper,
+.UIMediaItem_Photo a:hover .UIMediaItem_PhotoBorder{border:1px solid #3b5998}
+.UIMediaItem_Photo .UIMediaItem_PhotoFrame{border:3px solid white}
+.UIMediaItem_UnknownWidth img{max-width:90px;max-height:90px}
+.ie6 .UIMediaItem_UnknownWidth img{width:90px}
+.UIStoryAttachment{margin-top:6px;overflow:hidden;padding-right:10px;margin-bottom:5px}
+.UIStoryAttachment_Tab{position:absolute}
+.UIStoryAttachment_Icon{background:#fff;padding-bottom:2px}
+.UIStoryAttachment_BlockQuote{border-left:2px solid #ccc;padding:0 0 3px 8px}
+.ie6 .UIStoryAttachment_BlockQuote{zoom:1}
+.UIStoryAttachment_BlockQuote .UIStoryAttachment_Title{margin-top:0}
+.UIStoryAttachment_Media{float:left;overflow:hidden;padding-right:10px}
+.UIStoryAttachment_MediaWide{float:none}
+.UIStoryAttachment_MediaShortened .UIStoryAttachment_MediaWide{float:left}
+.text_exposed .UIStoryAttachment_MediaShortened .UIStoryAttachment_MediaWide{float:none;display:block;*zoom:1}
+.UIStoryAttachment_Info{display:table;*zoom:1}
+.text_exposed .UIStoryAttachment_MediaShortened .UIStoryAttachment_Info,
+.UIStory_Open .UIStoryAttachment_Info{display:block;clear:left}
+.UIStoryAttachment_Title{font-weight:bold;padding-top:3px}
+.UIStoryAttachment_TitleAbove{margin:0}
+.UIStoryAttachment_TitleAboveMedia{margin:0 0 5px}
+.UIStoryAttachment_TitleBelow{clear:left;padding:5px 0 0}
+.ie6 .UIStoryAttachment_TitleBelow{padding-top:2px}
+.UIStoryAttachment_Title_Byline{color:#777;font-weight:normal}
+.UIStoryAttachment_Title_Byline a{font-weight:bold}
+.UIStoryAttachment_Caption{color:#808080;padding-top:3px}
+.UIStoryAttachment_Copy{color:#808080;padding-top:3px}
+.UIStoryAttachment_Copy .CopyTitle{font-weight:bold}
+.UIStoryAttachment_Copy table{border-collapse:collpase}
+.UIStoryAttachment_Copy table td{padding:2px 2px 0 0}
+.UIStoryAttachment_Table{padding-top:2px}
+.UIStoryAttachment_Tags{color:#808080;padding:0 0 3px}
+.UIStoryAttachment_Label{color:#999;padding-right:4px}
+.UIStoryAttachment_Tags .UIStoryAttachment_Label{background:transparent url(/rsrc.php/z3O30/hash/3wq3vjh4.png) no-repeat left -395px;padding-left:16px}
+.UIShowMore_Pager .PagerMoreLink{float:left;padding-right:5px}
+.UIShowMore_Pager .PagerArrow{display:inline;margin:5px 0 0 5px;position:absolute}
+.UIShowMore_Pager_Loader{display:none;margin:1px 15px 0 25px;position:absolute}
+.async_saving .UIShowMore_Pager_Loader,
+.UIShowMore_PagerLoading .UIShowMore_Pager_Loader{display:inline}
+.UIShowMore_PagerInner{margin:5px 10px;overflow:hidden}
+.ie6 .UIShowMore_PagerInner{zoom:1}
+.UIShowMore_ShowMore{display:block}
+.UIShowMore_NoMore{display:none}
+.uiVideoThumb{border:0;overflow:hidden;position:relative}
+.uiVideoThumb img{display:-moz-inline-box;display:inline-block;max-width:130px;_clear:expression(
+style.width = this.offsetWidth > 130 ? "130px":"auto",
+style.clear = "none", 0
+)}
+.uiVideoThumb img[width]{max-width:auto}
+.uiVideoThumb i{background:url(/rsrc.php/z467T/hash/1fjg6c8h.png) no-repeat 0 0;bottom:0;height:32px;left:0;position:absolute;width:39px}
+.uiVideoThumbSmall i{background-image:url(/rsrc.php/zCK6C/hash/ar2u0whl.png);_background-image:url(/rsrc.php/zC7C3/hash/dzlhtn0c.png);height:26px;width:31px}
+.uiVideoThumbLoading i{background:#fff url(/rsrc.php/z4YAB/hash/7hwy7at6.png) no-repeat 50% 50%;height:100%;width:100%;_width:auto}
+
+#bootloader_css_b5kl90om6fsco4wg_pkg_css { height: 42px; }

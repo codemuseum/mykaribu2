@@ -20,6 +20,14 @@ from google.appengine.ext.webapp import template
 
 # *** Controller imports
 from controllers.admin import AdminHandler
+from controllers.admin import AdminHandler
+from controllers.admin import AdminPageViewsHandler
+from controllers.admin import AdminPathsHandler
+from controllers.admin import AdminPathDataHandler
+from controllers.admin import AdminUrlAnalyzerHandler
+from controllers.admin import AdminUrlSuggestHandler
+from controllers.admin import AdminUrlStatsHandler
+from controllers.admin import AdminUrlFunnelHandler
 from controllers.logging import LoggingHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
@@ -50,10 +58,18 @@ routing =[
     ('/', MainHandler),
     ('/auth2',Auth2Handler),
     ('/admin',AdminHandler),
+    ('/admin/pageviews',AdminPageViewsHandler),
+    ('/admin/paths',AdminPathsHandler),
+    ('/admin/paths/data.json',AdminPathDataHandler),
+    ('/admin/url-analyzer',AdminUrlAnalyzerHandler),
+    ('/admin/url-suggest',AdminUrlSuggestHandler),
+    ('/admin/urls/stats.json', AdminUrlStatsHandler),
+    ('/admin/urls/funnel.json', AdminUrlFunnelHandler),
     ('/logging',LoggingHandler),
     ('/t',FramedResultHandler),
     ('/share_counts',ShareCountsHandler),
-    ('/results',ResultsHandler)
+    ('/results',ResultsHandler),
+    ('/pageviews.json',PageViewsHandler)
     ]
 
 # *** Init code

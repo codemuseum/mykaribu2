@@ -32,8 +32,14 @@ from controllers.logging import LoggingHandler, PageViewsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
 
+# *** Model imports
+from models.user import User
+
 # *** Helpers
 import helpers as h
+import facebook
+from cookies import Cookies
+import datetime
 
 # *** Handlers
 
@@ -51,8 +57,37 @@ class MainHandler(webapp.RequestHandler):
 # Auth stage 2 - Eventually change this to catch possibly new tokens on any url
 class Auth2Handler(webapp.RequestHandler):
     def get(self):
+        cookies = Cookies(self,max_age=(60 * 60 * 24 * 2)) # Stay Logged in for 2 Days 
         c = h.context()
         c['access_token'] = self.request.get("access_token");
+        
+        user = User.gql("WHERE fb_oauth_access_token = :1", self.request.get("access_token")).get()
+        if user != None:
+            # If the user currently exists in the DB
+            h.set_current_user(cookies, user)
+            c['current_user'] = user
+        else: 
+            # Create the user by looking them up in the graph
+            try:
+                graph = facebook.GraphAPI(self.request.get("access_token"))
+                me = graph.get_object('me')
+            except Exception, e:
+                me = None
+                c['error'] = e
+
+            if me != None:
+                new_user = User(
+                    fb_user_id = str(me['id']),
+                    fb_oauth_access_token = self.request.get("access_token"),
+                    fb_oauth_access_token_stored_at = datetime.datetime.utcnow(),
+                    first_name = me['first_name'], 
+                    last_name = me['last_name'])
+                if 'email' in me:
+                    new_user.email = me['email']
+                new_user.put()
+                h.set_current_user(cookies, new_user)
+                c['current_user'] = new_user
+
         h.render_out(self, 'main.html', c)
 
 # *** Globals - Need to fix this to find handlers by string

@@ -34,5 +34,17 @@
     <!--<span id="temp"></span><br/>-->
     Placeholder for first app page post auth.<br/>
     access_token: {{access_token}}
+    
+    <div>
+      {% if error %}
+        <div style="background-color:red;color:#fff">{{ error }}</div>
+      {% endif %}
+      
+      {% if current_user %}
+        Current User: {{current_user}} :: <img src="http://graph.facebook.com/{{current_user.fb_user_id}}/picture" /> {{current_user.fb_user_id}}: {{current_user.first_name}} {{current_user.last_name}}
+      {% else %}
+        NOT LOGGED IN! :(
+      {% endif %}
+    </div>
     </body>
   </html>

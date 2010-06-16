@@ -41,16 +41,18 @@ import helpers as h
 class MainHandler(webapp.RequestHandler):
     def get(self):
         c = h.context()
-        self.redirect('https://graph.facebook.com/oauth/authorize?'
-                      +'type=user_agent&display=page&client_id='
-                      +cfg['app_id']+'&redirect_uri='
-                      +cfg['direct_url']
-                      +'/auth2&scope=publish_stream')
+        c['auth_url'] = ('https://graph.facebook.com/oauth/authorize?'
+                         +'type=user_agent&display=page&client_id='
+                         +cfg['app_id']+'&redirect_uri='
+                         +cfg['fb_url']
+                         +'/auth2&scope=publish_stream')
+        h.render_out(self, "auth1.tplt", c)
 
 # Auth stage 2 - Eventually change this to catch possibly new tokens on any url
 class Auth2Handler(webapp.RequestHandler):
     def get(self):
         c = h.context()
+        c['access_token'] = self.request.get("access_token");
         h.render_out(self, 'main.html', c)
 
 # *** Globals - Need to fix this to find handlers by string

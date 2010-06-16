@@ -23,6 +23,10 @@ def init():
     import yaml
     global cfg
     cfg = yaml.load(file('config.yaml','r'))
+    # add direct_url dynamically
+    import os
+    cfg['direct_url'] = "http://"+os.environ['HTTP_HOST']
+    cfg['is_deployed'] = (os.environ['SERVER_SOFTWARE'] != "Development/1.0")
     
     # load local config and override general options
     try:

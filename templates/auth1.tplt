@@ -1,0 +1,10 @@
+<html>
+  <script>
+    function init()
+    {
+    if(self.location != top.location) top.location.href = '{{auth_url}}';
+    }
+  </script>
+  <body onload="init()">
+  </body>
+</html>

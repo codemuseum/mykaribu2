@@ -6,6 +6,10 @@
   <title>{{page_title}} - myKaribu.com</title>
   <link rel="stylesheet" type="text/css"
 	href="{{cfg.direct_url}}/public/css/framed_result.css" />
+	<script type="text/javascript">
+	  // Un-iFrame me!  Required for the case where the user just authenticated.
+	  if (window.top != window) {window.top.location = window.location.href; }
+  </script>
 </head>
 <body class="" scroll='auto'>
   

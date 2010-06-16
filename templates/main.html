@@ -33,8 +33,7 @@
       }
     </script>-->
     <!--<span id="temp"></span><br/>-->
-    Placeholder for first app page post auth.<br/>
-    access_token: {{access_token}}
+    Placeholder for first app page.
     
     <div>
       {% if error %}
@@ -47,5 +46,19 @@
         NOT LOGGED IN! :(
       {% endif %}
     </div>
+    
+    <div>
+      See <a href="/results?q=indigo">some results</a>!
+    </div>
+    
+    <div>
+      See <a href="/t?u=http://thecrowhouse.com/message_from_an_indigo.html&amp;q=indigo&amp;infb=true" target="_top">a toolbar without logging in</a>!
+    </div>
+    
+    
+    <div>
+      See <a href="/t?u=http://thecrowhouse.com/message_from_an_indigo.html&amp;q=indigo&amp;infb=true&amp;auth=1" target="_top">a toolbar **requiring** logging in</a>!
+    </div>
+    
     </body>
   </html>

@@ -3,9 +3,39 @@
 from google.appengine.ext.webapp import template
 from models.user import User
 from google.appengine.ext import db
+from cookies import Cookies
 
 cfg = None # holds variables for config of fb app, etc.
 
+# Gets cookies object, set to the default max_age for this application
+def get_default_cookies(handler):
+    return Cookies(handler,max_age=(60 * 60 * 24 * 2)) # Stay Logged in for 2 Days 
+
+# If not logged in: Stores page in cookie for after-authentication returning, outputs a page that redirects to top, and returns false.
+# Else: returns current_user
+def login_required(handler):
+    cookies = get_default_cookies(handler)
+    cookied_user = get_current_user(cookies)
+    
+    if cookied_user == None:
+        cookies['post_auth_url'] = handler.request.url
+        c = context()
+        c['auth_url'] = ('https://graph.facebook.com/oauth/authorize?'
+                         +'type=user_agent&display=page&client_id='
+                         +cfg['app_id']+'&redirect_uri='
+                         +cfg['fb_url']
+                         +'/auth2&scope=publish_stream')
+        render_out(handler, "auth1.tplt", c)
+        return None
+    else:
+        return cookied_user
+    
+
+# Returns current_user if any, or None
+def login_optional(handler):
+    return get_current_user(get_default_cookies(handler))
+    
+    
 # Returns None if no current user
 def get_current_user(cookies):
     if 'uk' in cookies and 'oat' in cookies:

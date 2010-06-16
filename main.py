@@ -38,7 +38,6 @@ from models.user import User
 # *** Helpers
 import helpers as h
 import facebook
-from cookies import Cookies
 import datetime
 
 # *** Handlers
@@ -47,17 +46,13 @@ import datetime
 class MainHandler(webapp.RequestHandler):
     def get(self):
         c = h.context()
-        c['auth_url'] = ('https://graph.facebook.com/oauth/authorize?'
-                         +'type=user_agent&display=page&client_id='
-                         +cfg['app_id']+'&redirect_uri='
-                         +cfg['fb_url']
-                         +'/auth2&scope=publish_stream')
-        h.render_out(self, "auth1.tplt", c)
+        c['current_user'] = h.login_optional(self)
+        h.render_out(self, 'main.html', c)
 
 # Auth stage 2 - Eventually change this to catch possibly new tokens on any url
 class Auth2Handler(webapp.RequestHandler):
     def get(self):
-        cookies = Cookies(self,max_age=(60 * 60 * 24 * 2)) # Stay Logged in for 2 Days 
+        cookies = h.get_default_cookies(self)
         c = h.context()
         c['access_token'] = self.request.get("access_token");
         
@@ -87,8 +82,11 @@ class Auth2Handler(webapp.RequestHandler):
                 new_user.put()
                 h.set_current_user(cookies, new_user)
                 c['current_user'] = new_user
-
-        h.render_out(self, 'main.html', c)
+        
+        if 'post_auth_url' in cookies:
+            self.redirect(cookies['post_auth_url'])
+        else:
+            self.redirect('/')
 
 # *** Globals - Need to fix this to find handlers by string
 routing =[

@@ -4,6 +4,14 @@ import helpers as h
 class FramedResultHandler(webapp.RequestHandler):
     def get(self):
         c = h.context()
+        
+        if self.request.get('auth') == '1':
+            c['current_user'] = h.login_required(self)
+            if c['current_user'] == None:
+                return None
+        else:
+            c['current_user'] = h.login_optional(self)
+        
         c['url'] = self.request.get("u")
         c['query'] = self.request.get("q")
         c['start'] = self.request.get("start")

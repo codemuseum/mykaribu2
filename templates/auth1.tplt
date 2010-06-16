@@ -1,10 +1,17 @@
 <html>
-  <script>
-    function init()
-    {
-    if(self.location != top.location) top.location.href = '{{auth_url}}';
-    }
-  </script>
-  <body onload="init()">
+  <head>
+    <script type="text/javascript">
+      function redirectToAuth() {
+        if (window.top) {
+          window.top.location = '{{auth_url}}';
+        }
+        else {
+          window.location = '{{auth_url}}';
+        }
+      }
+    </script>
+  </head>
+
+  <body onload="redirectToAuth()">
   </body>
 </html>

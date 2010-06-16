@@ -28,7 +28,7 @@ from controllers.admin import AdminUrlAnalyzerHandler
 from controllers.admin import AdminUrlSuggestHandler
 from controllers.admin import AdminUrlStatsHandler
 from controllers.admin import AdminUrlFunnelHandler
-from controllers.logging import LoggingHandler
+from controllers.logging import LoggingHandler, PageViewsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
 

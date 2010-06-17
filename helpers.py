@@ -4,6 +4,7 @@ from google.appengine.ext.webapp import template
 from models.user import User
 from google.appengine.ext import db
 from cookies import Cookies
+import logging
 
 cfg = None # holds variables for config of fb app, etc.
 
@@ -17,11 +18,11 @@ def login_required(handler):
     cookies = get_default_cookies(handler)
     cookied_user = get_current_user(cookies)
     
+    logging.info(cookies)
+        
     if cookied_user == None:
-        import logging
-        logging.info(cookies)
-        logging.info(handler.request.cookies)
-        cookies['post_auth_url'] = handler.request.url
+        if handler.request.url.find('/auth2') == -1:
+            cookies['post_auth_url'] = handler.request.url
         c = context()
         c['auth_url'] = ('https://graph.facebook.com/oauth/authorize?'
                          +'type=user_agent&display=page&client_id='

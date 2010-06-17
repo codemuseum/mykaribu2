@@ -23,13 +23,15 @@ def login_required(handler):
     if cookied_user == None:
         if handler.request.url.find('/auth2') == -1:
             cookies['post_auth_url'] = handler.request.url
+        else:
+            logging.warning("OH NO!  handler.request.url had /auth2: == "+handler.request.url)
         c = context()
-        c['auth_url'] = ('https://graph.facebook.com/oauth/authorize?'
+        c['top_redirect_url'] = ('https://graph.facebook.com/oauth/authorize?'
                          +'type=user_agent&display=page&client_id='
                          +cfg['app_id']+'&redirect_uri='
                          +cfg['fb_url']
                          +'/auth2&scope=publish_stream')
-        render_out(handler, "auth1.tplt", c)
+        render_out(handler, "redirector.tplt", c)
         return None
     else:
         return cookied_user    

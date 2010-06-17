@@ -55,7 +55,12 @@ class Auth2Handler(webapp.RequestHandler):
     def get(self):
         cookies = h.get_default_cookies(self)
         c = h.context()
-        c['access_token'] = self.request.get("access_token");
+        c['access_token'] = self.request.get("access_token")
+        
+        if self.request.get("access_token") == '':
+            raise KeyError("No access token set, but we expected on %s" % self.request.get("access_token"))
+        else:
+            logging.warning("Got access token %s" % self.request.get("access_token"))
         
         user = User.gql("WHERE fb_oauth_access_token = :1", self.request.get("access_token")).get()
         if user != None:
@@ -88,11 +93,19 @@ class Auth2Handler(webapp.RequestHandler):
                 h.set_current_user(cookies, new_user)
                 c['current_user'] = new_user
         
+        logging.info(c['current_user'])
+        
         if 'post_auth_url' in cookies:
-            cookies.unset_cookie('post_auth_url')
-            self.redirect(cookies['post_auth_url'])
-        else:
-            self.redirect('/')
+            redirect_to_url = cookies['post_auth_url']
+            del cookies['post_auth_url']
+            c['top_redirect_url'] = redirect_to_url
+            # self.redirect(redirect_to_url)
+        else:    
+            c['top_redirect_url'] = h.cfg['fb_url']
+            # self.redirect('/')
+        
+        h.render_out(self, "redirector.tplt", c)
+
 
 # *** Globals - Need to fix this to find handlers by string
 routing =[

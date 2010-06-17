@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <script type="text/javascript">
+        if (window.top) {
+          window.top.location = '{{top_redirect_url}}';
+        }
+        else {
+          window.location = '{{top_redirect_url}}';
+        }
+    </script>
+  </head>
+
+  <body>You should have been redirected. Please <a href="{{top_redirect_url}}" target="_top">click here</a> to move along.</body>
+</html>

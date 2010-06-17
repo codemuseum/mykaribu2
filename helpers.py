@@ -20,6 +20,7 @@ def login_required(handler):
     if cookied_user == None:
         import logging
         logging.info(cookies)
+        logging.info(handler.request.cookies)
         cookies['post_auth_url'] = handler.request.url
         c = context()
         c['auth_url'] = ('https://graph.facebook.com/oauth/authorize?'

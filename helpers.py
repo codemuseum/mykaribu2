@@ -32,8 +32,8 @@ def login_required(handler):
         render_out(handler, "auth1.tplt", c)
         return None
     else:
-        return cookied_user
-    
+        return cookied_user    
+
 
 # Returns current_user if any, or None
 def login_optional(handler):

@@ -25,6 +25,9 @@ class ResultsHandler(webapp.RequestHandler):
         url2 = 'http://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=large&start=8&q='\
                +ue_query+'&key='\
                +h.cfg['gs_api_key']
+        url3 = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=large&q='\
+               +ue_query+'&key='\
+               +h.cfg['gs_api_key']
         rpcs = []
         
         rpc = urlfetch.create_rpc(10)
@@ -33,19 +36,25 @@ class ResultsHandler(webapp.RequestHandler):
         rpc = urlfetch.create_rpc(10)
         urlfetch.make_fetch_call(rpc,url2)
         rpcs.append(rpc)
+        rpc = urlfetch.create_rpc(10)
+        urlfetch.make_fetch_call(rpc,url3)
+        rpcs.append(rpc)
         for rpc in rpcs:
             rpc.wait()
         result = rpcs[0].get_result()        
-        result2 = rpcs[1].get_result() # need to put these into an async fetch
+        result2 = rpcs[1].get_result()
+        result_web = rpcs[2].get_result()
         
         o = simplejson.loads(result.content)
-        o2 = simplejson.loads(result.content)
+        o2 = simplejson.loads(result2.content)
+        o_web = simplejson.loads(result_web.content)
         
         from print_r import print_r
-        c['content'] = print_r(o, False)
+        #c['content'] = print_r(o_web, False)
         c['ad'] = ""
         all_imgs = o['responseData']['results']+o2['responseData']['results']
-
+        c['web_data'] = o_web['responseData']['results']
+        
         # calculate appropriate sizes for image placement
         c['max_height'] = int(max(all_imgs, key=lambda x: int(x['tbHeight']))['tbHeight'])
         c['row_height'] = c['max_height']+20

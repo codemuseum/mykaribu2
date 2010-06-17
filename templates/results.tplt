@@ -3,12 +3,53 @@
   <link href="/public/results.css" media="screen" 
 	rel="stylesheet" type="text/css">
 </head>
-<body style="margin:0; overflow:hidden" >
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
-	  type="text/javascript"></script>
-  <script src="/public/js/header.js"></script>
-  {% include "fb_init.tplt" %}
-<style>
+<body style="margin:0;" >
+ <div id="data-gcsek" style="display:none">{{cfg.gs_api_key}}</div>
+ <div id="fb-root"></div>
+  <script>
+    // All FB stuff
+    window.fbAsyncInit = function() {
+    FB.init({
+    appId  : '{{cfg.app_id}}',
+    status : true, // check login status
+    cookie : true, // enable cookies to allow the server to access the session
+    xfbml  : true  // parse XFBML
+    },"/public/xd_receiver.htm");
+   FB.Canvas.setSize();
+    };
+    (function() {
+    var e = document.createElement('script');
+    e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+    e.async = true;
+    document.getElementById('fb-root').appendChild(e);
+    }());
+
+    // util
+    function print_r(theObj)
+    {
+    var building_str = "";
+    if(theObj.constructor == Array ||
+       theObj.constructor == Object){
+	building_str+=("<ul>");
+	for(var p in theObj){
+	    if(theObj[p]&&(theObj[p].constructor == Array||
+			   theObj[p].constructor == Object)){
+		building_str+=("<li>["+p+"] => "+typeof(theObj)+"</li>");
+		building_str+=("<ul>");
+		building_str+=print_r(theObj[p]);
+		building_str+=("</ul>");
+	    } else {
+                if(typeof(theObj[p]) != 'function')
+		    building_str+=("<li>["+p+"] =>"+theObj[p]+"</li>");
+	    }
+        }
+        building_str+=("</ul>");
+    }
+    return building_str;
+    }
+    
+  </script>
+  <style>
     .mi_row 
     {
       width:758px; 
@@ -16,6 +57,8 @@
       border-bottom:3px solid white; 
       background-color:black
     }
+    .ad_frame { border:10px solid black;width:738px;height:100px }
+    .ad_frame:hover { border:10px solid #ffe000;width:738px;height:100px }
     .mi_div { float:left; }
     .mi { border: 0px; }
 
@@ -30,6 +73,14 @@
       border-right:{{i.right_border}}px solid #333333;
       border-left:{{i.left_border}}px solid #333333;
     }
+    #mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}:hover
+    {
+      border-top:{{i.top_border}}px solid #ffe000; 
+      border-bottom:{{i.bot_border}}px solid #ffe000; 
+      margin-right:{{i.right_margin}}px; 
+      border-right:{{i.right_border}}px solid #ffe000;
+      border-left:{{i.left_border}}px solid #ffe000;
+    }
     #mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}
     {
       width:{{i.tbWidth}}px;
@@ -39,11 +90,47 @@
     {% endfor %}
     {% endfor %}
 
-  </style>
+    
+    #ads {padding:15px 0;}
+    .cse-result {border-bottom: solid 1px #ddd; min-height:66px; position:relative; padding:20px 0 0 0;}
+    .cse-result:hover {background-color: #Fee000;}
+    .result-content {margin-left:70px;}
+    .res_item {width:80%; overflow:hidden; padding:0px 0px 5px 10px}
+    .title_loc {color:#bb0000; text-decoration:underline; font-size:20px; line-height:25px;}
+    .content_loc {font-size:16px; line-height:1.3em; }
+    .like_loc {margin-top:5px;}
+    .result .content-bottom-padding {width:10px;height:10px;}
+.loc {position:relative; float:left; left: 0px; top:0px;}
+    .bg_div {padding:0px 0px 0px 80px;}
+    a.result_a {display:block;text-decoration:none; color:#777;}
+    #next_a {color:#bb0000}
+    #next_a:hover {text-decoration:underline;}
+    #next_a .next-padding {padding:0px 20px 0px 20px; background-color:white}
+#rnext {height:30px;padding:28px 0px 28px 0px;text-align:right; font-size:32px}
+    
+    #sharing-notice { width:350px; position:fixed; top:100px; right:10px; background-color:#333; border:1px solid #444; color:#fff; padding:5px; opacity:0.75; z-index:10000; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;}
+    #sharing-notice .label {padding:5px;}
+    #sharing-notice .stop {display:block; float:right; margin:0 4px; padding:5px; background-color:#444; border:1px solid #555; cursor:pointer; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;}
+    #sharing-notice .stop div {cursor:pointer; padding-right:15px; background:transparent url(/images/delete-12.png) right center no-repeat; }
+    #sharing-notice .stop:hover {background-color:#555; border-color:#666;}
+    #sharing-notice .stop:hover div {background-image:url(/images/delete-hover-12.png);}
+    
+    .fb-share-box { position:absolute; top:25px; left:5px; width:60px; height:61px;}
+    .fb-share-widget {float:left; position:relative;}
+    .fb-share-nub {background-image:url(/images/facebook/fb-share-nub-bottom.png); background-repeat:no-repeat; border:medium none; display:block; height:7px; left:7px; margin:0; padding:0; position:absolute; top:35px; width:6px;}
+    .fb-share-count-box {border:1px solid #B0B9EC; display:block; font-size:22px; letter-spacing:-1px; line-height:34px; margin-bottom:7px; background:none repeat scroll 0 0 #B0B9EC; color:#333333; text-align:center; }
+    .fb-share-count { background:none repeat scroll 0 0 #E8EBF2; display:block; }
+    .fb-share-widget a { text-decoration:none; font-size:10px; line-height:10px; text-decoration:none; background:url(/images/facebook/fb-icons.png) no-repeat scroll 0 0 #29447E; cursor:pointer; display:inline-block; outline:medium none; padding:0 0 0 1px; text-decoration:none; background-position:left -232px;  }
+    .fb-share-widget a span { padding:2px 6px 3px; background:url(/images/facebook/fb-icons.png) repeat scroll 0 0 #5F78AB; border-bottom:1px solid #1A356E; border-top:1px solid #879AC0; color:#FFFFFF; display:block; font-weight:bold; margin:1px 1px 0 21px; margin-left:17px; text-shadow:none; text-decoration:none; font-size:10px; line-height:10px; cursor:pointer; }
+    .fb-share-widget a:active span {background:none repeat scroll 0 0
+    #4F6AA3; border-bottom:1px solid #29447E; border-top:1px solid
+    #45619D; text-shadow:none;}
 
+  </style>
+  
   <!-- top box -->
 
- <div id="header">
+  <div id="header">
     <div id="bg_top">
       <div class="top-left">&nbsp;</div>
       <a href="http://bzz.heroku.com/facebook/"><img id="top_title" 
@@ -73,8 +160,7 @@ src="/public/srp_title.png"></a>
       <!-- Profile Link -->
       <div id="profile_link" class="top_emboss shadow">
         
-        <a href="http://bzz.heroku.com/facebook/profiles/736134199">George's
- Profile</a>
+        <a href="{{fb_url}}/stash">Your Stash</a>
         
       </div>
       <img src="/public/srp_top_line.png" class="top_line">
@@ -97,7 +183,7 @@ src="/public/srp_title.png"></a>
     <label id="find_entry_label" class="form_emboss shadow" 
 for="find_entry">Find things you like.</label>
 
-    <form target="_top" action="{{cfg.fb_url}}/results" method="get">
+    <form action="{{cfg.direct_url}}/results" method="get">
       <input name="src" value="srp" id="query_src" type="hidden"/>
       <input name="q" value="{{query}}" id="q" type="text" onfocus="focus_query();" onblur="blur_query();" />
       <img id="find_entry_bg" src="/public/srp_search_entry.png">
@@ -128,7 +214,7 @@ value="find" type="image"/>
   <div class="mi_row">
     {% for i in r %}
     <a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1">
-      <div id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi_div">
+      <div class="mi_div" id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi_div">
 	<img src="{{i.tbUrl}}" id="mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi"/>
       </div>
     </a>
@@ -136,13 +222,52 @@ value="find" type="image"/>
   </div>
   {% endfor %}
   <br/>
-  <!--{{content}}-->
-  <iframe style='border:10px solid black;width:738px;height:100px' src='http://www.google.com/uds/GafsAds?q={{ue_query}}&hl=en&ad=w2&source=gcsc&qid=12821e3abd4855884&cx=004221970179818813180:lomxfldenpg'></iframe>
-  
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+  {{content}}
+  <iframe class="ad_frame"
+  src='http://www.google.com/uds/GafsAds?q={{ue_query}}&hl=en&ad=w2&source=gcsc&qid=12821e3abd4855884&cx=004221970179818813180:lomxfldenpg'></iframe>
+
+
+  {% for i in web_data %}
+  <div class="cse-result">
+    <div class="raw-result-url" style="display:none;">{{ i.unescapedUrl }}</div>
+    <div class="fb-share-box">
+      <div class="share_loc">
+	
+        <div class="fb-share-widget">
+          <div class="fb-share-nub">&nbsp;</div>
+          <div class="fb-share-count-box">
+            <div class="fb-share-count">--</div>
+          </div>
+          <a target="_blank" 
+	     onclick="Results.fbShareWithFetch('{{i.url}}','{{cfg.direct_url}}/t?u={{i.url}}&q={{query}}&infb=true');return false;" 
+	     href="http://www.facebook.com/sharer.php?u={{cfg.direct_url}}/t?u={{i.unescapedUrl}}&q={{query}}&infb=true">
+            <span>Share</span>
+          </a>
+        </div>
+	
+      </div>
+    </div>
+    <div class="result-content">
+      <a class="href_loc result_a" target="_blank" href="{{cfg.direct_url}}/t?u={{i.unescapedUrl}}&q={{query}}&infb=true&auth=1">
+        <div class="res_item">
+          <div class="title_loc">{{i.title}}</div>
+          <div class="content_loc">{{i.content}}</div>
+          <div class="like_loc">
+            <iframe src="http://www.facebook.com/widgets/like.php?href={{i.url}}"
+                    scrolling="no" frameborder="0" allowTransparency="true"
+                    style="border:none; width:550px; height:65px"></iframe>
+            <!-- fb:like href="{{i.url}}"></fb:like -->	    
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+	  type="text/javascript"></script>
+  <script src="/public/js/header.js"></script>
   <script src="{{cfg.direct_url}}/public/js/pageviews.js"></script>
-  
+  <script src="{{cfg.direct_url}}/public/js/results.js"></script>  
   <script type="text/javascript">
     var _gaq = _gaq || [];
   </script>
@@ -161,6 +286,5 @@ value="find" type="image"/>
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
   </script>
-  
 </body>
 </html>

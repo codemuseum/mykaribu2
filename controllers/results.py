@@ -25,8 +25,19 @@ class ResultsHandler(webapp.RequestHandler):
         url2 = 'http://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=large&start=8&q='\
                +ue_query+'&key='\
                +h.cfg['gs_api_key']
-        result = urlfetch.fetch(url)
-        result2 = urlfetch.fetch(url2) # need to put these into an async fetch
+        rpcs = []
+        
+        rpc = urlfetch.create_rpc(10)
+        urlfetch.make_fetch_call(rpc,url)
+        rpcs.append(rpc)
+        rpc = urlfetch.create_rpc(10)
+        urlfetch.make_fetch_call(rpc,url2)
+        rpcs.append(rpc)
+        for rpc in rpcs:
+            rpc.wait()
+        result = rpcs[0].get_result()        
+        result2 = rpcs[1].get_result() # need to put these into an async fetch
+        
         o = simplejson.loads(result.content)
         o2 = simplejson.loads(result.content)
         

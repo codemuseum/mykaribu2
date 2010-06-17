@@ -93,9 +93,7 @@ class Auth2Handler(webapp.RequestHandler):
                 h.set_current_user(cookies, new_user)
                 c['current_user'] = new_user
         
-        logging.info(c['current_user'])
-        
-        if 'post_auth_url' in cookies:
+        if 'current_user' in c and 'post_auth_url' in cookies:
             redirect_to_url = cookies['post_auth_url']
             del cookies['post_auth_url']
             c['top_redirect_url'] = redirect_to_url

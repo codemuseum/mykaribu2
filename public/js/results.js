@@ -64,7 +64,6 @@ var Results = {
     var resultUrls = [];
     $('.raw-result-url').each(function(i) { resultUrls.push(encodeURI($(this).text())); });
     $.get('/share_counts?&urls[]=' + resultUrls.join('&urls[]='), function(data) {
-	alert(data);
       Results.populateShareCounts(data);
     });
   },

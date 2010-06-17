@@ -183,11 +183,14 @@ src="/public/srp_title.png"></a>
     <label id="find_entry_label" class="form_emboss shadow" 
 for="find_entry">Find things you like.</label>
 
+
     <form action="{{cfg.direct_url}}/results" method="get">
+      <!-- required for queries.js to work-->
+      <input name="previous_q" id="previous_q" type="hidden" value="{{query}}" />
+      <!-- end queries.js requirements -->
       <input name="src" value="srp" id="query_src" type="hidden"/>
       <input name="q" value="{{query}}" id="q" type="text" onfocus="focus_query();" onblur="blur_query();" />
       <img id="find_entry_bg" src="/public/srp_search_entry.png">
-
 
       <div id="find_btn" class="shadow" value="find">Find</div>
       <input id="find_trans_submit" src="/public/transparent.gif" 
@@ -196,6 +199,11 @@ value="find" type="image"/>
     </form>      
   </div>
 </div>
+
+<!-- required for queries.js to work-->
+<div id="results"></div>
+<!-- end queries.js requirements -->
+
 <script>
   var hint = "Type something.";
   function focus_query()
@@ -213,10 +221,13 @@ value="find" type="image"/>
   {% for r in mini_imgs %}
   <div class="mi_row">
     {% for i in r %}
-    <a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1">
+    <a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1" onclick="Queries.resultClick(this)">
       <div class="mi_div" id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi_div">
 	<img src="{{i.tbUrl}}" id="mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi"/>
       </div>
+      <!--required for queries.js to work -->
+      <div class="raw-result-url" style="display:none">{{i.originalContextUrl}}</div>
+      <!-- end queries.js requirement -->
     </a>
     {% endfor %}
   </div>
@@ -267,8 +278,9 @@ value="find" type="image"/>
 	  type="text/javascript"></script>
   <script src="/public/js/header.js"></script>
   <script src="{{cfg.direct_url}}/public/js/pageviews.js"></script>
-  <script src="{{cfg.direct_url}}/public/js/results.js"></script>  
-  <script type="text/javascript">
+ <script src="{{cfg.direct_url}}/public/js/results.js"></script>  
+ <script src="{{cfg.direct_url}}/public/js/queries.js"></script>
+ <script type="text/javascript">
     var _gaq = _gaq || [];
   </script>
   <script type="text/javascript">

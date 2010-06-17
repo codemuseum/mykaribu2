@@ -39,6 +39,7 @@ from models.user import User
 import helpers as h
 import facebook
 import datetime
+import logging
 
 # *** Handlers
 
@@ -67,6 +68,10 @@ class Auth2Handler(webapp.RequestHandler):
                 graph = facebook.GraphAPI(self.request.get("access_token"))
                 me = graph.get_object('me')
             except Exception, e:
+                logging.error(
+                    "ERROR!  Failed to access Facebook Graph for access_token=" + 
+                    self.request.get("access_token") +
+                    "::" + str(e)) 
                 me = None
                 c['error'] = e
 
@@ -84,6 +89,7 @@ class Auth2Handler(webapp.RequestHandler):
                 c['current_user'] = new_user
         
         if 'post_auth_url' in cookies:
+            cookies.unset_cookie('post_auth_url')
             self.redirect(cookies['post_auth_url'])
         else:
             self.redirect('/')

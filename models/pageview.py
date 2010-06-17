@@ -9,4 +9,4 @@ class PageView(db.Model):
 	session_id = db.StringProperty()
 	ip_address = db.StringProperty()
 	created_at = db.DateTimeProperty(auto_now_add=True)
-	user_id = db.IntegerProperty()
+	user_key = db.StringProperty()

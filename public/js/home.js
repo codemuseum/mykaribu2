@@ -3,7 +3,7 @@ var Home = {
   loggedIn: $('body').hasClass('logged-in'),
   init: function() {
     if (!this.loggedIn) { this.observePageForLoginEvents(); }
-    this.trackPageView(window.location.href);
+    // this.trackPageView(window.location.href); // Taken over by pageviews.js
     this.showProfileNoticeIfNecessary();
   },
   observePageForLoginEvents: function() {
@@ -62,9 +62,7 @@ var Home = {
     });
   },
   trackPageView: function(url) {
-    $.post('/page_views.json', {u: url, referrer: document.referrer}, function(data) {
-      if (data['status'] == 'error') { ErrorLogger.report(data.toString()); }
-    });
+    PageViews.log(url); // Use New Library
   },
   blurSearchBox: function() {
     if ($('#search_edit')[0].value == '') { $('#search_hint').fadeIn(); }

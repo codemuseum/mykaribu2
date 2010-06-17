@@ -51,6 +51,7 @@
   
   <div id="data-gcsek" style="display:none">{{cfg.gs_api_key}}</div>
   
+<script src="{{cfg.direct_url}}/public/js/pageviews.js"></script>
 <script src="{{cfg.direct_url}}/public/js/home.js"></script>
 <script src="{{cfg.direct_url}}/public/js/header.js"></script>
 <script src="{{cfg.direct_url}}/public/js/results.js"></script>
@@ -67,10 +68,9 @@
 <!--  <% if RAILS_ENV != 'development' && (!current_user || !current_user.admin?) %>-->
   <script type="text/javascript">
     _gaq.push(['_setAccount', 'UA-13245981-1']);
-    _gaq.push(['_setCustomVar', 1, 'logged-in', {{logged_in}}, 3]);
-    {% if logged_in %}
-      _gaq.push(['_setCustomVar', 1, 'user-id', {{current_user_user_id}}, 1]);
-      _gaq.push(['_setCustomVar', 2, 'user-fb-id', {{current_user_fb_user_id}}, 1]); 
+    {% if current_user %}
+      _gaq.push(['_setCustomVar', 1, 'user-key', {{current_user.user_key}}, 1]);
+      _gaq.push(['_setCustomVar', 2, 'user-fb-id', {{current_user.fb_user_id}}, 1]); 
     {% endif %}
     _gaq.push(['_trackPageview']);
 

@@ -63,7 +63,7 @@ var Results = {
     // batch request all facebook counts
     var resultUrls = [];
     $('.raw-result-url').each(function(i) { resultUrls.push(encodeURI($(this).text())); });
-    $.get('/share_counts?&urls[]=' + resultUrls.join('&urls[]='), function(data) {
+    $.get('/share_counts?&urls[]=' + resultUrls.join(','), function(data) {
       Results.populateShareCounts(data);
     });
   },

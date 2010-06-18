@@ -23,7 +23,11 @@ class AdminPageViewsHandler(webapp.RequestHandler):
 		page_views = db.GqlQuery("SELECT * FROM PageView ORDER BY created_at DESC")
 		result = ''
 		for page_view in page_views:
-			result += "<tr><td>"+str(page_view.session_order)+"</td><td>"+page_view.normalized_url+"</td><td>"+page_view.url+"</td><td>"+page_view.referrer+"</td><td>"+page_view.session_id+"</td><td>"+page_view.ip_address+"</td><td>"+str(page_view.created_at)+"</td><td>"+str(page_view.user_key)+"</td></tr>"
+		    if page_view.user != None:
+		        user_key = page_view.user.key()
+		    else:
+		        user_key = None
+			result += "<tr><td>"+str(page_view.session_order)+"</td><td>"+page_view.normalized_url+"</td><td>"+page_view.url+"</td><td>"+page_view.referrer+"</td><td>"+page_view.session_id+"</td><td>"+page_view.ip_address+"</td><td>"+str(page_view.created_at)+"</td><td>"+str(user_key)+"</td></tr>"
 
 		h.output(self, '<html><head><style>tr:hover {background-color:#ccc;}th{background-color:#000;color:#fff;}table{width:100%}</style></head><body>Page Views:<table border="1"><tr><th>Order</th><th>Normalized URL</th><th>URL</th><th>Referrer</th><th>Session ID</th><th>IP Address</th><th>Created At</th><th>User ID</th></tr>'+result+'</table></body></html>')
 

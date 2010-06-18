@@ -37,8 +37,8 @@ class PageViewsHandler(webapp.RequestHandler):
         page_view = PageView()
         current_user = h.get_current_user(cookies)
         
-        if current_user != None: # change this to somehow get the user id
-              page_view.user_key = str(current_user.key())
+        if current_user != None:
+              page_view.user = current_user
 
         page_view.url = self.request.get('u')
         page_view.normalized_url = self.request.get('u')[:500] # TODO actually normalize URLs according to some logic (e.g. stripping out fb params)

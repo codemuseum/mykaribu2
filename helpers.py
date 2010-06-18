@@ -10,7 +10,7 @@ cfg = None # holds variables for config of fb app, etc.
 
 # Gets cookies object, set to the default max_age for this application
 def get_default_cookies(handler):
-    return Cookies(handler,max_age=(60 * 60 * 24 * 2)) # Stay Logged in for 2 Days 
+    return Cookies(handler,max_age=3600) # Match Facebook Auth Token Expiry 
 
 # If not logged in: Stores page in cookie for after-authentication returning, outputs a page that redirects to top, and returns false.
 # Else: returns current_user

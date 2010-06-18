@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from google.appengine.ext import db
+from user import User
 
 class PageView(db.Model):
 	url = db.TextProperty()
@@ -9,4 +10,4 @@ class PageView(db.Model):
 	session_id = db.StringProperty()
 	ip_address = db.StringProperty()
 	created_at = db.DateTimeProperty(auto_now_add=True)
-	user_key = db.StringProperty()
+	user = db.ReferenceProperty(User)

@@ -62,7 +62,7 @@ var Results = {
   fetchShareCounts: function() {
     // batch request all facebook counts
     var resultUrls = [];
-    $('.raw-result-url').each(function(i) { resultUrls.push(encodeURI($(this).text())); });
+    $('.cse-result .raw-result-url').each(function(i) { resultUrls.push(encodeURI($(this).text())); });
     $.get('/share_counts?&urls[]=' + resultUrls.join(','), function(data) {
       Results.populateShareCounts(data);
     });

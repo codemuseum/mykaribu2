@@ -28,7 +28,7 @@ from controllers.admin import AdminUrlAnalyzerHandler
 from controllers.admin import AdminUrlSuggestHandler
 from controllers.admin import AdminUrlStatsHandler
 from controllers.admin import AdminUrlFunnelHandler
-from controllers.logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler
+from controllers.logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
 
@@ -133,7 +133,8 @@ routing =[
     ('/results',ResultsHandler),
     ('/pageviews.json',PageViewsHandler),
     ('/storequeries.json',QueryLoggingsHandler),
-    ('/storeresultclicks.json',ResultViewLoggingsHandler)
+    ('/storeresultclicks.json',ResultViewLoggingsHandler),
+    ('/postlogin.json', PostLoginSewingLoggingsHandler)
     ]
 
 # *** Init code

@@ -19,6 +19,36 @@ from models.resultview import ResultView
 
 # *** Handlers
 
+# Helper for writing wallposts for queries
+class QueryFacebookWallpostHelper:
+    @staticmethod
+    def postToWallIfNecessary(user, result_view, query, image_url):
+        if user != None and query != None and query.fb_wall_post_id == None:
+            verbs = ['found', 'looked at', 'searched for']
+            verb = verbs[random.randint(0, len(verbs)-1)]
+            q_base = h.cfg['fb_url']+"/results"
+            params_str = urllib.urlencode((('q', query.query_string), ('v', verb), ('suid', user.fb_user_id), ('sqid', str(query.key()))))
+            q_url = "%s?%s" % (q_base, params_str)
+            message = ":"
+            attach = {
+                'name': "%s just %s \"%s\"." % (user.first_name, verb, query.query_string),
+                'link': q_url,
+                'caption': '{*actor*} is waiting for your comment',
+                'description': 'on this social search.',
+                'picture': image_url,
+                'properties': {'They Found:': { 'text': 'this', 'href': "%s/t?u=%s" % (q_base, result_view.url) }}}
+
+            # TODO: Not sure if this access token is the most recent.
+            graph = facebook.GraphAPI(user.fb_oauth_access_token)
+            result = graph.put_wall_post(message=message, attachment=attach)
+            
+            query.fb_wall_post_id = result['id']
+            query.put()
+            
+            return query.fb_wall_post_id
+        else:
+            return None
+
 # Logging main handler
 class LoggingHandler(webapp.RequestHandler):
     def get(self):
@@ -65,11 +95,15 @@ class QueryLoggingsHandler(webapp.RequestHandler):
         
       	query.referrer = self.request.get('referrer')
       	query.url = self.request.get('u')
+        query.ip_address = self.request.remote_addr
         if current_user != None:
             query.user = current_user
             if current_user.fb_user_id != None:
                 query.fb_user_id = current_user.fb_user_id
-                
+
+        if '_pvk' in cookies and cookies['_pvk'] != None and cookies['_pvk'] != '':
+            query.session_id = cookies['_pvk']
+        
         query.put()
         self.response.out.write('{status: \'ok\'}')
 
@@ -85,6 +119,12 @@ class ResultViewLoggingsHandler(webapp.RequestHandler):
       	result_view.source = self.request.get('src')
       	result_view.referrer = self.request.get('referrer')
       	result_view.url = self.request.get('u')
+        result_view.ip_address = self.request.remote_addr
+        result_view.image_url = self.request.get('image_url')
+        result_view.query_string = self.request.get('q')
+      	
+      	if '_pvk' in cookies and cookies['_pvk'] != None and cookies['_pvk'] != '':
+            result_view.session_id = cookies['_pvk']
         
         if current_user != None:
             result_view.user = current_user
@@ -95,31 +135,54 @@ class ResultViewLoggingsHandler(webapp.RequestHandler):
                 "WHERE user = :1 AND query_string = :2 ORDER BY created_at DESC", 
                 current_user.key(), 
                 self.request.get('q')).get()
+
             if query != None:
                 result_view.query = query
 
         result_view.put()
-        self.response.out.write('{status: \'ok\'}')
         
         # Post to facebook wall for the query if the query hasn't already posted to wall
         if current_user != None and query != None and query.fb_wall_post_id == None:
-            verbs = ['found', 'looked at', 'searched for']
-            verb = verbs[random.randint(0, len(verbs)-1)]
-            q_base = h.cfg['fb_url']+"/results"
-            params_str = urllib.urlencode((('q', query.query_string), ('v', verb), ('suid', current_user.fb_user_id), ('sqid', str(query.key()))))
-            q_url = "%s?%s" % (q_base, params_str)
-            message = ":"
-            attach = {
-                'name': "%s just %s \"%s\"." % (current_user.first_name, verb, query.query_string),
-                'link': q_url,
-                'caption': '{*actor*} is waiting for your comment',
-                'description': 'on this social search.',
-                'picture': self.request.get('image_url'),
-                'properties': {'They Found:': { 'text': 'this', 'href': "%s/t?u=%s" % (q_base, result_view.url) }}}
+            fb_post_id = QueryFacebookWallpostHelper.postToWallIfNecessary(current_user, result_view, query, self.request.get('image_url'))
+            self.response.out.write('{status: \'ok\', fb_wall_post_id: \'%s\', result_view_key: \'%s\'}' % (fb_post_id, str(result_view.key())))
+        else:
+            self.response.out.write('{status: \'ok\', result_view_key: \'%s\', result_view_has_user: \'%s\'}' % (str(result_view.key()), str(current_user != None)))
 
-            # TODO: Not sure if this access token is the most recent.
-            graph = facebook.GraphAPI(current_user.fb_oauth_access_token)
-            result = graph.put_wall_post(message=message, attachment=attach)
+# After login handler to tie together result views (5 at a time; there shouldn't be too many of these)
+class PostLoginSewingLoggingsHandler(webapp.RequestHandler):
+    def post(self):
+        cookies = h.get_default_cookies(self)
+        current_user = h.get_current_user(cookies)
+        
+      	if current_user != None and '_pvk' in cookies and cookies['_pvk'] != None and cookies['_pvk'] != '':
+            unlinked_result_views = ResultView.gql("WHERE session_id = :1 AND user = NULL", cookies['_pvk']).fetch(5)
+            for result_view in unlinked_result_views:
+                result_view.user = current_user
+                if current_user.fb_user_id != None:
+                    result_view.fb_user_id = current_user.fb_user_id
+                
+                # Create a "backdated" version for this query, because the user probably made the query while 
+                # logged out, and it's worthwile knowing that that happened
+                if result_view.query_string != None and result_view.query_string != '':
+                    query = Query(query_string = result_view.query_string, referrer = self.request.referer, url = "__ARTIFICIALLY_CREATED_FOR_USER__")
+                    
+                    query.user = current_user
+                    if current_user.fb_user_id != None:
+                        query.fb_user_id = current_user.fb_user_id
+                    if '_pvk' in cookies and cookies['_pvk'] != None and cookies['_pvk'] != '':
+                        query.session_id = cookies['_pvk']
+                    
+                    query.put()
+                
+                    result_view.query = query
+                    result_view.put()
+                    fb_post_id = QueryFacebookWallpostHelper.postToWallIfNecessary(current_user, result_view, query, result_view.image_url)
+                
+                else:
+                    result_view.put()
+        
+        self.response.out.write('{status: \'ok\'}')
+        
             
-            query.fb_wall_post_id = result['id']
-            query.put()
+            
+

@@ -30,6 +30,6 @@ class ShareCountsHandler(webapp.RequestHandler):
     def get(self):
         u = self.request.get("urls[]")
         url = "http://api.facebook.com/restserver.php?method=links.getStats&format=json&urls="+u
-        result = urlfetch.fetch(url)
+        result = urlfetch.fetch(url, deadline=10)
         self.response.headers['Content-Type'] = "application/json"
         h.output(self, result.content)

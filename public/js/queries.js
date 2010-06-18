@@ -21,15 +21,21 @@ var Queries = {
        // if (data['current_user']) {Header.currentUserSearchScore(data['current_user']['user']['search_points']);}
      });
    },
-   resultClick: function(a) {
+    resultClick: function(a) {
      if (!this.lastStoredQuery) {return;}
      var resultBase = $(a);
      var resultUrl = resultBase.find('.raw-result-url').text();
      var resultImg = resultBase.find('img');
      var resultImgUrl = resultImg[0] ? resultImg[0].src : '';
-     $.post('/storeresultclicks.json', {q: this.lastStoredQuery, u: (resultUrl && resultUrl != '' ? resultUrl : a.href), src: a.className, referrer: document.referrer, image_url: resultImgUrl }, function(data) {
-       if (data['status'] == 'error') { ErrorLogger.report(data.toString()); }
-     });
-   }
+	//$('body').ajaxError(function(a,b,c,d) {
+	//    alert(b.status);
+	//});
+	$.post('/storeresultclicks.json',
+	       {q: this.lastStoredQuery, u: (resultUrl && resultUrl != '' ? resultUrl : a.href), src: a.className, referrer: document.referrer, image_url: resultImgUrl },
+	       function(data) {
+		   if (data['status'] == 'error') { ErrorLogger.report(data.toString()); }
+	       });
+
+    }
 };
 Queries.init();

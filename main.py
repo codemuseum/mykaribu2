@@ -68,7 +68,7 @@ class Auth2Handler(webapp.RequestHandler):
             h.set_current_user(cookies, user)
             c['current_user'] = user
         else: 
-            # Create the user by looking them up in the graph
+            # Look user up in graph, and either find them in the DB or create them if they don't exist
             try:
                 graph = facebook.GraphAPI(self.request.get("access_token"))
                 me = graph.get_object('me')
@@ -81,17 +81,27 @@ class Auth2Handler(webapp.RequestHandler):
                 c['error'] = e
 
             if me != None:
-                new_user = User(
-                    fb_user_id = str(me['id']),
-                    fb_oauth_access_token = self.request.get("access_token"),
-                    fb_oauth_access_token_stored_at = datetime.datetime.utcnow(),
-                    first_name = me['first_name'], 
-                    last_name = me['last_name'])
-                if 'email' in me:
-                    new_user.email = me['email']
-                new_user.put()
-                h.set_current_user(cookies, new_user)
-                c['current_user'] = new_user
+                og_user = User.gql("WHERE fb_user_id = :1", str(me['id'])).get()
+                
+                if og_user == None:
+                    new_user = User(
+                        fb_user_id = str(me['id']),
+                        fb_oauth_access_token = self.request.get("access_token"),
+                        fb_oauth_access_token_stored_at = datetime.datetime.utcnow(),
+                        first_name = me['first_name'], 
+                        last_name = me['last_name'])
+                    if 'email' in me:
+                        new_user.email = me['email']
+                    new_user.put()
+                    h.set_current_user(cookies, new_user)
+                    c['current_user'] = new_user
+                    
+                else: # Update auth token for user because it's out of date
+                    og_user.fb_oauth_access_token = self.request.get("access_token")
+                    og_user.fb_oauth_access_token_stored_at = datetime.datetime.utcnow()
+                    og_user.put()
+                    h.set_current_user(cookies, og_user)
+                    c['current_user'] = og_user
         
         if 'current_user' in c and 'post_auth_url' in cookies:
             redirect_to_url = cookies['post_auth_url']

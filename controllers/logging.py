@@ -105,9 +105,9 @@ class ResultViewLoggingsHandler(webapp.RequestHandler):
         if current_user != None and query != None and query.fb_wall_post_id == None:
             verbs = ['found', 'looked at', 'searched for']
             verb = verbs[random.randint(0, len(verbs)-1)]
-            q_base = "http://apps.facebook.com/mykaribu"
+            q_base = h.cfg['fb_url']+"/results"
             params_str = urllib.urlencode((('q', query.query_string), ('v', verb), ('suid', current_user.fb_user_id), ('sqid', str(query.key()))))
-            q_url = "%s/?%s" % (q_base, params_str)
+            q_url = "%s?%s" % (q_base, params_str)
             message = ":"
             attach = {
                 'name': "%s just %s \"%s\"." % (current_user.first_name, verb, query.query_string),

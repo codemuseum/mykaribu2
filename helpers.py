@@ -67,8 +67,8 @@ def context():
     c['cfg'] = cfg
     return c
 
-def cfg():
-    return cfg;
+#def cfg():
+#    return cfg;
 
 def init():
     # load general config

@@ -1,3 +1,4 @@
 *.pyc
 *.*~
 local.yaml
+remote_dev.yaml

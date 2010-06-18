@@ -82,7 +82,10 @@ def init():
     
     # load local config and override general options
     try:
-        local_config = yaml.load(file('local.yaml','r'))
+        if cfg['is_deployed']:
+            local_config = yaml.load(file('remote_dev.yaml','r'))
+        else:
+            local_config = yaml.load(file('local.yaml','r'))
     except IOError:
         pass
     else:

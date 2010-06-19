@@ -221,7 +221,7 @@ value="find" type="image"/>
   {% for r in mini_imgs %}
   <div class="mi_row">
     {% for i in r %}
-    <a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1" onclick="Queries.resultClick(this)">
+    <a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1" class="query-image" onclick="Queries.resultClick(this)">
       <div class="mi_div" id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi_div">
 	<img src="{{i.tbUrl}}" id="mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi"/>
       </div>

@@ -227,7 +227,7 @@ value="find" type="image"/>
   <div class="mi_row">
     {% for i in r %}
       <div class="mi_div" id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}">
-	<a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1"
+	<a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1">
 	<img src="{{i.tbUrl}}" id="mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi"/>
 	<div class="raw-result-url" style="display:none">{{i.originalContextUrl}}</div>
       </a>

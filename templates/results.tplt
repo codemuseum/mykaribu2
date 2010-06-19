@@ -243,7 +243,6 @@ value="find" type="image"/>
 
   {% for i in web_data %}
   <div class="cse-result">
-    <div class="raw-result-url" style="display:none;">{{ i.unescapedUrl }}</div>
     <div class="fb-share-box">
       <div class="share_loc">
 	

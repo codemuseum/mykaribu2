@@ -227,7 +227,7 @@ value="find" type="image"/>
   <div class="mi_row">
     {% for i in r %}
       <div class="mi_div" id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}">
-	<a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1" onclick="Queries.resultClick(this)">
+	<a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1"
 	<img src="{{i.tbUrl}}" id="mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi"/>
 	<div class="raw-result-url" style="display:none">{{i.originalContextUrl}}</div>
       </a>
@@ -262,9 +262,7 @@ value="find" type="image"/>
       </div>
     </div>
     <div class="result-content">
-      <a class="href_loc result_a" target="_blank"
-    href="{{cfg.direct_url}}/t?u={{i.url}}&q={{query}}&infb=true&auth=1"
-    onclick="Queries.resultClick(this)">
+      <a class="href_loc result_a" target="_blank" href="{{cfg.direct_url}}/t?u={{i.unescapedUrl}}&q={{query}}&infb=true&auth=1" onclick="Queries.resultClick(this)">
         <div class="res_item">
           <div class="title_loc">{{i.title}}</div>
           <div class="content_loc">{{i.content}}</div>

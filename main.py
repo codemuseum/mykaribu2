@@ -19,16 +19,8 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
 # *** Controller imports
-from controllers.admin import AdminHandler
-from controllers.admin import AdminHandler
-from controllers.admin import AdminPageViewsHandler
-from controllers.admin import AdminPathsHandler
-from controllers.admin import AdminPathDataHandler
-from controllers.admin import AdminUrlAnalyzerHandler
-from controllers.admin import AdminUrlSuggestHandler
-from controllers.admin import AdminUrlStatsHandler
-from controllers.admin import AdminUrlFunnelHandler
-from controllers.logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler
+from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler
+from controllers.logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
 
@@ -122,6 +114,13 @@ routing =[
     ('/auth2',Auth2Handler),
     ('/admin',AdminHandler),
     ('/admin/pageviews',AdminPageViewsHandler),
+    ('/admin/pageviews/data.json',AdminPageViewsDataHandler),
+    ('/admin/users',AdminUsersHandler),
+    ('/admin/users/data.json',AdminUsersDataHandler),
+    ('/admin/querys',AdminQueriesHandler),
+    ('/admin/querys/data.json',AdminQueriesDataHandler),
+    ('/admin/resultviews',AdminResultViewsHandler),
+    ('/admin/resultviews/data.json',AdminResultViewsDataHandler),
     ('/admin/paths',AdminPathsHandler),
     ('/admin/paths/data.json',AdminPathDataHandler),
     ('/admin/url-analyzer',AdminUrlAnalyzerHandler),
@@ -134,7 +133,8 @@ routing =[
     ('/results',ResultsHandler),
     ('/pageviews.json',PageViewsHandler),
     ('/storequeries.json',QueryLoggingsHandler),
-    ('/storeresultclicks.json',ResultViewLoggingsHandler)
+    ('/storeresultclicks.json',ResultViewLoggingsHandler),
+    ('/postlogin.json', PostLoginSewingLoggingsHandler)
     ]
 
 # *** Init code

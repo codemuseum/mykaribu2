@@ -10,5 +10,9 @@ class ResultView(db.Model):
     source = db.StringProperty(indexed=True)
     referrer = db.TextProperty()
     url = db.TextProperty()
+    session_id = db.StringProperty(indexed=True)
+    ip_address = db.StringProperty(indexed=True)
+    image_url = db.StringProperty()
+    query_string = db.StringProperty()
     created_at = db.DateTimeProperty(auto_now_add=True)
     

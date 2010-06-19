@@ -20,7 +20,7 @@ from google.appengine.ext.webapp import template
 
 # *** Controller imports
 from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler
-from controllers.logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
+from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
 
@@ -35,6 +35,11 @@ import logging
 
 # *** Handlers
 
+class CookieTestHandler(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        h.render_out(self, 'cookie_test.tplt', c)
+        
 # Auth stage 1 - Eventually change this to only redirect when lacking auth
 class MainHandler(webapp.RequestHandler):
     def get(self):
@@ -45,8 +50,11 @@ class MainHandler(webapp.RequestHandler):
 # Auth stage 2 - Eventually change this to catch possibly new tokens on any url
 class Auth2Handler(webapp.RequestHandler):
     def get(self):
-        cookies = h.get_default_cookies(self)
         c = h.context()
+        logging.info("***Auth2")
+        cookies = h.get_default_cookies(self)
+        c['cookies'] = cookies
+        logging.info("***cookies: "+str(cookies))
         c['access_token'] = self.request.get("access_token")
         
         if self.request.get("access_token") == '':
@@ -57,7 +65,9 @@ class Auth2Handler(webapp.RequestHandler):
         user = User.gql("WHERE fb_oauth_access_token = :1", self.request.get("access_token")).get()
         if user != None:
             # If the user currently exists in the DB
+            logging.info("***SCU1")
             h.set_current_user(cookies, user)
+            logging.info("***cookies: "+str(cookies))
             c['current_user'] = user
         else: 
             # Look user up in graph, and either find them in the DB or create them if they don't exist
@@ -85,22 +95,28 @@ class Auth2Handler(webapp.RequestHandler):
                     if 'email' in me:
                         new_user.email = me['email']
                     new_user.put()
+                    logging.info("***SCU2")
                     h.set_current_user(cookies, new_user)
+                    logging.info("***cookies: "+str(cookies))
                     c['current_user'] = new_user
                     
                 else: # Update auth token for user because it's out of date
                     og_user.fb_oauth_access_token = self.request.get("access_token")
                     og_user.fb_oauth_access_token_stored_at = datetime.datetime.utcnow()
                     og_user.put()
+                    logging.info("***SCU3")
                     h.set_current_user(cookies, og_user)
+                    logging.info("***cookies: "+str(cookies))
                     c['current_user'] = og_user
         
         if 'current_user' in c and 'post_auth_url' in cookies:
+            logging.info("***Sent to post_auth_url")
             redirect_to_url = cookies['post_auth_url']
             del cookies['post_auth_url']
             c['top_redirect_url'] = redirect_to_url
             # self.redirect(redirect_to_url)
-        else:    
+        else:
+            logging.info("***Sent home due to lack of post_auth or current_user")
             c['top_redirect_url'] = h.cfg['fb_url']
             # self.redirect('/')
         
@@ -134,7 +150,8 @@ routing =[
     ('/pageviews.json',PageViewsHandler),
     ('/storequeries.json',QueryLoggingsHandler),
     ('/storeresultclicks.json',ResultViewLoggingsHandler),
-    ('/postlogin.json', PostLoginSewingLoggingsHandler)
+    ('/postlogin.json', PostLoginSewingLoggingsHandler),
+    ('/cookie_test', CookieTestHandler)
     ]
 
 # *** Init code

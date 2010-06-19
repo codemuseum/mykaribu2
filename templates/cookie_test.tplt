@@ -1,0 +1,12 @@
+<html>
+  <body>
+    <b>svr cookies:</b><br/>
+    {{ cookies }}
+    <p/>
+    <b>client cookies:</b><br/>
+    <span id="cookie_dump">&nbsp;</span>
+    <script>
+      document.getElementById("cookie_dump").innerHTML = document.cookie;
+    </script>
+  </body>
+</html>

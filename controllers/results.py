@@ -3,6 +3,7 @@ from google.appengine.api import urlfetch
 from django.utils import simplejson
 import helpers as h
 import urllib
+import logging
 
 class MultiFetch():
     def add_fetch(self, url):

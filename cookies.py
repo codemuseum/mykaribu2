@@ -6,6 +6,9 @@ from Cookie import BaseCookie
 class Cookies(UserDict.DictMixin):
 
     def __init__(self,handler,**policy):
+        handler.response.headers.add_header(
+            "p3p",
+            'CP="IDC DSP COR ADM DEVi TAIi PSA PSD IVAi IVDi CONi HIS OUR IND CNT"')
         self.response = handler.response
         self._in = handler.request.cookies
         self.policy = policy

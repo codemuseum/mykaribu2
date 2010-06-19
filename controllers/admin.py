@@ -31,7 +31,7 @@ class AdminHelper:
         for prop in entity.__class__.properties():
             val = getattr(entity, prop)
             if isinstance(val, db.Model):
-                result[prop] = '<a href="/admin/'+val.__class__.__name__.lower()+'s#key_'+str(val.key())+'">'+str(val.key())+'</a>'
+                result[prop] = '<a href="/admin/'+val.__class__.__name__.lower()+'s#key_'+str(val.key())+'" target="_blank">'+str(val.key())+'</a>'
             else:
                 result[prop] = str(val)
         return result
@@ -44,7 +44,7 @@ class AdminHelper:
 # Admin main handler
 class AdminHandler(webapp.RequestHandler):
     def get(self):
-        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/queries'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> |  <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a>")
+        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> |  <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a>")
 
 class AdminPageViewsHandler(webapp.RequestHandler):
     def get(self):
@@ -72,7 +72,7 @@ class AdminUsersDataHandler(webapp.RequestHandler):
 class AdminQueriesHandler(webapp.RequestHandler):
     def get(self):
         c = h.context()
-        c['model'] = 'querie'
+        c['model'] = 'query'
         c['model_properties'] = sorted(Query.properties())
         h.render_out(self, 'admin.tplt', c)
 

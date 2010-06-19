@@ -3,9 +3,11 @@ var AdminData = {
   dataTable: $('#data'),
   properties: $('#data th.property'),
   init: function() {
-    this.fetchDataLoop(0, function() {
-      console.log("done");
-    });
+      this.fetchDataLoop(0, function() {
+        if (document.location.hash.substring(1) != '') {
+          $('#'+document.location.hash.substring(1)).addClass('hilighted');
+        }
+      });
   },
   fetchDataLoop: function(page, callback) {
     $.getJSON(this.sourceUrl, {'page': page}, function(data) {
@@ -20,7 +22,7 @@ var AdminData = {
     var propertiesHtml = '';
     this.properties.each(function(i,v) {  propertiesHtml += '<td class="property">'+row[$(v).text()]+'</td>'; });
     
-    this.dataTable.append('<tr id="key_'+row['__key__']+'">' + propertiesHtml+ '<td><a name="key_'+row['__key__']+'"></a></td></tr>');
+    this.dataTable.append('<tr id="key_'+row['__key__']+'">' + propertiesHtml+ '</tr>');
   }
 };
 AdminData.init();

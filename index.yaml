@@ -12,7 +12,25 @@ indexes:
 
 - kind: PageView
   properties:
+  - name: normalized_url
   - name: session_id
+
+- kind: PageView
+  properties:
+  - name: session_id
+  - name: created_at
+    direction: desc
+
+- kind: PageView
+  properties:
+  - name: session_id
+  - name: session_order
+  - name: created_at
+    direction: desc
+
+- kind: PageView
+  properties:
+  - name: session_order
   - name: created_at
     direction: desc
 

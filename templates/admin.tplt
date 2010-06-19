@@ -6,6 +6,7 @@
     tr:hover {background-color:#f7f7f7;}
     th {background-color:#000; color:#fff;padding:4px 8px; border-left:1px solid #555; border-bottom:1px solid #555;}
     td {padding:4px 8px; border-left:1px solid #ccc; border-bottom:1px solid #ccc;}
+    #data tr.hilighted { background-color:#FFE669;}
   </style>
 
   <div id="loading-msg">Loading...</div>
@@ -17,7 +18,6 @@
       {% for property in model_properties %}
         <th class="property">{{ property }}</th>
       {% endfor %}
-      <th class="anchor"></th>
     </tr>
   </table>
   

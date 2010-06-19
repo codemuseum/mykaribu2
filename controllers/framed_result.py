@@ -21,8 +21,9 @@ class FramedResultHandler(webapp.RequestHandler):
         c['next_href_root'] = "http://next_href_root"
         curr_base_url = ( h.cfg["direct_url"], h.cfg["fb_url"] )[in_fb]
         c['back_to_results_href'] = curr_base_url + "/results?q=" + c['query'] + "&start=" + c['start']
-        c['next_step_href'] = curr_base_url
+        c['next_step_href'] = c['back_to_results_href'] #curr_base_url
         h.render_out(self, 'framed_result.tplt', c)
+
 
 from google.appengine.api import urlfetch
 

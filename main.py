@@ -117,7 +117,8 @@ class Auth2Handler(webapp.RequestHandler):
 
 # *** Globals - Need to fix this to find handlers by string
 routing =[
-    ('/', MainHandler),
+    ('/',ResultsHandler),
+    ('/test',MainHandler),
     ('/auth2',Auth2Handler),
     ('/admin',AdminHandler),
     ('/admin/pageviews',AdminPageViewsHandler),

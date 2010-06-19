@@ -17,9 +17,6 @@ def get_default_cookies(handler):
 def login_required(handler):
     cookies = get_default_cookies(handler)
     cookied_user = get_current_user(cookies)
-    
-    logging.info(cookies)
-        
     if cookied_user == None:
         if handler.request.url.find('/auth2') == -1:
             cookies['post_auth_url'] = handler.request.url

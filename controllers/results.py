@@ -14,6 +14,7 @@ class ResultsHandler(webapp.RequestHandler):
         
         c = h.context()
         query = self.request.get('q')
+        if not query: query = "red"
         c['query'] = query
 
         # fetch the google image results
@@ -25,7 +26,7 @@ class ResultsHandler(webapp.RequestHandler):
         url2 = 'http://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=large&start=8&q='\
                +ue_query+'&key='\
                +h.cfg['gs_api_key']
-        url3 = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&rsz=large&q='\
+        url3 = 'http://ajax.googleapis.com/ajax/services/search/web?v=1.0&q='\
                +ue_query+'&key='\
                +h.cfg['gs_api_key']
         rpcs = []

@@ -1,4 +1,6 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
   <link href="/public/results.css" media="screen" 
 	rel="stylesheet" type="text/css">
@@ -59,8 +61,8 @@
     }
     .ad_frame { border:10px solid black;width:738px;height:100px }
     .ad_frame:hover { border:10px solid #ffe000;width:738px;height:100px }
-    .mi_div { float:left; }
-    .mi { border: 0px; }
+    .mi_div { float:left; vertical-align:middle; }
+    .mi { border: 0px; margin: 0px; padding: 0px}
 
     {% for r in mini_imgs %}
     {% for i in r %}
@@ -72,6 +74,8 @@
       margin-right:{{i.right_margin}}px; 
       border-right:{{i.right_border}}px solid #333333;
       border-left:{{i.left_border}}px solid #333333;
+      width:{{i.tbWidth}}px;
+      height:{{i.tbHeight}}px;
     }
     #mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}:hover
     {
@@ -133,7 +137,7 @@
   <div id="header">
     <div id="bg_top">
       <div class="top-left">&nbsp;</div>
-      <a href="http://bzz.heroku.com/facebook/"><img id="top_title" 
+      <a href="{{cfg.fb_url}}"><img id="top_title" 
 src="/public/srp_title.png"></a>
       <div class="top-right">&nbsp;</div>
 
@@ -218,23 +222,22 @@ value="find" type="image"/>
   }
 </script>
  <!-- images -->
-  {% for r in mini_imgs %}
+
+{% for r in mini_imgs %}
   <div class="mi_row">
     {% for i in r %}
-    <a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1" onclick="Queries.resultClick(this)">
-      <div class="mi_div" id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi_div">
+      <div class="mi_div" id="mi_div_{{forloop.parentloop.counter0}}_{{forloop.counter0}}">
+	<a target="_blank" href="{{cfg.direct_url}}/t?u={{i.originalContextUrl}}&q={{query}}&infb=true&auth=1" onclick="Queries.resultClick(this)">
 	<img src="{{i.tbUrl}}" id="mi_{{forloop.parentloop.counter0}}_{{forloop.counter0}}" class="mi"/>
+	<div class="raw-result-url" style="display:none">{{i.originalContextUrl}}</div>
+      </a>
       </div>
-      <!--required for queries.js to work -->
-      <div class="raw-result-url" style="display:none">{{i.originalContextUrl}}</div>
-      <!-- end queries.js requirement -->
-    </a>
     {% endfor %}
   </div>
   {% endfor %}
-  <br/>
-  {{content}}
-  <iframe class="ad_frame"
+
+
+<iframe class="ad_frame" scrolling="no" frameborder="0"
   src='http://www.google.com/uds/GafsAds?q={{ue_query}}&hl=en&ad=w2&source=gcsc&qid=12821e3abd4855884&cx=004221970179818813180:lomxfldenpg'></iframe>
 
 
@@ -259,7 +262,9 @@ value="find" type="image"/>
       </div>
     </div>
     <div class="result-content">
-      <a class="href_loc result_a" target="_blank" href="{{cfg.direct_url}}/t?u={{i.unescapedUrl}}&q={{query}}&infb=true&auth=1">
+      <a class="href_loc result_a" target="_blank"
+    href="{{cfg.direct_url}}/t?u={{i.url}}&q={{query}}&infb=true&auth=1"
+    onclick="Queries.resultClick(this)">
         <div class="res_item">
           <div class="title_loc">{{i.title}}</div>
           <div class="content_loc">{{i.content}}</div>
@@ -270,6 +275,9 @@ value="find" type="image"/>
             <!-- fb:like href="{{i.url}}"></fb:like -->	    
           </div>
         </div>
+	<!--required for queries.js to work -->
+	<div class="raw-result-url" style="display:none">{{i.url}}</div>
+	<!-- end queries.js requirement -->
       </a>
     </div>
   </div>

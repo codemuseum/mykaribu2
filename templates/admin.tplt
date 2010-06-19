@@ -1,0 +1,27 @@
+<html>
+<body>
+  <style>
+    #loading-msg { position:absolute; top:25px; left:40%; padding:25px 50px; font-size:200%; border:1px solid #333; background-color:#945400; color:#fff; }
+    table {border-right:1px solid #ccc; font-size:75%;}
+    tr:hover {background-color:#f7f7f7;}
+    th {background-color:#000; color:#fff;padding:4px 8px; border-left:1px solid #555; border-bottom:1px solid #555;}
+    td {padding:4px 8px; border-left:1px solid #ccc; border-bottom:1px solid #ccc;}
+  </style>
+
+  <div id="loading-msg">Loading...</div>
+  <a href="/admin/{{model}}s/data.json" id="data-source" style="display:none"></a>
+
+  <table id="data" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <th class="property">__key__</th>
+      {% for property in model_properties %}
+        <th class="property">{{ property }}</th>
+      {% endfor %}
+      <th class="anchor"></th>
+    </tr>
+  </table>
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script>
+  <script src="/public/js/admin/data.js" type="text/javascript"></script>
+</body>
+</html>

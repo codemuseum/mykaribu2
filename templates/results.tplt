@@ -259,7 +259,7 @@ value="find" type="image"/>
       </div>
     </div>
     <div class="result-content">
-      <a class="href_loc result_a" target="_blank" href="{{cfg.direct_url}}/t?u={{i.unescapedUrl}}&q={{query}}&infb=true&auth=1">
+      <a class="href_loc result_a" target="_blank" href="{{cfg.direct_url}}/t?u={{i.unescapedUrl}}&q={{query}}&infb=true&auth=1" onclick="Queries.resultClick(this)">
         <div class="res_item">
           <div class="title_loc">{{i.title}}</div>
           <div class="content_loc">{{i.content}}</div>

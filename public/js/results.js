@@ -11,7 +11,7 @@ var Results = {
       var privacy = $('#private_true')[0] ? $('#private_true')[0].checked : false;
       // Don't store the query if this id exists the first time around
       if ($('#store_query').text() != 'false') { 
-        this.storeQuery(query, privacy);
+        // this.storeQuery(query, privacy); // THIS IS NOW DONE BY queries.js
         if (!privacy) {
           this.promptToCancelQueryShare(query);
         }
@@ -110,18 +110,11 @@ var Results = {
     }, 
     function(resp) { Results.fbShareComplete(url, resp); });
 
-    $.post('/page_views.json', { u: '/fb-share-initiated?u='+url,  referrer: document.location.href }, function(data) {
-      if (data['status'] == 'error') { ErrorLogger.report(data.toString()); }
-    });
+    PageViews.log( '/fb-share-initiated?u='+url);
   },
   fbShareComplete:function(url, resp) {
     if (resp && resp.post_id) {
-      $.post('/page_views.json', {
-        u: '/fb-share-completed?u='+url+'&'+'post_id='+resp.post_id, 
-        referrer: document.location.href
-      }, function(data) {
-        if (data['status'] == 'error') { ErrorLogger.report(data.toString()); }
-      });
+      PageViews.log('/fb-share-completed?u='+url+'&'+'post_id='+resp.post_id);
     }
   },
   fbShareWithFetch: function(baseUrl, shareUrl) {

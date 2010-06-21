@@ -3,20 +3,21 @@ var AdminData = {
   dataTable: $('#data'),
   properties: $('#data th.property'),
   init: function() {
-      this.fetchDataLoop(0, function() {
+      this.fetchDataLoop(null, function() {
         if (document.location.hash.substring(1) != '') {
           $('#'+document.location.hash.substring(1)).addClass('hilighted');
         }
       });
   },
-  fetchDataLoop: function(page, callback) {
-    $.getJSON(this.sourceUrl, {'page': page}, function(data) {
+  fetchDataLoop: function(cursor, callback) {
+    var cursorParam = cursor == null ? {} : {'cursor': cursor};
+    $.post(this.sourceUrl, cursorParam, function(data) {
 			if (data['count'] == 0) { $('#loading-msg').fadeOut(); callback(); }
-			else {
-        for (var i in data['results']) { AdminData.appendDataRow(data['results'][i]); }
-				AdminData.fetchDataLoop(page + 1, callback);
+	        else {
+                for (var i in data['results']) { AdminData.appendDataRow(data['results'][i]); }
+				AdminData.fetchDataLoop(data['cursor'], callback);
 			}
-		});
+	}, 'json');
   },
   appendDataRow: function(row) {
     var propertiesHtml = '';

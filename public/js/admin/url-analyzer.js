@@ -14,7 +14,7 @@ var UrlAnalyzer =  {
 		$('#entrances').html(loadingHtml);
 		$('#exits').html(loadingHtml);
 		
-		this.fetchAndMergePageStats(this.currentUrl, this.currentDoubleCount, 0, {results: [], total_pageviews:0, total_sessions:0 }, function(data) {
+		this.fetchAndMergePageStats(this.currentUrl, this.currentDoubleCount, null, {results: [], total_pageviews:0, total_sessions:0 }, function(data) {
 			$('#page-stats').html('<div>Hits: '+data['total_pageviews']+' / from ' + data['total_sessions'] + ' Sessions</div');
 		});
 		this.fetchAndMergeFunnelStats('entrances', this.currentUrl, this.currentDoubleCount, 0, {results: {}, total_entrance_pageviews: 0, total_entrances: 0}, function(data) {
@@ -43,8 +43,9 @@ var UrlAnalyzer =  {
 			return $.map(resultsArry, function(v,i) { return v[1]; }).join('\n');
 		}
 	},
-	fetchAndMergePageStats: function(pageUrl, doubleCount, pageNum, currentData, callback) {
-		$.getJSON('/admin/urls/stats.json', {url: pageUrl, double_count_sessions: doubleCount, page: pageNum}, function(data) {
+	fetchAndMergePageStats: function(pageUrl, doubleCount, cursor, currentData, callback) {
+        var cursorParam = cursor == null ? {url: pageUrl, double_count_sessions: doubleCount} : {'cursor': cursor, url: pageUrl, double_count_sessions: doubleCount};
+		$.post('/admin/urls/stats.json', cursorParam, function(data) {
 			if (data['total_pageviews'] == 0) {
 				// Loop through and calculate the real values
 				currentData['total_pageviews'] = 0;
@@ -66,12 +67,12 @@ var UrlAnalyzer =  {
 					mergedData['results'][sessId] += data['results'][sessId];
 				}
 			
-				UrlAnalyzer.fetchAndMergePageStats(pageUrl, doubleCount, pageNum + 1, mergedData, callback);
+				UrlAnalyzer.fetchAndMergePageStats(pageUrl, doubleCount, data['cursor'], mergedData, callback);
 			}
-		});
+		},'json');
 	},
 	fetchAndMergeFunnelStats: function(modeStr, pageUrl, doubleCount, pageNum, currentData, callback) {
-		$.getJSON('/admin/urls/funnel.json', {mode: modeStr, url: pageUrl, double_count_sessions: doubleCount, page: pageNum}, function(data) {
+		$.post('/admin/urls/funnel.json', {mode: modeStr, url: pageUrl, double_count_sessions: doubleCount, page: pageNum}, function(data) {
 			if (data['total_entrances'] == 0) {
 				// Loop through and calculate the final values
 				currentData['total_entrance_pageviews'] = 0;
@@ -95,7 +96,7 @@ var UrlAnalyzer =  {
 			
 				UrlAnalyzer.fetchAndMergeFunnelStats(modeStr, pageUrl, doubleCount, pageNum + 1, mergedData, callback);
 			}
-		});
+		}, 'json');
 	}
 };
 UrlAnalyzer.init();

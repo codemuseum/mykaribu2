@@ -1,13 +1,14 @@
 var AdminPaths = {
 	init: function() {
 		var startAtSessionOrder = 0;
-		this.fetchAndMergeData(startAtSessionOrder, 0, '', {total_pageviews_in_query:0, results: []}, function(data) {
+		this.fetchAndMergeData(startAtSessionOrder, null, '', {total_pageviews_in_query:0, results: []}, function(data) {
 			$('#paths').html(AdminPaths.pathResultsHtml(data, startAtSessionOrder));
 			AdminPaths.bindPaths($('#paths .path'));
 		});
 	},
-	fetchAndMergeData: function(sessionOrder, sessionOrderOffset, sessionIds, currentData, callbackForMergedData) {
-		$.getJSON('/admin/paths/data.json', {session_order: sessionOrder, session_order_offset: sessionOrderOffset, session_ids: sessionIds}, function(data) {
+	fetchAndMergeData: function(sessionOrder, cursor, sessionIds, currentData, callbackForMergedData) {
+        var cursorParam = cursor == null ? {session_order: sessionOrder, session_ids: sessionIds} : {'cursor': cursor, session_order: sessionOrder, session_ids: sessionIds};
+		$.post('/admin/paths/data.json', cursorParam, function(data) {
 			if (data['total_pageviews_in_query'] == 0) {
 				currentData['results'].sort(function(a,b) { return a['count'] - b['count']; });
 				currentData['results'].reverse();
@@ -29,9 +30,9 @@ var AdminPaths = {
 				}
 				// remove any null (merged) results from data
 				mergedData['results'] = mergedData['results'].concat($.grep(data['results'], function (a) { return a != null; }));
-				AdminPaths.fetchAndMergeData(sessionOrder, sessionOrderOffset + 1, sessionIds, mergedData, callbackForMergedData);
+				AdminPaths.fetchAndMergeData(sessionOrder, data['cursor'], sessionIds, mergedData, callbackForMergedData);
 			}
-		});
+		}, 'json');
 	},
 	pathHtml: function(path, totalCount, currentOrder) {
 		return "<div class='path collapsed'><div class='data-path-url' style='display:none'>"+path['url']+"</div><div class='data-path-order' style='display:none'>"+currentOrder+"</div><div class='data-session-ids' style='display:none'>[\""+path['session_ids'].join('\",\"')+"\"]</div><div class='percent'>"+Math.round(path['count'] * 100 / totalCount)+"%</div><div class='numeric'>"+path['count'] +"/"+totalCount+"</div><div class='url'><a>"+path['url']+"</a></div><div class='clear'></div><div class='sub-paths'><img src='http://bzz.heroku.com/images/loading.gif' width='16' height='11'/> Loading...</div></div>";
@@ -62,9 +63,9 @@ var AdminPaths = {
 				path.addClass('expanded');
 				var url = path.find('.data-path-url').text();
 				var nextOrder = parseInt(path.find('.data-path-order').text()) + 1;
-				var sessionIds = path.find('.data-session-ids').text(); console.log(sessionIds);
+				var sessionIds = path.find('.data-session-ids').text(); 
 				
-				AdminPaths.fetchAndMergeData(nextOrder, 0, sessionIds, {total_pageviews_in_query:0, results: []}, function(data) {
+				AdminPaths.fetchAndMergeData(nextOrder, null, sessionIds, {total_pageviews_in_query:0, results: []}, function(data) {
 					subPaths.slideUp(50);
 					subPaths.html(AdminPaths.pathResultsHtml(data, nextOrder));
 					subPaths.slideDown(500);

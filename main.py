@@ -59,7 +59,7 @@ class Auth2Handler(webapp.RequestHandler):
         c['access_token'] = self.request.get("access_token")
         
         if self.request.get("access_token") == '':
-            raise KeyError("No access token set, but we expected on %s" % self.request.get("access_token"))
+            logging.error("No access token set, but we expected on %s" % str(self.request.url))
         else:
             logging.warning("Got access token %s" % self.request.get("access_token"))
         

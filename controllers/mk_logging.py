@@ -159,7 +159,7 @@ class ResultViewLoggingsHandler(webapp.RequestHandler):
             fb_post_id = QueryFacebookWallpostHelper.postToWallIfNecessary(current_user, result_view, query, image_url)
             self.response.out.write('{status: \'ok\', fb_wall_post_id: \'%s\', result_view_key: \'%s\'}' % (fb_post_id, str(result_view.key())))
         else:
-            logging.info("***NoPost : "+current_user+" "+query+" "+query.fb_wall_post_id)
+            # logging.info("***NoPost : "+current_user+" "+query+" "+query.fb_wall_post_id)
             self.response.out.write('{status: \'ok\', result_view_key: \'%s\', result_view_has_user: \'%s\'}' % (str(result_view.key()), str(current_user != None)))
 
 # After login handler to tie together result views (5 at a time; there shouldn't be too many of these)

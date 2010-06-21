@@ -5,6 +5,8 @@ from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from django.utils import simplejson
 import datetime
+from urlparse import urlparse
+import cgi
 
 # *** Helpers
 import helpers as h
@@ -49,7 +51,7 @@ class AdminHelper:
 # Admin main handler
 class AdminHandler(webapp.RequestHandler):
     def get(self):
-        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> |  <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a>")
+        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> |  <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
 
 class AdminPageViewsHandler(webapp.RequestHandler):
     def get(self):
@@ -223,7 +225,45 @@ class AdminUrlFunnelHandler(webapp.RequestHandler):
         
         self.response.out.write(simplejson.dumps({'status': 'ok', 'mode': mode, 'cursor': str(query.cursor()), 'results': entrances_hash, 'total_entrances': len(entrances_hash.keys()), 'total_entrance_pageviews': sum(entrances_hash.values()) }))
                         
+
+class AdminPageViewNormalizerHandler(webapp.RequestHandler):
+    def get(self):
+        h.output(self, '<html><head><style></style></head><body><div>Normalization Status: <span id="status">Not started, complete below.</span></div><div><textarea id="filtered-params" style="height:15em;width:50%">fb_sig,fb_sig_in_iframe,fb_sig_iframe_key,fb_sig_locale,fb_sig_in_new_facebook,fb_sig_time,fb_sig_added,fb_sig_profile_update_time,fb_sig_expires,fb_sig_user,fb_sig_session_key,fb_sig_ss,fb_sig_cookie_sig,fb_sig_ext_perms,fb_sig_country,fb_sig_api_key,fb_sig_app_id,auth,infb</textarea><br/>Fill in the above with a comma-separated list</div><div><a id="normalize-button" href="#">NORMALIZE NOW!</a><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/url-normalizer.js" type="text/javascript"></script></body></html>')
+    
+    
+    def post(self):
+        query = PageView.all()
+        query.order('-created_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        filter_out_params = {}
+        for param in str(self.request.get('filtered_params')).split(','):
+            filter_out_params[param.strip()] = True
+
+        page_views = query.fetch(1000)
+
+        for page_view in page_views:            
+            parsed = urlparse(page_view.url)
+            params = cgi.parse_qs(parsed.query)
+
+            new_url = parsed.scheme + "://" + parsed.netloc + parsed.path
+            new_param_string = ''
+
+            for key in sorted(params.keys()):
+              if key not in filter_out_params or filter_out_params[key] == False:
+                for val in params[key]:
+                  if new_param_string != '':
+                    new_param_string += '&'
+                  new_param_string += key + "=" + val
+
+            if len(new_param_string) == 0:
+              page_view.normalized_url = new_url
+            else:
+              page_view.normalized_url = new_url + "?" + new_param_string
+
+            page_view.put()
         
-        
-        
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(page_views) }))
         

@@ -19,7 +19,7 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
 # *** Controller imports
-from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler
+from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminPageViewNormalizerHandler
 from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
@@ -131,6 +131,7 @@ routing =[
     ('/admin',AdminHandler),
     ('/admin/pageviews',AdminPageViewsHandler),
     ('/admin/pageviews/data.json',AdminPageViewsDataHandler),
+    ('/admin/pageviews/normalizer', AdminPageViewNormalizerHandler),
     ('/admin/users',AdminUsersHandler),
     ('/admin/users/data.json',AdminUsersDataHandler),
     ('/admin/querys',AdminQueriesHandler),

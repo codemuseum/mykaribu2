@@ -23,6 +23,7 @@ from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageView
 from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
+from controllers.stash import StashHandler
 
 # *** Model imports
 from models.user import User
@@ -152,7 +153,8 @@ routing =[
     ('/storequeries.json',QueryLoggingsHandler),
     ('/storeresultclicks.json',ResultViewLoggingsHandler),
     ('/postlogin.json', PostLoginSewingLoggingsHandler),
-    ('/cookie_test', CookieTestHandler)
+    ('/cookie_test', CookieTestHandler),
+    ('/stash', StashHandler)
     ]
 
 # *** Init code

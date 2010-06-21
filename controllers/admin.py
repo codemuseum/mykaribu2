@@ -242,7 +242,7 @@ class AdminPageViewNormalizerHandler(webapp.RequestHandler):
         for param in str(self.request.get('filtered_params')).split(','):
             filter_out_params[param.strip()] = True
 
-        page_views = query.fetch(1000)
+        page_views = query.fetch(100)
 
         for page_view in page_views:            
             parsed = urlparse(page_view.url)

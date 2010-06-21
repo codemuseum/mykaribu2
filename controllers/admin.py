@@ -4,6 +4,7 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from django.utils import simplejson
+import datetime
 
 # *** Helpers
 import helpers as h
@@ -18,12 +19,14 @@ from models.user import User
 
 class AdminHelper:
     @staticmethod
-    def writePaginatedDataJson(handler, model, page_param):
+    def writePaginatedDataJson(handler, model, cursor_param=None):
         query = model.all()
         query.order('-created_at')
-        results = query.fetch(1000, int(page_param) * 1000)
+        if cursor_param != None:
+            query.with_cursor(cursor_param)
+        results = query.fetch(1000)
 
-        handler.response.out.write(simplejson.dumps({'status': 'ok', 'results': AdminHelper.MapToHash(results), 'count': len(results) }))
+        handler.response.out.write(simplejson.dumps({'status': 'ok', 'results': AdminHelper.MapToHash(results), 'cursor': str(query.cursor()), 'count': len(results) }))
 
     @staticmethod
     def ToHash(entity):
@@ -32,6 +35,8 @@ class AdminHelper:
             val = getattr(entity, prop)
             if isinstance(val, db.Model):
                 result[prop] = '<a href="/admin/'+val.__class__.__name__.lower()+'s#key_'+str(val.key())+'" target="_blank">'+str(val.key())+'</a>'
+            if isinstance(val, basestring):
+                result[prop] = str(val.encode('utf-8'))
             else:
                 result[prop] = str(val)
         return result
@@ -54,8 +59,8 @@ class AdminPageViewsHandler(webapp.RequestHandler):
         h.render_out(self, 'admin.tplt', c)
 
 class AdminPageViewsDataHandler(webapp.RequestHandler):
-    def get(self):
-        AdminHelper.writePaginatedDataJson(self, PageView, self.request.get('page'))
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, PageView, self.request.get('cursor'))
 
 class AdminUsersHandler(webapp.RequestHandler):
     def get(self):
@@ -65,8 +70,8 @@ class AdminUsersHandler(webapp.RequestHandler):
         h.render_out(self, 'admin.tplt', c)
 
 class AdminUsersDataHandler(webapp.RequestHandler):
-    def get(self):
-        AdminHelper.writePaginatedDataJson(self, User, self.request.get('page'))
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, User, self.request.get('cursor'))
 
 
 class AdminQueriesHandler(webapp.RequestHandler):
@@ -77,8 +82,8 @@ class AdminQueriesHandler(webapp.RequestHandler):
         h.render_out(self, 'admin.tplt', c)
 
 class AdminQueriesDataHandler(webapp.RequestHandler):
-    def get(self):
-        AdminHelper.writePaginatedDataJson(self, Query, self.request.get('page'))
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, Query, self.request.get('cursor'))
 
 
 class AdminResultViewsHandler(webapp.RequestHandler):
@@ -89,8 +94,8 @@ class AdminResultViewsHandler(webapp.RequestHandler):
         h.render_out(self, 'admin.tplt', c)
 
 class AdminResultViewsDataHandler(webapp.RequestHandler):
-    def get(self):
-        AdminHelper.writePaginatedDataJson(self, ResultView, self.request.get('page'))
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, ResultView, self.request.get('cursor'))
 
 class AdminPathsHandler(webapp.RequestHandler):
     def get(self):
@@ -98,15 +103,19 @@ class AdminPathsHandler(webapp.RequestHandler):
         
 
 class AdminPathDataHandler(webapp.RequestHandler):
-    def get(self):
+    def post(self):
         session_ids = None
         query = PageView.all()
         query.order('-created_at')
         query.filter('session_order =', int(self.request.get('session_order')))
         if self.request.get('session_ids') != '':
             query.filter('session_id IN', simplejson.loads(self.request.get('session_ids')))
+        
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
 
-        page_views = query.fetch(1000, int(self.request.get('session_order_offset')) * 1000)
+        page_views = query.fetch(1000)
         page_views.sort(lambda a,b: cmp(a.normalized_url, b.normalized_url))
         collapsed_page_views = []
         current_url = None
@@ -129,7 +138,7 @@ class AdminPathDataHandler(webapp.RequestHandler):
         current_url = None
         current_count = 0
         
-        self.response.out.write(simplejson.dumps({'status': 'ok', 'results': collapsed_page_views, 'total_pageviews_in_query': len(page_views) }))
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'results': collapsed_page_views, 'total_pageviews_in_query': len(page_views) }))
 
 
 class AdminUrlAnalyzerHandler(webapp.RequestHandler):
@@ -154,12 +163,15 @@ class AdminUrlSuggestHandler(webapp.RequestHandler):
         self.response.out.write("\n".join(unique_urls))
         
 class AdminUrlStatsHandler(webapp.RequestHandler):
-    def get(self):
+    def post(self):
         url = self.request.get('url')
         query = PageView.all()
         query.order('session_id')
         query.filter('normalized_url =', url)
-        page_views = query.fetch(1000, int(self.request.get('page')) * 1000)
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+        page_views = query.fetch(1000)
         
         page_views_by_session_id = {}
         for page_view in page_views: 
@@ -168,10 +180,10 @@ class AdminUrlStatsHandler(webapp.RequestHandler):
             else:
                 page_views_by_session_id[page_view.session_id] = 1
         
-        self.response.out.write(simplejson.dumps({'status': 'ok', 'results': page_views_by_session_id, 'total_pageviews': len(page_views), 'total_sessions': len(page_views_by_session_id.keys()) }))
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'results': page_views_by_session_id, 'cursor': str(query.cursor()), 'total_pageviews': len(page_views), 'total_sessions': len(page_views_by_session_id.keys()) }))
         
 class AdminUrlFunnelHandler(webapp.RequestHandler):
-    def get(self):
+    def post(self):
         mode = self.request.get('mode')
         if mode == 'entrances':
             mode_session_order_add_amount = -1
@@ -181,7 +193,10 @@ class AdminUrlFunnelHandler(webapp.RequestHandler):
         query = PageView.all()
         query.order('session_id')
         query.filter('normalized_url =', url)
-        page_views = query.fetch(1000, int(self.request.get('page')) * 1000)
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+        page_views = query.fetch(1000)
         
         entrances_hash = {}
         for page_view in page_views:
@@ -206,7 +221,7 @@ class AdminUrlFunnelHandler(webapp.RequestHandler):
                         entrances_hash['[leave-site]'] = 1
                         
         
-        self.response.out.write(simplejson.dumps({'status': 'ok', 'mode': mode, 'results': entrances_hash, 'total_entrances': len(entrances_hash.keys()), 'total_entrance_pageviews': sum(entrances_hash.values()) }))
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'mode': mode, 'cursor': str(query.cursor()), 'results': entrances_hash, 'total_entrances': len(entrances_hash.keys()), 'total_entrance_pageviews': sum(entrances_hash.values()) }))
                         
         
         

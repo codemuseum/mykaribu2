@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <body style="text-align:center; font-size:20px; font-family:verdana;">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+	    type="text/javascript"></script>
+    <script src="{{cfg.direct_url}}/public/js/pageviews.js"></script>
+
+    <style>
+      a {text-decoration:none;}
+      a:visited {color:black;}
+    </style>
+    <div style="border:5px solid #ffff88; width:500px;height:400px; margin:auto; background-color:#eeeeee">
+      <div style="padding-top:50px;padding-bottom:50px;">
+	<a href="{{cfg.direct_url}}"> Please check back later!<br/>We're still gathering info for your<br/>stash of cool stuff!<br/></a>
+      </div>
+      <div>
+	<a href="{{cfg.direct_url}}"> In the meantime find more cool stuff!</a>
+      </div>
+      <a href="{{cfg.direct_url}}">
+	<img style="border:0px; padding-top:20px;" src="{{cfg.direct_url}}/public/images/big_green_forward.png" />
+      </a>
+    </div>
+ </body>
+</html>

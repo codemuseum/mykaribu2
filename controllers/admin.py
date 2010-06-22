@@ -16,14 +16,15 @@ from models.pageview import PageView
 from models.query import Query
 from models.resultview import ResultView
 from models.user import User
+from models.installmetric import InstallMetric
 
 # *** Handlers
 
 class AdminHelper:
     @staticmethod
-    def writePaginatedDataJson(handler, model, cursor_param=None):
+    def writePaginatedDataJson(handler, model, cursor_param=None, order_by = '-created_at'):
         query = model.all()
-        query.order('-created_at')
+        query.order(order_by)
         if cursor_param != None:
             query.with_cursor(cursor_param)
         results = query.fetch(1000)
@@ -37,7 +38,7 @@ class AdminHelper:
             val = getattr(entity, prop)
             if isinstance(val, db.Model):
                 result[prop] = '<a href="/admin/'+val.__class__.__name__.lower()+'s#key_'+str(val.key())+'" target="_blank">'+str(val.key())+'</a>'
-            if isinstance(val, basestring):
+            elif isinstance(val, basestring):
                 result[prop] = str(val.encode('utf-8'))
             else:
                 result[prop] = str(val)
@@ -51,7 +52,7 @@ class AdminHelper:
 # Admin main handler
 class AdminHandler(webapp.RequestHandler):
     def get(self):
-        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> |  <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
+        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> | <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> | <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
 
 class AdminPageViewsHandler(webapp.RequestHandler):
     def get(self):
@@ -230,7 +231,6 @@ class AdminPageViewNormalizerHandler(webapp.RequestHandler):
     def get(self):
         h.output(self, '<html><head><style></style></head><body><div>Normalization Status: <span id="status">Not started, complete below.</span></div><div><textarea id="filtered-params" style="height:15em;width:50%">fb_sig,fb_sig_in_iframe,fb_sig_iframe_key,fb_sig_locale,fb_sig_in_new_facebook,fb_sig_time,fb_sig_added,fb_sig_profile_update_time,fb_sig_expires,fb_sig_user,fb_sig_session_key,fb_sig_ss,fb_sig_cookie_sig,fb_sig_ext_perms,fb_sig_country,fb_sig_api_key,fb_sig_app_id,auth,infb</textarea><br/>Fill in the above with a comma-separated list</div><div><a id="normalize-button" href="#">NORMALIZE NOW!</a><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/url-normalizer.js" type="text/javascript"></script></body></html>')
     
-    
     def post(self):
         query = PageView.all()
         query.order('-created_at')
@@ -266,4 +266,132 @@ class AdminPageViewNormalizerHandler(webapp.RequestHandler):
             page_view.put()
         
         self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(page_views) }))
+
+
+class AdminInstallMetricsHandler(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        c['model'] = 'installmetric'
+        c['model_properties'] = sorted(InstallMetric.properties())
+        h.render_out(self, 'admin.tplt', c)
+
+class AdminInstallMetricsDataHandler(webapp.RequestHandler):
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, InstallMetric, self.request.get('cursor'), order_by = '-updated_at')
+
+
+class AdminInstallMetricsSummaryHandler(webapp.RequestHandler):
+    def get(self):
+        last_metric_at = InstallMetric.gql("ORDER BY updated_at DESC").get()
+        if last_metric_at == None:
+            last_metric_at = "[Never]"
+        else:
+            last_metric_at = last_metric_at.updated_at
+        
+        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div>Install Metric Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-button" href="#">RE-CALCULATE NOW!</a></div><div>Total Users: <span id="total-users">...</span></div><div>Users From Ads: <span id="total-from-ads">...</span></div><div>Users From Newsfeeds: <span id="total-from-newsfeeds">...</span></div><div>Users From Unknown: <span id="total-from-unknown">...</span></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/install-metrics.js" type="text/javascript"></script></body></html>')
+
+    def post(self):
+        query = InstallMetric.all()
+        query.order('-updated_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        install_metrics = query.fetch(1000)
+        total_users = 0
+        total_from_ads = 0
+        total_from_newsfeeds = 0
+        total_from_unknown = 0
+        for install_metric in install_metrics:
+            total_users += 1
+            if install_metric.installed_via_ad == True:
+                total_from_ads += 1
+            elif install_metric.installed_via_newsfeed == True:
+                total_from_newsfeeds += 1
+            elif install_metric.installed_via_unknown == True:
+                total_from_unknown += 1
+        
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'total_users': total_users, 'total_from_ads': total_from_ads, 'total_from_newsfeeds': total_from_newsfeeds, 'total_from_unknown': total_from_unknown, 'count': len(install_metrics) }))
+
+# Runs through the system and calculates the installation path for each user.  Batches 50 users at a time
+class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
+    def post(self):
+        query = User.all()
+        query.order('-created_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        users = query.fetch(50)
+
+        for user in users:
+            page_view_with_user = PageView.gql("WHERE user = :1 ORDER BY created_at ASC", user).get() 
+            if page_view_with_user.session_id != None and len(page_view_with_user.session_id) > 0:
+                page_view_with_session_id = PageView.gql("WHERE session_id = :1 ORDER BY created_at ASC", page_view_with_user.session_id).get()
+            else:
+                page_view_with_session_id = page_view_with_user
+            
+            installed_at = page_view_with_user.created_at
+            if page_view_with_session_id.referrer == None or len(page_view_with_session_id.referrer) < 10:
+                url_to_parse = page_view_with_session_id.url
+            else:
+                url_to_parse = page_view_with_session_id.referrer
+            
+            parsed_referral_url = urlparse(url_to_parse)
+            params = cgi.parse_qs(parsed_referral_url.query)
+            
+            if 'suid' in params and params['suid'] != None and len(params['suid']) > 0:
+                installed_via_newsfeed = True
+                referring_user = User.gql("WHERE __key__ = :1", db.Key(params['suid'])).get()
+                newsfeed_search_term = params['q']
+                newsfeed_verb = params['v']
+                ad_name = None
+                installed_via_ad = False
+                installed_via_unknown = False
+            elif 'q' in params and params['q'] != None and len(params['q']) > 0:
+                installed_via_newsfeed = False
+                referring_user = None
+                newsfeed_search_term = None
+                newsfeed_verb = None
+                ad_name = params['q']
+                installed_via_ad = True
+                installed_via_unknown = False
+            else:
+                installed_via_newsfeed = False
+                referring_user = None
+                newsfeed_search_term = None
+                newsfeed_verb = None
+                ad_name = None
+                installed_via_ad = False
+                installed_via_unknown = True   
+            
+            install_metric = InstallMetric.gql("WHERE user = :1", user).get()
+            if install_metric == None:
+                install_metric = InstallMetric(
+                    fb_user_id = user.fb_user_id,
+                    user = user,
+                    installed_at = installed_at,
+                    installed_via_ad = installed_via_ad,
+                    ad_name = ad_name,
+                    installed_via_newsfeed = installed_via_newsfeed,
+                    referring_user = referring_user,
+                    newsfeed_search_term = newsfeed_search_term,
+                    newsfeed_verb = newsfeed_verb,
+                    installed_via_unknown = installed_via_unknown
+                )
+            else:    
+                install_metric.fb_user_id = user.fb_user_id
+                install_metric.user = user
+                install_metric.installed_at = installed_at
+                install_metric.installed_via_ad = installed_via_ad
+                install_metric.ad_name = ad_name
+                install_metric.installed_via_newsfeed = installed_via_newsfeed
+                install_metric.referring_user = referring_user
+                install_metric.newsfeed_search_term = newsfeed_search_term
+                install_metric.newsfeed_verb = newsfeed_verb
+                install_metric.installed_via_unknown = installed_via_unknown
+                
+            install_metric.put()
+
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(users) }))
         

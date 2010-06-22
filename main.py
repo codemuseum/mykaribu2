@@ -19,7 +19,7 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
 # *** Controller imports
-from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminPageViewNormalizerHandler
+from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler
 from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
@@ -145,6 +145,10 @@ routing =[
     ('/admin/url-suggest',AdminUrlSuggestHandler),
     ('/admin/urls/stats.json', AdminUrlStatsHandler),
     ('/admin/urls/funnel.json', AdminUrlFunnelHandler),
+    ('/admin/installmetrics',AdminInstallMetricsHandler),
+    ('/admin/installmetrics/data.json',AdminInstallMetricsDataHandler),
+    ('/admin/installmetrics/summary',AdminInstallMetricsSummaryHandler),
+    ('/admin/installmetrics/calculator.json',AdminInstallMetricCalculatorHandler),
     ('/logging',LoggingHandler),
     ('/t',FramedResultHandler),
     ('/share_counts',ShareCountsHandler),

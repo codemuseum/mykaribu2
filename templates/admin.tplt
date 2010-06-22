@@ -1,7 +1,7 @@
 <html>
 <body>
+  <link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /> 
   <style>
-    #loading-msg { position:absolute; top:25px; left:40%; padding:25px 50px; font-size:200%; border:1px solid #333; background-color:#945400; color:#fff; }
     table {border-right:1px solid #ccc; font-size:75%;}
     tr:hover {background-color:#f7f7f7;}
     th {background-color:#000; color:#fff;padding:4px 8px; border-left:1px solid #555; border-bottom:1px solid #555;}

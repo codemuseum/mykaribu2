@@ -329,7 +329,7 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
             page_view_with_user = PageView.gql("WHERE user = :1 ORDER BY created_at ASC", user).get() 
             
             if page_view_with_user == None:
-                logging.error("Couldn't find PageView for User(key=%s,fb_user_id=%s)" % (str(user.key()) % str(user.fb_user_id)))
+                logging.error("Couldn't find PageView for User(key=%s,fb_user_id=%s)" % (str(user.key()), str(user.fb_user_id)))
                 page_view_with_user = PageView() # Fake it till we make it
             
             if page_view_with_user.session_id != None and len(page_view_with_user.session_id) > 0:

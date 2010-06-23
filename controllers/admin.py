@@ -340,20 +340,20 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
             parsed_referral_url = urlparse(url_to_parse)
             params = cgi.parse_qs(parsed_referral_url.query)
             
-            if 'suid' in params and params['suid'] != None and len(params['suid']) > 0:
+            if 'suid' in params and params['suid'] != None and len(params['suid'][0]) > 0:
                 installed_via_newsfeed = True
-                referring_user = User.gql("WHERE __key__ = :1", db.Key(params['suid'])).get()
-                newsfeed_search_term = params['q']
-                newsfeed_verb = params['v']
+                referring_user = User.gql("WHERE __key__ = :1", db.Key(params['suid'][0])).get()
+                newsfeed_search_term = '|'.join(params['q'])
+                newsfeed_verb = '|'.join(params['v'])
                 ad_name = None
                 installed_via_ad = False
                 installed_via_unknown = False
-            elif 'q' in params and params['q'] != None and len(params['q']) > 0:
+            elif 'q' in params and params['q'] != None and len(params['q'][0]) > 0:
                 installed_via_newsfeed = False
                 referring_user = None
                 newsfeed_search_term = None
                 newsfeed_verb = None
-                ad_name = params['q']
+                ad_name = '|'.join(params['q'])
                 installed_via_ad = True
                 installed_via_unknown = False
             else:

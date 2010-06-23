@@ -47,11 +47,11 @@ var OrganicSearchMetrics = {
 			if (data['count'] == 0) { $('#loading-msg').fadeOut(); callback(currentData); }
 	        else {
 	            mergedData = {}
-	            margedData.total_users = currentData.total_users + data.total_users;
-	            margedData.results = currentData.results;
+	            mergedData.total_users = currentData.total_users + data.total_users;
+	            mergedData.results = currentData.results;
 	            for (var key in data.results) {
-	                if (margedData.results[key] == null) { margedData.results[key] = 0; }
-	                margedData.results[key] += data.results[key];
+	                if (mergedData.results[key] == null) { mergedData.results[key] = 0; }
+	                mergedData.results[key] += data.results[key];
 	            }
                 for (var key in currentData) {  mergedData[key] = currentData[key] + data[key]; }
 				OrganicSearchMetrics.fetchSummaryLoop(data['cursor'], mergedData, callback);

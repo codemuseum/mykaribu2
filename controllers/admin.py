@@ -342,13 +342,16 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
                 url_to_parse = page_view_with_session_id.url
             else:
                 url_to_parse = page_view_with_session_id.referrer
+                
+            if url_to_parse == None:
+                url_to_parse = ''
             
             parsed_referral_url = urlparse(url_to_parse)
             params = cgi.parse_qs(parsed_referral_url.query)
             
             if 'suid' in params and params['suid'] != None and len(params['suid'][0]) > 0:
                 installed_via_newsfeed = True
-                referring_user = User.gql("WHERE __key__ = :1", db.Key(params['suid'][0])).get()
+                referring_user = User.gql("WHERE fb_user_id = :1", db.Key(params['suid'][0])).get()
                 newsfeed_search_term = '|'.join(params['q'])
                 newsfeed_verb = '|'.join(params['v'])
                 ad_name = None

@@ -351,7 +351,7 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
             
             if 'suid' in params and params['suid'] != None and len(params['suid'][0]) > 0:
                 installed_via_newsfeed = True
-                referring_user = User.gql("WHERE fb_user_id = :1", db.Key(params['suid'][0])).get()
+                referring_user = User.gql("WHERE fb_user_id = :1", params['suid'][0]).get()
                 newsfeed_search_term = '|'.join(params['q'])
                 newsfeed_verb = '|'.join(params['v'])
                 ad_name = None

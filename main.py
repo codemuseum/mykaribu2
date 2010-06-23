@@ -19,7 +19,7 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 
 # *** Controller imports
-from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler
+from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler, AdminOrganicSearchMetricsHandler, AdminOrganicSearchMetricsDataHandler, AdminOrganicSearchMetricsSummaryHandler, AdminOrganicSearchMetricCalculatorHandler
 from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler
@@ -149,6 +149,10 @@ routing =[
     ('/admin/installmetrics/data.json',AdminInstallMetricsDataHandler),
     ('/admin/installmetrics/summary',AdminInstallMetricsSummaryHandler),
     ('/admin/installmetrics/calculator.json',AdminInstallMetricCalculatorHandler),
+    ('/admin/organicsearchmetrics',AdminOrganicSearchMetricsHandler),
+    ('/admin/organicsearchmetrics/data.json',AdminOrganicSearchMetricsDataHandler),
+    ('/admin/organicsearchmetrics/summary',AdminOrganicSearchMetricsSummaryHandler),
+    ('/admin/organicsearchmetrics/calculator.json',AdminOrganicSearchMetricCalculatorHandler),
     ('/logging',LoggingHandler),
     ('/t',FramedResultHandler),
     ('/share_counts',ShareCountsHandler),

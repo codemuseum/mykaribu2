@@ -18,6 +18,7 @@ from models.query import Query
 from models.resultview import ResultView
 from models.user import User
 from models.installmetric import InstallMetric
+from models.organicsearchmetric import OrganicSearchMetric
 
 # *** Handlers
 
@@ -53,7 +54,7 @@ class AdminHelper:
 # Admin main handler
 class AdminHandler(webapp.RequestHandler):
     def get(self):
-        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> | <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> | <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
+        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> | <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> | <a href='/admin/organicsearchmetrics'>Organic Search Metrics</a> | <a href='/admin/organicsearchmetrics/summary'>Summary Organic Search Metrics</a> | <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
 
 class AdminPageViewsHandler(webapp.RequestHandler):
     def get(self):
@@ -409,4 +410,98 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
             install_metric.put()
 
         self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(users) }))
-        
+
+
+
+
+class AdminOrganicSearchMetricsHandler(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        c['model'] = 'organicsearchmetric'
+        c['model_properties'] = sorted(OrganicSearchMetric.properties())
+        h.render_out(self, 'admin.tplt', c)
+
+class AdminOrganicSearchMetricsDataHandler(webapp.RequestHandler):
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, OrganicSearchMetric, self.request.get('cursor'), order_by = '-updated_at')
+
+
+class AdminOrganicSearchMetricsSummaryHandler(webapp.RequestHandler):
+    def get(self):
+        last_metric_at = OrganicSearchMetric.gql("ORDER BY updated_at DESC").get()
+        if last_metric_at == None:
+            last_metric_at = "[Never]"
+        else:
+            last_metric_at = last_metric_at.updated_at
+
+        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div>Organic Search Metric Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-button" href="#">RE-CALCULATE NOW!</a></div><div>Total Users: <span id="total-users">...</span></div><div>Histogram for Number of Searches: <div id="histogram-text">...</div></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/organic-search-metrics.js" type="text/javascript"></script></body></html>')
+
+    def post(self):
+        query = OrganicSearchMetric.all()
+        query.order('-updated_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        organic_search_metrics = query.fetch(1000)
+        total_users = 0
+        histogram = {}
+        for organic_search_metric in organic_search_metrics:
+            total_users += 1
+            search_count_key = "%s_organic_searches" % str(organic_search_metric.search_count)
+            if search_count_key in histogram:
+                histogram[search_count_key] += 1
+            else:
+                histogram[search_count_key] = 1
+
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'results': histogram, 'count': len(organic_search_metrics), 'total_users': total_users}))
+
+
+# Runs through the system and calculates the number of organic searches for each user.  Batches 50 users at a time        
+# NOTE: Right now, we'll use the x (and y) param to signify an organic search.  This may change depending on
+# how the search box is implemented in HTML
+class AdminOrganicSearchMetricCalculatorHandler(webapp.RequestHandler):
+    def post(self):
+        query = User.all()
+        query.order('-created_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        users = query.fetch(50)
+
+        for user in users:
+            user_queries = Query.gql("WHERE user = :1 ORDER BY created_at ASC", user).fetch(1000)
+            user_search_strings = []
+
+            for user_query in user_queries:
+                if user_query.url != None:
+                    parsed_url = urlparse(user_query.url)
+                else:
+                    parsed_url = urlparse('')
+                
+                
+                params = cgi.parse_qs(parsed_url.query)
+                    
+                # Right now, we'll use the x (and y) param to signify an organic search.
+                if 'x' in params and params['x'] != None:
+                    user_search_strings.append(user_query.query_string)
+
+            organic_search_metric = OrganicSearchMetric.gql("WHERE user = :1", user).get()
+            if organic_search_metric == None:
+                organic_search_metric = OrganicSearchMetric(
+                    fb_user_id = user.fb_user_id,
+                    user = user,
+                    search_count = len(user_search_strings),
+                    searches = "||".join(user_search_strings)
+                )
+            else:    
+                organic_search_metric.fb_user_id = user.fb_user_id
+                organic_search_metric.user = user
+                organic_search_metric.search_count = len(user_search_strings)
+                organic_search_metric.searches = "||".join(user_search_strings)
+
+            organic_search_metric.put()
+
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(users) }))
+

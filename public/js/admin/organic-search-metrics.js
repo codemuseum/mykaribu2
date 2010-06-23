@@ -26,7 +26,7 @@ var OrganicSearchMetrics = {
         OrganicSearchMetrics.running = false;
         OrganicSearchMetrics.fetchSummaryNow();
       });
-  },
+  }, 
   fetchSummaryNow: function() {
       $('#loading-msg').fadeIn(); 
       $('#total-users').text('...');

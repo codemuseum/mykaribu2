@@ -7,6 +7,7 @@ from django.utils import simplejson
 import datetime
 from urlparse import urlparse
 import cgi
+import logging
 
 # *** Helpers
 import helpers as h

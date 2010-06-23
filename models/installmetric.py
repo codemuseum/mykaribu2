@@ -1,5 +1,6 @@
 from google.appengine.ext import db
 from user import User
+from pageview import PageView
 
 class InstallMetric(db.Model):
     fb_user_id = db.StringProperty(indexed=True, required=True)
@@ -13,4 +14,5 @@ class InstallMetric(db.Model):
     newsfeed_search_term = db.StringProperty(indexed=True)
     newsfeed_verb = db.StringProperty(indexed=True)
     installed_via_unknown = db.BooleanProperty(required=True, indexed=True, default=False)
+    referring_page_view = db.ReferenceProperty(PageView, indexed=True, collection_name="installmetric_reference_referring_page_view_set")
     

@@ -337,6 +337,10 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
             else:
                 page_view_with_session_id = page_view_with_user
             
+            referring_page_view = page_view_with_session_id
+            if not referring_page_view.is_saved():
+                referring_page_view = None
+            
             installed_at = page_view_with_user.created_at
             if page_view_with_session_id.referrer == None or len(page_view_with_session_id.referrer) < 10:
                 url_to_parse = page_view_with_session_id.url
@@ -386,7 +390,8 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
                     referring_user = referring_user,
                     newsfeed_search_term = newsfeed_search_term,
                     newsfeed_verb = newsfeed_verb,
-                    installed_via_unknown = installed_via_unknown
+                    installed_via_unknown = installed_via_unknown,
+                    referring_page_view = referring_page_view
                 )
             else:    
                 install_metric.fb_user_id = user.fb_user_id
@@ -399,6 +404,7 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
                 install_metric.newsfeed_search_term = newsfeed_search_term
                 install_metric.newsfeed_verb = newsfeed_verb
                 install_metric.installed_via_unknown = installed_via_unknown
+                install_metric.referring_page_view = referring_page_view
                 
             install_metric.put()
 

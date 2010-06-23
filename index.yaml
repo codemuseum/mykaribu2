@@ -50,3 +50,8 @@ indexes:
   - name: user
   - name: created_at
     direction: desc
+
+- kind: Query
+  properties:
+  - name: user
+  - name: created_at

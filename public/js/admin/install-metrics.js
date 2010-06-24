@@ -35,9 +35,9 @@ var InstallMetrics = {
       $('#total-from-unknown').text('...');
       this.fetchSummaryLoop(null, {total_users: 0, total_from_ads: 0, total_from_newsfeeds: 0, total_from_unknown: 0} , function(data) {
           $('#total-users').text(data.total_users);
-          $('#total-from-ads').text(data.total_from_ads + '('+Math.round(100*data.total_from_ads/data.total_users+'%)');
-          $('#total-from-newsfeeds').text(data.total_from_newsfeeds + '('+Math.round(100*data.total_from_newsfeeds/data.total_users+'%)');
-          $('#total-from-unknown').text(data.total_from_unknown + '('+Math.round(100*data.total_from_unknown/data.total_users+'%)');
+          $('#total-from-ads').text(data.total_from_ads + '('+Math.round(100*data.total_from_ads/data.total_users)+'%)');
+          $('#total-from-newsfeeds').text(data.total_from_newsfeeds + '('+Math.round(100*data.total_from_newsfeeds/data.total_users)+'%)');
+          $('#total-from-unknown').text(data.total_from_unknown + '('+Math.round(100*data.total_from_unknown/data.total_users)+'%)');
       });
   },
   fetchSummaryLoop: function(cursor, currentData, callback) {

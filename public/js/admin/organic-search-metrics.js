@@ -35,7 +35,7 @@ var OrganicSearchMetrics = {
           $('#total-users').text(data.total_users);
           var histogramHtmls = [];
           for (var key in data.results) {
-              histogramHtml << '<div><span>'+key+'</span><span>: '+data.results[key]+'</span></div>'
+              histogramHtmls << '<div><span>'+key+'</span><span>: '+data.results[key]+'</span></div>'
           }
           histogramHtmls.sort();
           $('#histogram-text').html(histogramHtmls.join(''));

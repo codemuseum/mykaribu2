@@ -35,10 +35,10 @@ var OrganicSearchMetrics = {
           $('#total-users').text(data.total_users);
           var histogramHtmls = [];
           for (var key in data.results) {
-              histogramHtmls.push('<li><span>Users with '+key+'</span><span>: '+data.results[key]+' ('+Math.round(100*data.results[key]/data.total_users)+'%)</span></li>');
+              histogramHtmls.push('<li><span>Users with '+key.replace('_organic_searches', ' Organic Searches')+'</span><span>: '+data.results[key]+' ('+Math.round(100*data.results[key]/data.total_users)+'%)</span></li>');
           }
           histogramHtmls.sort();
-          $('#histogram-text').html('<ul>'+histogramHtmls.join('').replace('_organic_searches', ' Organic Searches')+'</ul>');
+          $('#histogram-text').html('<ul>'+histogramHtmls.join('')+'</ul>');
       });
   },
   fetchSummaryLoop: function(cursor, currentData, callback) {

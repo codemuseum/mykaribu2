@@ -554,9 +554,9 @@ class AdminPostInstallActivityMetricsSummaryHandler(webapp.RequestHandler):
             
             for day in [1,2,3,4,5,6,7]:
                 day_span_active_prop = "%s_day_active" % str(day+1)
+                added_amount = 0
                 for previous_day in range(1, day+1):
                     active_day_prop = "active_day_%s" % str(previous_day)
-                    added_amount = 0
                     if getattr(post_install_activity_metric, active_day_prop) == True:
                         added_amount = 1
 

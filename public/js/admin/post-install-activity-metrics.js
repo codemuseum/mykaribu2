@@ -42,7 +42,7 @@ var PostInstallActivityMetrics = {
           $('#total-users').text(data.total_users);
           var histogramHtmls = [];
           for (var key in data.results) {
-              histogramHtmls.push('<li><span>Users '+key.replace('active_day_', 'Active ')+' Days After Install</span><span>: '+data.results[key]+' ('+Math.round(100*data.results[key]/data.total_users)+'%)</span></li>');
+              histogramHtmls.push('<li><span>'+key.replace(/active_day_([0-9])/, 'Users Active $1 Days After Install').replace(/([0-9])_day_active/, '$1-Day-Active (Post Install) Users')+' </span><span>: '+data.results[key]+' ('+Math.round(100*data.results[key]/data.total_users)+'%)</span></li>');
           }
           histogramHtmls.sort();
           $('#histogram-text').html('<ul>'+histogramHtmls.join('')+'</ul>');

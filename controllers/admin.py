@@ -541,15 +541,30 @@ class AdminPostInstallActivityMetricsSummaryHandler(webapp.RequestHandler):
         histogram = {}
         for post_install_activity_metric in post_install_activity_metrics:
             total_users += 1
-            for prop in ['active_day_1', 'active_day_2', 'active_day_3', 'active_day_4', 'active_day_5', 'active_day_6', 'active_day_7']:
+            for day in [1,2,3,4,5,6,7]:
+                active_day_prop = "active_day_%s" % str(day)
                 added_amount = 0
-                if getattr(post_install_activity_metric, prop) == True:
+                if getattr(post_install_activity_metric, active_day_prop) == True:
                     added_amount = 1
                 
-                if prop in histogram:
-                    histogram[prop] += added_amount
+                if active_day_prop in histogram:
+                    histogram[active_day_prop] += added_amount
                 else:
-                    histogram[prop] = added_amount
+                    histogram[active_day_prop] = added_amount
+            
+            for day in [1,2,3,4,5,6,7]:
+                day_span_active_prop = "%s_day_active" % str(day+1)
+                for previous_day in range(1, day+1):
+                    active_day_prop = "active_day_%s" % str(previous_day)
+                    added_amount = 0
+                    if getattr(post_install_activity_metric, active_day_prop) == True:
+                        added_amount = 1
+
+                if day_span_active_prop in histogram:
+                    histogram[day_span_active_prop] += added_amount
+                else:
+                    histogram[day_span_active_prop] = added_amount
+                
 
         self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'results': histogram, 'count': len(post_install_activity_metrics), 'total_users': total_users}))
 

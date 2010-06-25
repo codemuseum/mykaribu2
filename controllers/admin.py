@@ -325,7 +325,7 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
         if cursor != None:
             query.with_cursor(cursor)
 
-        users = query.fetch(50)
+        users = query.fetch(25)
 
         for user in users:
             page_view_with_user = PageView.gql("WHERE user = :1 ORDER BY created_at ASC", user).get() 
@@ -579,7 +579,7 @@ class AdminPostInstallActivityMetricCalculatorHandler(webapp.RequestHandler):
         if cursor != None:
             query.with_cursor(cursor)
 
-        install_metrics = query.fetch(50)
+        install_metrics = query.fetch(25)
 
         for install_metric in install_metrics:
             post_install_activity_metric = PostInstallActivityMetric.gql("WHERE user = :1", install_metric.user).get()

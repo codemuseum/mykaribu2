@@ -1,18 +1,25 @@
-var OrganicSearchMetrics = {
+// This relies on all Install Metrics being Calculated already.
+var PostInstallActivityMetrics = {
   statusEl: $('#status'),
   statusCount: 0,
   running: false,
   init: function() { 
-      $("#calculate-organic-search-metrics-button").click(function(ev) { OrganicSearchMetrics.calculateNow(); });
-      if ($('#auto-fetch-organic-search-metrics')[0]) { this.fetchSummaryNow(); }
+      $("#calculate-post-install-activity-metrics-button").click(function(ev) { 
+        InstallMetrics.running = true;
+        InstallMetrics.calculateDataLoop(null, function() {
+          InstallMetrics.running = false;
+          PostInstallActivityMetrics.calculateNow();
+        });
+      });
+      if ($('#auto-fetch-post-install-activity-metrics')[0]) { this.fetchSummaryNow(); }
   },
   calculateDataLoop: function(cursor, callback) {
-    OrganicSearchMetrics.statusEl.text(OrganicSearchMetrics.statusCount + "...");
+    PostInstallActivityMetrics.statusEl.text(PostInstallActivityMetrics.statusCount + " [calculating install activity metrics]...");
     var cursorParam = cursor == null ? {} : {'cursor': cursor};
-    $.post('/admin/organicsearchmetrics/calculator.json', cursorParam, function(data) {
+    $.post('/admin/postinstallactivitymetrics/calculator.json', cursorParam, function(data) {
 			if (data['count'] == 0) { callback(); }
 	        else {
-				OrganicSearchMetrics.calculateDataLoop(data['cursor'], callback);
+				PostInstallActivityMetrics.calculateDataLoop(data['cursor'], callback);
 			}
 	}, 'json');
   },
@@ -22,9 +29,9 @@ var OrganicSearchMetrics = {
       this.running = true;
       this.statusCount = 0;
       this.calculateDataLoop(null, function() {
-        OrganicSearchMetrics.statusEl.text("DONE!");
-        OrganicSearchMetrics.running = false;
-        OrganicSearchMetrics.fetchSummaryNow();
+        PostInstallActivityMetrics.statusEl.text("DONE!");
+        PostInstallActivityMetrics.running = false;
+        PostInstallActivityMetrics.fetchSummaryNow();
       });
   }, 
   fetchSummaryNow: function() {
@@ -35,7 +42,7 @@ var OrganicSearchMetrics = {
           $('#total-users').text(data.total_users);
           var histogramHtmls = [];
           for (var key in data.results) {
-              histogramHtmls.push('<li><span>Users with '+key.replace('_organic_searches', ' Organic Searches')+'</span><span>: '+data.results[key]+' ('+Math.round(100*data.results[key]/data.total_users)+'%)</span></li>');
+              histogramHtmls.push('<li><span>Users '+key.replace('active_day_', 'Active ')+' Days After Install</span><span>: '+data.results[key]+' ('+Math.round(100*data.results[key]/data.total_users)+'%)</span></li>');
           }
           histogramHtmls.sort();
           $('#histogram-text').html('<ul>'+histogramHtmls.join('')+'</ul>');
@@ -54,9 +61,9 @@ var OrganicSearchMetrics = {
               mergedData.results[key] += data.results[key];
           }
                 
-				OrganicSearchMetrics.fetchSummaryLoop(data['cursor'], mergedData, callback);
+				PostInstallActivityMetrics.fetchSummaryLoop(data['cursor'], mergedData, callback);
 			}
 	}, 'json');
   }
 };
-OrganicSearchMetrics.init();
+PostInstallActivityMetrics.init();

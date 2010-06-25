@@ -19,6 +19,7 @@ from models.resultview import ResultView
 from models.user import User
 from models.installmetric import InstallMetric
 from models.organicsearchmetric import OrganicSearchMetric
+from models.postinstallactivitymetric import PostInstallActivityMetric
 
 # *** Handlers
 
@@ -54,7 +55,7 @@ class AdminHelper:
 # Admin main handler
 class AdminHandler(webapp.RequestHandler):
     def get(self):
-        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> | <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> | <a href='/admin/organicsearchmetrics'>Organic Search Metrics</a> | <a href='/admin/organicsearchmetrics/summary'>Summary Organic Search Metrics</a> | <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
+        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> <br/> Calculated Metrics: <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> <br/> Calculated Metrics: <a href='/admin/organicsearchmetrics'>Organic Search Metrics</a> | <a href='/admin/organicsearchmetrics/summary'>Summary Organic Search Metrics</a> <br/> Calculated Metrics: <a href='/admin/postinstallactivitymetrics'>Post-Install Activity Metrics</a> | <a href='/admin/postinstallactivitymetrics/summary'>Summary Post-Install Activity Metrics</a> <br/> Beta: <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
 
 class AdminPageViewsHandler(webapp.RequestHandler):
     def get(self):
@@ -290,7 +291,7 @@ class AdminInstallMetricsSummaryHandler(webapp.RequestHandler):
         else:
             last_metric_at = last_metric_at.updated_at
         
-        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div>Install Metric Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-button" href="#">RE-CALCULATE NOW!</a></div><div>Total Users: <span id="total-users">...</span></div><div>Users From Ads: <span id="total-from-ads">...</span></div><div>Users From Newsfeeds: <span id="total-from-newsfeeds">...</span></div><div>Users From Unknown: <span id="total-from-unknown">...</span></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/install-metrics.js" type="text/javascript"></script></body></html>')
+        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div id="auto-fetch-install-metrics"></div><div>Install Metric Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-install-metrics-button" href="#">RE-CALCULATE NOW!</a></div><div>Total Users: <span id="total-users">...</span></div><div>Users From Ads: <span id="total-from-ads">...</span></div><div>Users From Newsfeeds: <span id="total-from-newsfeeds">...</span></div><div>Users From Unknown: <span id="total-from-unknown">...</span></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/install-metrics.js" type="text/javascript"></script></body></html>')
 
     def post(self):
         query = InstallMetric.all()
@@ -434,7 +435,7 @@ class AdminOrganicSearchMetricsSummaryHandler(webapp.RequestHandler):
         else:
             last_metric_at = last_metric_at.updated_at
 
-        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div>Organic Search Metric Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-button" href="#">RE-CALCULATE NOW!</a></div><div>Total Users: <span id="total-users">...</span></div><div>Histogram for Number of Searches: <div id="histogram-text">...</div></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/organic-search-metrics.js" type="text/javascript"></script></body></html>')
+        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div id="auto-fetch-organic-search-metrics"></div><div>Organic Search Metric Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-organic-search-metrics-button" href="#">RE-CALCULATE NOW!</a></div><div>Total Users: <span id="total-users">...</span></div><div>Histogram for Number of Searches: <div id="histogram-text">...</div></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/organic-search-metrics.js" type="text/javascript"></script></body></html>')
 
     def post(self):
         query = OrganicSearchMetric.all()
@@ -505,3 +506,89 @@ class AdminOrganicSearchMetricCalculatorHandler(webapp.RequestHandler):
 
         self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(users) }))
 
+
+class AdminPostInstallActivityMetricsHandler(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        c['model'] = 'postinstallactivitymetric'
+        c['model_properties'] = sorted(PostInstallActivityMetric.properties())
+        h.render_out(self, 'admin.tplt', c)
+
+class AdminPostInstallActivityMetricsDataHandler(webapp.RequestHandler):
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, PostInstallActivityMetric, self.request.get('cursor'), order_by = '-updated_at')
+
+
+class AdminPostInstallActivityMetricsSummaryHandler(webapp.RequestHandler):
+    def get(self):
+        last_metric_at = PostInstallActivityMetric.gql("ORDER BY updated_at DESC").get()
+        if last_metric_at == None:
+            last_metric_at = "[Never]"
+        else:
+            last_metric_at = last_metric_at.updated_at
+
+        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div id="auto-fetch-post-install-activity-metrics"></div><div>Post Install Activity Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-post-install-activity-metrics-button" href="#">RE-CALCULATE NOW!</a></div><div>Total Users: <span id="total-users">...</span></div><div>Histogram for Post Install Activity: <div id="histogram-text">...</div></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script src="/public/js/admin/install-metrics.js" type="text/javascript"></script><script src="/public/js/admin/post-install-activity-metrics.js" type="text/javascript"></script></body></html>')
+
+    def post(self):
+        query = PostInstallActivityMetric.all()
+        query.order('-updated_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        post_install_activity_metrics = query.fetch(1000)
+        total_users = 0
+        histogram = {}
+        for post_install_activity_metric in post_install_activity_metrics:
+            total_users += 1
+            for prop in ['active_day_1', 'active_day_2', 'active_day_3', 'active_day_4', 'active_day_5', 'active_day_6', 'active_day_7']:
+                added_amount = 0
+                if getattr(post_install_activity_metric, prop) == True:
+                    added_amount = 1
+                
+                if prop in histogram:
+                    histogram[prop] += added_amount
+                else:
+                    histogram[prop] = added_amount
+
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'results': histogram, 'count': len(post_install_activity_metrics), 'total_users': total_users}))
+
+
+# Runs through the system and calculates whether a single user was active within the first 7 days of install, signified by a pageview
+# Tied to that user.
+class AdminPostInstallActivityMetricCalculatorHandler(webapp.RequestHandler):
+    def post(self):
+        query = InstallMetric.all()
+        query.order('-installed_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        install_metrics = query.fetch(50)
+
+        for install_metric in install_metrics:
+            post_install_activity_metric = PostInstallActivityMetric.gql("WHERE user = :1", install_metric.user).get()
+            if post_install_activity_metric == None:
+                post_install_activity_metric = PostInstallActivityMetric(
+                    fb_user_id = install_metric.user.fb_user_id,
+                    user = install_metric.user,
+                    installed_at = install_metric.installed_at
+                )
+            else:    
+                post_install_activity_metric.fb_user_id = install_metric.user.fb_user_id
+                post_install_activity_metric.user = install_metric.user
+                post_install_activity_metric.installed_at = install_metric.installed_at
+            
+            for day in [1,2,3,4,5,6,7]:
+                day_start = install_metric.installed_at + datetime.timedelta(days=day)
+                day_end = install_metric.installed_at + datetime.timedelta(days=(day+1))
+                page_view_in_day = PageView.gql(
+                    "WHERE user = :1 AND created_at >= :2 AND created_at < :3", 
+                    install_metric.user, day_start, day_end).get()
+                
+                if page_view_in_day != None:
+                    setattr(post_install_activity_metric, "active_day_%s" % day, True)
+
+            post_install_activity_metric.put()
+        
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(install_metrics) }))

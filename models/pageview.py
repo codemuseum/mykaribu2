@@ -4,10 +4,10 @@ from user import User
 
 class PageView(db.Model):
 	url = db.TextProperty()
-	normalized_url = db.StringProperty()
+	normalized_url = db.StringProperty(indexed=True)
 	referrer = db.TextProperty()
-	session_order = db.IntegerProperty()
-	session_id = db.StringProperty()
-	ip_address = db.StringProperty()
-	created_at = db.DateTimeProperty(auto_now_add=True)
-	user = db.ReferenceProperty(User)
+	session_order = db.IntegerProperty(indexed=True)
+	session_id = db.StringProperty(indexed=True)
+	ip_address = db.StringProperty(indexed=True)
+	created_at = db.DateTimeProperty(auto_now_add=True, indexed=True)
+	user = db.ReferenceProperty(User, indexed=True)

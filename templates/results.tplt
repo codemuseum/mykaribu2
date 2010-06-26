@@ -172,28 +172,29 @@ src="/public/srp_title.png"></a>
   </div>
 
   <style>
-.search-form-box {position:relative;width:500px; height:100px; margin: 0px auto;}
-#search-form {background:#3f3f3f url(/public/srp_top_channel.png) repeat-x 0 -53px; width:100%; height:107px; font-size:15px; padding:0px; border:0px; margin:0px; overflow:hidden; }
-#find_entry_label { position:absolute; left:115px; top:15px; }
-#q { position:absolute; top:43px;left:5px; width:387px; border:none; font-size:16px; text-align:center; z-index:1; }
-#find_entry_bg { position:absolute; top:38px; left:0px; width:401px; z-index:0; }
-#find_btn { position:absolute; top:38px; left:423px; width:94px; height:37px; line-height:32px; color:white; text-align:center;background-image:url(/public/srp_find_btn.png); text-shadow:#404040 -1px -1px 0px }
-#find_trans_submit { position:absolute;top:38px;left:423px;width:97px;height:37px; }
+.search-form-box {position:relative;width:500px; height:100px;margin:0px auto;}
+#search-form {background:#3f3f3f url({{header_img}}) no-repeat 0; width:760px; height:175px; font-size:15px; padding:0px; border:0px; margin:0px; overflow:hidden; }
+#find_entry_label { position:absolute; left:115px; top:10px;}
+#q { position:absolute; top:38px;left:5px; width:387px; border:none; font-size:16px; text-align:center; z-index:1; }
+#find_entry_bg { position:absolute; top:33px; left:0px; width:401px; z-index:0; }
+#find_btn { position:absolute; top:33px; left:423px; width:94px; height:37px; line-height:32px; color:white; text-align:center;background-image:url(/public/srp_find_btn.png); text-shadow:#404040 -1px -1px 0px }
+#find_trans_submit { position:absolute;top:33px;left:423px;width:97px;height:37px; }
 .form_emboss { font-size:16px; text-shadow:#000 -1px -1px 1px; color:white; }
-</style>
-
+  </style>
+  
 <div id="search-form">
+  <div style="position:absolute;background-color:#000000;width:760px;height:80px;opacity:0.4;filter:alpha(opacity=40)">
+    </div>
   <div class="search-form-box">
-    <label id="find_entry_label" class="form_emboss shadow" 
-for="find_entry">Find things you like.</label>
-
-
-    <form action="{{cfg.direct_url}}/results" method="get">
+  <label id="find_entry_label" class="form_emboss shadow" 
+	 for="find_entry">{{header_txt}}</label>
+  <form action="{{cfg.direct_url}}/results" method="get">
       <!-- required for queries.js to work-->
       <input name="previous_q" id="previous_q" type="hidden" value="{{query}}" />
       <!-- end queries.js requirements -->
       <input name="src" value="srp" id="query_src" type="hidden"/>
-      <input name="q" value="{{query}}" id="q" type="text" onfocus="focus_query();" onblur="blur_query();" />
+      <input name="q" value="{{hint}}" id="q" type="text"
+  onfocus="focus_query();" onblur="blur_query();" style="color:grey" />
       <img id="find_entry_bg" src="/public/srp_search_entry.png">
 
       <div id="find_btn" class="shadow" value="find">Find</div>
@@ -209,7 +210,7 @@ value="find" type="image"/>
 <!-- end queries.js requirements -->
 
 <script>
-  var hint = "Type something.";
+  var hint = "{{hint}}";
   function focus_query()
   {
   o = $('#q')
@@ -283,6 +284,9 @@ value="find" type="image"/>
   {% endfor %}
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
 	  type="text/javascript"></script>
+  <script>
+  $('#q').attr('value', "{{hint}}");
+  </script>
   <script src="/public/js/header.js"></script>
   <script src="{{cfg.direct_url}}/public/js/pageviews.js"></script>
  <script src="{{cfg.direct_url}}/public/js/results.js"></script>  

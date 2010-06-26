@@ -5,7 +5,7 @@
   <link href="/public/results.css" media="screen" 
 	rel="stylesheet" type="text/css">
 </head>
-<body style="margin:0;" >
+<body style="margin:0;overflow:hidden" scroll="no" >
  <div id="data-gcsek" style="display:none">{{cfg.gs_api_key}}</div>
  <div id="fb-root"></div>
   <script>
@@ -183,7 +183,7 @@ src="/public/srp_title.png"></a>
   </style>
   
 <div id="search-form">
-  <div style="position:absolute;background-color:#000000;width:760px;height:80px;opacity:0.4;filter:alpha(opacity=40)">
+  <div style="position:absolute;left:0px;background-color:#000000;width:760px;height:80px;opacity:0.4;filter:alpha(opacity=40)">
     </div>
   <div class="search-form-box">
   <label id="find_entry_label" class="form_emboss shadow" 

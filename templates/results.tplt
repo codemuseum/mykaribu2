@@ -201,8 +201,9 @@ src="/public/srp_title.png"></a>
       <input id="find_trans_submit" src="/public/transparent.gif" 
 value="find" type="image"/>
 
-    </form>      
+    </form>
   </div>
+  <a href="#" onclick="window.location.reload()"><img style="position:absolute; z-index:2; left:725px; top:100px; border:0px" src="{{cfg.direct_url}}/public/images/little_green_forward.png" /></a>
 </div>
 
 <!-- required for queries.js to work-->

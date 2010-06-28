@@ -1,5 +1,7 @@
 <html>
   <body>
+    <a href="/qad">[Edit Current Questions]</a> [Upload Question]
+    <hr/>
     <form action="{{upload_url}}"
 	  enctype="multipart/form-data"
 	  method="post">

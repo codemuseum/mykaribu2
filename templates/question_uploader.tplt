@@ -1,0 +1,16 @@
+<html>
+  <body>
+    <a href="/qad">[Edit Current Questions]</a> [Upload Question]
+    <hr/>
+    <form action="{{upload_url}}"
+	  enctype="multipart/form-data"
+	  method="post">
+      <table>
+	<tr><td>Question :</td><td><input type="text" name="question" /></td></tr>
+	<tr><td>Hint :</td><td><input type="text" name="hint" /></td></tr>
+        <tr><td>Image :</td><td><input type="file" name="image" /><td/></tr>
+     </table>
+      <input type="submit" value='upload' />
+    </form>
+  </body>
+</html>

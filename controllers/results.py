@@ -1,20 +1,81 @@
-from google.appengine.ext import webapp
+from google.appengine.ext import webapp, blobstore
+from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import urlfetch
 from django.utils import simplejson
+from google.appengine.ext import db
+
+from models.question import Question
+
 import helpers as h
 import urllib
 import logging
 
-class MultiFetch():
-    def add_fetch(self, url):
-        self.outstanding[url] = ""
+def add_question(qtext, hint, img, handler):
+    question = Question()
+    cookies = h.get_default_cookies(handler)
+    current_user = h.get_current_user(cookies)
+    if current_user:
+        question.user = current_user
+    question.qtext = qtext
+    question.hint = hint
+    question.img = img
+    question.status = 1
+    question.put()
+    return question
+
+
+#  This is just docmentation of the original questions/images. these calls don't actually work
+#  because the img needs to be a blob_info
+#        add_question("What dessert do you like?","tasty things...",'dessert2.original.jpg', self)
+#        add_question("What sports team do you like?",None,'sports.original.jpg', self)
+#        add_question("What Sex & the City character do you like?",None,'satc2.original.jpg', self)
+#        add_question("What vacation spot do you like?","some place nice...",'vacation3.original.jpg', self)
+#        add_question("What pet do you like?","cute... strong...",'puppy-kitten.original.jpg', self)
+#        add_question("What's the best big city?","a cool place...",'city.original.jpg', self)
+
+class QuestionAdmin(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        query = Question.all()
+        results = query.fetch(1000)
+        for q in results:
+            q.i = str(q.img.key())
+            q.k = q.key()
+        c['questions'] = results
+        h.render_out(self, 'question_admin.tplt', c)
+    def post(self):
+        key_str = self.request.get('k')
+        k = db.Key(key_str)
+        db.delete(db.get(k))
+        self.redirect("/qad?msg=deleted.")
         
+class QuestionUploader(blobstore_handlers.BlobstoreUploadHandler):
+    def get(self):
+        c = h.context()
+        c['upload_url'] = blobstore.create_upload_url('/qup')
+        h.render_out(self, 'question_uploader.tplt', c)
+    def post(self):
+        question_text = self.request.get("question")
+        question_hint = self.request.get("hint")
+        upload_files = self.get_uploads('image')
+        blob_info = upload_files[0]
+        ent = add_question(question_text, question_hint, blob_info, self)
+        self.redirect('/qad')
+
+class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
+    def get(self, resource):
+        resource = str(urllib.unquote(resource))
+        blob_info = blobstore.BlobInfo.get(resource)
+        self.send_blob(blob_info)
+
 class ResultsHandler(webapp.RequestHandler):
     def get(self):
         img_rows = 2
         
         c = h.context()
         query = self.request.get('q')
+        force_quest = self.request.get('force_quest')
+        
         if not query: query = "red"
         c['query'] = query
 
@@ -123,5 +184,21 @@ class ResultsHandler(webapp.RequestHandler):
             if len(c['mini_imgs']) >= img_rows: done = True
 
             start_img += num_imgs
-        
+
+            # pick up the questions and images for the
+            q = None
+            if not force_quest:
+                query = Question.all()
+                results = query.fetch(1000)
+                import random
+                q = random.choice(results)
+            else:
+                k = db.Key(force_quest)
+                q = db.get(k)
+                
+            c['header_img'] = h.cfg['direct_url']+'/serve/'+str(q.img.key())
+            c['header_txt'] = q.qtext
+            c['hint'] = q.hint
+            if not c['hint']:
+                c['hint'] = "type something."
         h.render_out(self, 'results.tplt', c)

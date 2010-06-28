@@ -2,6 +2,7 @@ from google.appengine.ext import webapp, blobstore
 from google.appengine.ext.webapp import blobstore_handlers
 from google.appengine.api import urlfetch
 from django.utils import simplejson
+from google.appengine.ext import db
 
 from models.question import Question
 
@@ -20,6 +21,7 @@ def add_question(qtext, hint, img, handler):
     question.img = img
     question.status = 1
     question.put()
+    return question
 
 
 #  This is just docmentation of the original questions/images. these calls don't actually work
@@ -31,7 +33,22 @@ def add_question(qtext, hint, img, handler):
 #        add_question("What pet do you like?","cute... strong...",'puppy-kitten.original.jpg', self)
 #        add_question("What's the best big city?","a cool place...",'city.original.jpg', self)
 
-
+class QuestionAdmin(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        query = Question.all()
+        results = query.fetch(1000)
+        for q in results:
+            q.i = str(q.img.key())
+            q.k = q.key()
+        c['questions'] = results
+        h.render_out(self, 'question_admin.tplt', c)
+    def post(self):
+        key_str = self.request.get('k')
+        k = db.Key(key_str)
+        db.delete(db.get(k))
+        self.redirect("/qad?msg=deleted.")
+        
 class QuestionUploader(blobstore_handlers.BlobstoreUploadHandler):
     def get(self):
         c = h.context()
@@ -42,8 +59,8 @@ class QuestionUploader(blobstore_handlers.BlobstoreUploadHandler):
         question_hint = self.request.get("hint")
         upload_files = self.get_uploads('image')
         blob_info = upload_files[0]
-        add_question(question_text, question_hint, blob_info, self)
-        self.redirect('/serve/%s' % blob_info.key())
+        ent = add_question(question_text, question_hint, blob_info, self)
+        self.redirect('/qad')
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
     def get(self, resource):
@@ -57,6 +74,8 @@ class ResultsHandler(webapp.RequestHandler):
         
         c = h.context()
         query = self.request.get('q')
+        force_quest = self.request.get('force_quest')
+        
         if not query: query = "red"
         c['query'] = query
 
@@ -166,10 +185,16 @@ class ResultsHandler(webapp.RequestHandler):
 
             start_img += num_imgs
 
-            query = Question.all()
-            results = query.fetch(100)
-            import random
-            q = random.choice(results)
+            # pick up the questions and images for the
+            q = None
+            if not force_quest:
+                query = Question.all()
+                results = query.fetch(1000)
+                import random
+                q = random.choice(results)
+            else:
+                k = db.Key(force_quest)
+                q = db.get(k)
                 
             c['header_img'] = h.cfg['direct_url']+'/serve/'+str(q.img.key())
             c['header_txt'] = q.qtext

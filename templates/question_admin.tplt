@@ -1,0 +1,25 @@
+<html>
+  <body>
+    <style>
+      td {border:1px solid #aaaaaa}
+      input {width:75px}
+    </style>
+    <table> <tr><td><b>question</b></td><td><b>hint</b></td><td><b>img</b></td><td><b>status</b></td><td>&nbsp;</td></tr>
+      {% for q in questions %}
+      <tr>
+	<td>{{ q.qtext }}</td>
+	<td>{{ q.hint }}</td>
+	<td><a href="/results?force_quest={{q.k}}"><img style="border:0" height="100" src="/serve/{{ q.i }}" /></a></td>
+	<td>{{ q.status }}</td>
+	<td>
+	  <form method="post" action="/qad">
+	    <input type="hidden" name="k" value="{{q.k}}"/>
+	    <input type="button" value="preview" onclick="window.location='/results?force_quest={{q.k}}'"/><br/>
+	    <input type="submit" value="delete" />
+	  </form>
+	</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </body>
+</html>

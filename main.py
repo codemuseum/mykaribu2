@@ -22,7 +22,7 @@ from google.appengine.ext.webapp import template
 from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler, AdminOrganicSearchMetricsHandler, AdminOrganicSearchMetricsDataHandler, AdminOrganicSearchMetricsSummaryHandler, AdminOrganicSearchMetricCalculatorHandler, AdminPostInstallActivityMetricsHandler, AdminPostInstallActivityMetricsDataHandler, AdminPostInstallActivityMetricsSummaryHandler, AdminPostInstallActivityMetricCalculatorHandler
 from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
-from controllers.results import ResultsHandler, QuestionUploader, ServeHandler
+from controllers.results import ResultsHandler, QuestionUploader, ServeHandler, QuestionAdmin
 from controllers.stash import StashHandler
 
 # *** Model imports
@@ -168,7 +168,8 @@ routing =[
     ('/cookie_test', CookieTestHandler),
     ('/stash', StashHandler),
     ('/qup',QuestionUploader),
-    ('/serve/([^/]+)?',ServeHandler)
+    ('/serve/([^/]+)?',ServeHandler),
+    ('/qad',QuestionAdmin)
     ]
 
 # *** Init code

@@ -11,12 +11,12 @@
       <tr>
 	<td>{{ q.qtext }}</td>
 	<td>{{ q.hint }}</td>
-	<td><a onclick="window.open('/results?force_quest={{q.k}}','mk_qpreview')"  href="#"><img style="border:0" height="100" src="/serve/{{ q.i }}" /></a></td>
+	<td><a onclick="window.open('/results?force_quest={{q.k}}','mk_qpreview');"  href="#"><img style="border:0" height="100" src="/serve/{{ q.i }}" /></a></td>
 	<td>{{ q.status }}</td>
 	<td>
 	  <form method="post" action="/qad">
 	    <input type="hidden" name="k" value="{{q.k}}"/>
-	    <input type="button" value="preview" onclick="window.open('/results?force_quest={{q.k}}','mk_qpreview')"/><br/>
+	    <input type="button" value="preview" onclick="window.open('/results?force_quest={{q.k}}');"/><br/>
 	    <input type="submit" value="delete" />
 	  </form>
 	</td>

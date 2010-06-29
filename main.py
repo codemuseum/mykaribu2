@@ -20,7 +20,7 @@ from google.appengine.ext.webapp import template
 from google.appengine.api import urlfetch
 
 # *** Controller imports
-from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminUserGraphsHandler, AdminUserGraphsDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler, AdminOrganicSearchMetricsHandler, AdminOrganicSearchMetricsDataHandler, AdminOrganicSearchMetricsSummaryHandler, AdminOrganicSearchMetricCalculatorHandler, AdminPostInstallActivityMetricsHandler, AdminPostInstallActivityMetricsDataHandler, AdminPostInstallActivityMetricsSummaryHandler, AdminPostInstallActivityMetricCalculatorHandler
+from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminUserGraphsHandler, AdminUserGraphsDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler, AdminOrganicSearchMetricsHandler, AdminOrganicSearchMetricsDataHandler, AdminOrganicSearchMetricsSummaryHandler, AdminOrganicSearchMetricCalculatorHandler, AdminPostInstallActivityMetricsHandler, AdminPostInstallActivityMetricsDataHandler, AdminPostInstallActivityMetricsSummaryHandler, AdminPostInstallActivityMetricCalculatorHandler, AdminKValueMetricsHandler, AdminKValueMetricsDataHandler, AdminKValueMetricsSummaryHandler, AdminKValueMetricCalculatorHandler, AdminKValueMetricCalculatorClearerHandler
 from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler, QuestionUploader, ServeHandler, QuestionAdmin
@@ -171,6 +171,11 @@ routing =[
     ('/admin/postinstallactivitymetrics/data.json',AdminPostInstallActivityMetricsDataHandler),
     ('/admin/postinstallactivitymetrics/summary',AdminPostInstallActivityMetricsSummaryHandler),
     ('/admin/postinstallactivitymetrics/calculator.json',AdminPostInstallActivityMetricCalculatorHandler),
+    ('/admin/kvaluemetrics',AdminKValueMetricsHandler),
+    ('/admin/kvaluemetrics/data.json',AdminKValueMetricsDataHandler),
+    ('/admin/kvaluemetrics/summary',AdminKValueMetricsSummaryHandler),
+    ('/admin/kvaluemetrics/calculator.json',AdminKValueMetricCalculatorHandler),
+    ('/admin/kvaluemetrics/clearer.json',AdminKValueMetricCalculatorClearerHandler),
     ('/logging',LoggingHandler),
     ('/t',FramedResultHandler),
     ('/share_counts',ShareCountsHandler),

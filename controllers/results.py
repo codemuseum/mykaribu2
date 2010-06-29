@@ -70,7 +70,7 @@ class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):
 
 class ResultsHandler(webapp.RequestHandler):
     def get(self):
-        img_rows = 2
+        img_rows = 3
         
         c = h.context()
         query = self.request.get('q')
@@ -201,4 +201,5 @@ class ResultsHandler(webapp.RequestHandler):
             c['hint'] = q.hint
             if not c['hint']:
                 c['hint'] = "type something."
+            c['search_form_display'] = "none"
         h.render_out(self, 'results.tplt', c)

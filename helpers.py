@@ -27,7 +27,7 @@ def login_required(handler):
                          +'type=user_agent&display=page&client_id='
                          +cfg['app_id']+'&redirect_uri='
                          +cfg['fb_url']
-                         +'/auth2&scope=publish_stream')
+                         +'/auth2&scope=publish_stream,offline_access,email')
         render_out(handler, "redirector.tplt", c)
         return None
     else:

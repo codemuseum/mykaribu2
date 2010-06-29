@@ -17,13 +17,15 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
+from google.appengine.api import urlfetch
 
 # *** Controller imports
-from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler, AdminOrganicSearchMetricsHandler, AdminOrganicSearchMetricsDataHandler, AdminOrganicSearchMetricsSummaryHandler, AdminOrganicSearchMetricCalculatorHandler, AdminPostInstallActivityMetricsHandler, AdminPostInstallActivityMetricsDataHandler, AdminPostInstallActivityMetricsSummaryHandler, AdminPostInstallActivityMetricCalculatorHandler
+from controllers.admin import AdminHandler, AdminPageViewsHandler, AdminPageViewsDataHandler, AdminPathsHandler, AdminPathDataHandler, AdminUrlAnalyzerHandler, AdminUrlSuggestHandler, AdminUrlStatsHandler, AdminUrlFunnelHandler, AdminQueriesHandler, AdminQueriesDataHandler, AdminResultViewsHandler, AdminResultViewsDataHandler, AdminUsersHandler, AdminUsersDataHandler, AdminUserGraphsHandler, AdminUserGraphsDataHandler, AdminPageViewNormalizerHandler, AdminInstallMetricsHandler, AdminInstallMetricsDataHandler, AdminInstallMetricsSummaryHandler, AdminInstallMetricCalculatorHandler, AdminOrganicSearchMetricsHandler, AdminOrganicSearchMetricsDataHandler, AdminOrganicSearchMetricsSummaryHandler, AdminOrganicSearchMetricCalculatorHandler, AdminPostInstallActivityMetricsHandler, AdminPostInstallActivityMetricsDataHandler, AdminPostInstallActivityMetricsSummaryHandler, AdminPostInstallActivityMetricCalculatorHandler
 from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggingsHandler, ResultViewLoggingsHandler, PostLoginSewingLoggingsHandler
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler, QuestionUploader, ServeHandler, QuestionAdmin
 from controllers.stash import StashHandler
+from controllers.users import FetchUserGraphHandler
 
 # *** Model imports
 from models.user import User
@@ -116,6 +118,16 @@ class Auth2Handler(webapp.RequestHandler):
             del cookies['post_auth_url']
             c['top_redirect_url'] = redirect_to_url
             # self.redirect(redirect_to_url)
+            
+            # Reparse user graph on login
+            graph_task_url = 'http://'+self.request.host+'/users/tasks/fetchgraph?key='+str(c['current_user'].key())
+            rpc = urlfetch.create_rpc(deadline=1)
+            urlfetch.make_fetch_call(rpc,graph_task_url)
+            try:
+              result_body = rpc.get_result()
+            except urlfetch.DownloadError, e:
+              logging.error("User Auth couldn't contact graph task url %s, got error:%s" % (graph_task_url, str(e)))
+            
         else:
             logging.info("***Sent home due to lack of post_auth or current_user")
             c['top_redirect_url'] = h.cfg['fb_url']
@@ -135,6 +147,8 @@ routing =[
     ('/admin/pageviews/normalizer', AdminPageViewNormalizerHandler),
     ('/admin/users',AdminUsersHandler),
     ('/admin/users/data.json',AdminUsersDataHandler),
+    ('/admin/usergraphs',AdminUserGraphsHandler),
+    ('/admin/usergraphs/data.json',AdminUserGraphsDataHandler),
     ('/admin/querys',AdminQueriesHandler),
     ('/admin/querys/data.json',AdminQueriesDataHandler),
     ('/admin/resultviews',AdminResultViewsHandler),
@@ -169,7 +183,8 @@ routing =[
     ('/stash', StashHandler),
     ('/qup',QuestionUploader),
     ('/serve/([^/]+)?',ServeHandler),
-    ('/qad',QuestionAdmin)
+    ('/qad',QuestionAdmin),
+    ('/users/tasks/fetchgraph',FetchUserGraphHandler)
     ]
 
 # *** Init code

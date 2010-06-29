@@ -17,6 +17,7 @@ from models.pageview import PageView
 from models.query import Query
 from models.resultview import ResultView
 from models.user import User
+from models.usergraph import UserGraph
 from models.installmetric import InstallMetric
 from models.organicsearchmetric import OrganicSearchMetric
 from models.postinstallactivitymetric import PostInstallActivityMetric
@@ -55,7 +56,7 @@ class AdminHelper:
 # Admin main handler
 class AdminHandler(webapp.RequestHandler):
     def get(self):
-        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> <br/> Calculated Metrics: <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> <br/> Calculated Metrics: <a href='/admin/organicsearchmetrics'>Organic Search Metrics</a> | <a href='/admin/organicsearchmetrics/summary'>Summary Organic Search Metrics</a> <br/> Calculated Metrics: <a href='/admin/postinstallactivitymetrics'>Post-Install Activity Metrics</a> | <a href='/admin/postinstallactivitymetrics/summary'>Summary Post-Install Activity Metrics</a> <br/> Beta: <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
+        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a> | <a href='/admin/usergraphs'>User Graphs</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> <br/> Calculated Metrics: <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> <br/> Calculated Metrics: <a href='/admin/organicsearchmetrics'>Organic Search Metrics</a> | <a href='/admin/organicsearchmetrics/summary'>Summary Organic Search Metrics</a> <br/> Calculated Metrics: <a href='/admin/postinstallactivitymetrics'>Post-Install Activity Metrics</a> | <a href='/admin/postinstallactivitymetrics/summary'>Summary Post-Install Activity Metrics</a> <br/> Beta: <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
 
 class AdminPageViewsHandler(webapp.RequestHandler):
     def get(self):
@@ -78,6 +79,17 @@ class AdminUsersHandler(webapp.RequestHandler):
 class AdminUsersDataHandler(webapp.RequestHandler):
     def post(self):
         AdminHelper.writePaginatedDataJson(self, User, self.request.get('cursor'))
+
+class AdminUserGraphsHandler(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        c['model'] = 'usergraph'
+        c['model_properties'] = sorted(UserGraph.properties())
+        h.render_out(self, 'admin.tplt', c)
+
+class AdminUserGraphsDataHandler(webapp.RequestHandler):
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, UserGraph, self.request.get('cursor'))
 
 
 class AdminQueriesHandler(webapp.RequestHandler):

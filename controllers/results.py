@@ -190,13 +190,17 @@ class ResultsHandler(webapp.RequestHandler):
             if not force_quest:
                 query = Question.all()
                 results = query.fetch(1000)
-                import random
-                q = random.choice(results)
+                if len(results) > 0:
+                    import random
+                    q = random.choice(results)
+                else: # Added this to prevent IndexError: list index out of range in development
+                    q = Question()
             else:
                 k = db.Key(force_quest)
                 q = db.get(k)
-                
-            c['header_img'] = h.cfg['direct_url']+'/serve/'+str(q.img.key())
+            
+            image_key = q.img.key() if q.img is not None else '' # Added to make development safe
+            c['header_img'] = h.cfg['direct_url']+'/serve/'+str(image_key)
             c['header_txt'] = q.qtext
             c['hint'] = q.hint
             if not c['hint']:

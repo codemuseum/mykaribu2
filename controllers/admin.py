@@ -670,7 +670,7 @@ class AdminKValueMetricsSummaryHandler(webapp.RequestHandler):
 
     def post(self):
         query = KValueMetric.all()
-        query.order('-updated_at')
+        query.order('-date')
         cursor = self.request.get('cursor')
         if cursor != None:
             query.with_cursor(cursor)

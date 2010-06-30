@@ -25,6 +25,7 @@ from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggin
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler, QuestionUploader, ServeHandler, QuestionAdmin
 from controllers.stash import StashHandler
+from controllers.questioneer import QuestioneerHandler
 from controllers.users import FetchUserGraphHandler
 
 # *** Model imports
@@ -189,6 +190,7 @@ routing =[
     ('/qup',QuestionUploader),
     ('/serve/([^/]+)?',ServeHandler),
     ('/qad',QuestionAdmin),
+    ('/questioneer',QuestioneerHandler),
     ('/users/tasks/fetchgraph',FetchUserGraphHandler)
     ]
 

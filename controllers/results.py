@@ -198,12 +198,15 @@ class ResultsHandler(webapp.RequestHandler):
             else:
                 k = db.Key(force_quest)
                 q = db.get(k)
-            
-            image_key = q.img.key() if q.img is not None else '' # Added to make development safe
-            c['header_img'] = h.cfg['direct_url']+'/serve/'+str(image_key)
-            c['header_txt'] = q.qtext
-            c['hint'] = q.hint
+            image_key = q.img.key() if q.img is not None else '' # Added to make development safe    
+            c['header_img'] = h.cfg['direct_url']+'/public/srp_top_channel_2.png'  #+'/serve/'+str(image_key)
+            c['header_txt'] = 'Find something you like!' #q.qtext
+            c['hint'] = 'type something.' #q.hint
+            c['header_repeat'] = 'repeat-x'
+            c['header_height'] = '80px'
             if not c['hint']:
                 c['hint'] = "type something."
-            c['search_form_display'] = "none"
+            c['search_form_display'] = "block"
+            c['translucent_overlay_display'] = "none"
+            c['little_arrow_display'] = "none"
         h.render_out(self, 'results.tplt', c)

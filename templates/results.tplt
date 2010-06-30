@@ -1,10 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <link href="/public/results.css" media="screen" 
-	rel="stylesheet" type="text/css">
-</head>
+  <head>
+    <link href="/public/results.css" media="screen" 
+	  rel="stylesheet" type="text/css" />
+    <link href="/public/score_header.css" media="screen" 
+	  rel="stylesheet" type="text/css" />
+  </head>
 <body style="margin:0;overflow:hidden" scroll="no" >
  <div id="data-gcsek" style="display:none">{{cfg.gs_api_key}}</div>
  <div id="fb-root"></div>
@@ -17,7 +19,7 @@
     cookie : true, // enable cookies to allow the server to access the session
     xfbml  : true  // parse XFBML
     },"/public/xd_receiver.htm");
-   FB.Canvas.setSize();
+    setTimeout("FB.Canvas.setSize();", 1000);
     };
     (function() {
     var e = document.createElement('script');
@@ -132,49 +134,13 @@
 
   </style>
   
-  <!-- top box -->
-
-  <div id="header">
-    <div id="bg_top">
-      <div class="top-left">&nbsp;</div>
-      <a href="{{cfg.fb_url}}"><img id="top_title" 
-src="/public/srp_title.png"></a>
-      <div class="top-right">&nbsp;</div>
-
-      <!-- Score Box -->      
-      <div style="display: block;" id="score_frame">
-        <img id="score_glare" src="/public/glare.png">
-        <div id="n2" class="number">
-          <div id="n2-value" style="display: none;">3</div>
-          <img src="/public/numbers_small.png">
-        </div>
-        <div id="n1" class="number">
-          <div id="n1-value" style="display: none;">1</div>
-          <img src="/public/numbers_small.png">
-        </div>
-        <div id="n0" class="number">
-          <div id="n0-value" style="display: none;">0</div>
-          <img src="/public/numbers_small.png">
-        </div>
-      </div>
-      <div id="score_text" class="top_emboss shadow">
-        Points:
-      </div>
-      <img src="/public/srp_top_line.png" class="top_line">
-      <!-- Profile Link -->
-      <div id="profile_link" class="top_emboss shadow">
-        
-        <a href="{{fb_url}}/stash">Your Stash</a>
-        
-      </div>
-      <img src="/public/srp_top_line.png" class="top_line">
-    </div>
-  </div>
+  <!-- top box with points, etc -->
+ {% include "score_header.tplt" %}
 
   <style>
 .search-form-box {position:relative;width:500px; height:100px;margin:0px auto;}
-#search-form {background:#3f3f3f url({{header_img}}) no-repeat 0; width:760px; height:175px; font-size:15px; padding:0px; border:0px; margin:0px; overflow:hidden; }
-#find_entry_label { position:absolute; left:115px; top:10px;}
+#search-form {background:#3f3f3f url({{header_img}}) {{header_repeat}}; width:760px; height:{{header_height}}; font-size:15px; padding:0px; border:0px; margin:0px; overflow:hidden; }
+#find_entry_label { position:absolute; left:105px; top:10px;}
 #q { position:absolute; top:38px;left:5px; width:387px; border:none; font-size:16px; text-align:center; z-index:1; }
 #find_entry_bg { position:absolute; top:33px; left:0px; width:401px; z-index:0; }
 #find_btn { position:absolute; top:33px; left:423px; width:94px; height:37px; line-height:32px; color:white; text-align:center;background-image:url(/public/srp_find_btn.png); text-shadow:#404040 -1px -1px 0px }
@@ -183,7 +149,8 @@ src="/public/srp_title.png"></a>
   </style>
   
 <div id="search-form" style="display:{{search_form_display}}">
-  <div style="position:absolute;left:0px;background-color:#000000;width:760px;height:80px;opacity:0.4;filter:alpha(opacity=40)">
+  <div style="position:absolute;left:0px;background-color:#000000;width:760px;height:80px;opacity:0.4;filter:alpha(opacity=40);
+	      display:{{translucent_overlay_display}}">
     </div>
   <div class="search-form-box">
   <label id="find_entry_label" class="form_emboss shadow" 
@@ -203,7 +170,7 @@ value="find" type="image"/>
 
     </form>
   </div>
-  <a href="#" onclick="window.location.reload()"><img style="position:absolute; z-index:2; left:725px; top:100px; border:0px" src="{{cfg.direct_url}}/public/images/little_green_forward.png" /></a>
+  <a href="#" style="display:{{little_arrow_display}}" onclick="window.location.reload()"><img style="position:absolute; z-index:2; left:725px; top:100px; border:0px" src="{{cfg.direct_url}}/public/images/little_green_forward.png" /></a>
 </div>
 
 <!-- required for queries.js to work-->

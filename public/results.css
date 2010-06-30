@@ -1,34 +1,10 @@
 body {margin:0; padding:0; font:13px/16px "Lucida Grande",Arial,Sans-serif; background-color:#fff; }
 .shadow {} /* shadow is just used for jquery to select and fix shadows in IE */
-
-#header {padding:0px 0px 0 0px;}
 body.inside-fb-canvas #header {padding:0;}
-
-
-#bg_top {position:relative; background-image:url(srp_top_channel.png); width:100%; height:53px; font-size:15px; padding:0px; border:0px; margin:0px; overflow:hidden;}
-#profile_link { position:relative; float:right; top:15px; width:140px; height:20px; text-align:center }
-#bg_top .top_emboss,
-#bg_top .top_emboss a,
-#profile_link.top_emboss a { color:#404040; text-shadow:#cdcdcd 1px 1px 0px; }
-#score_text { float:right; position:relative; top:15px; width:50px; height:20px; }
-#score_frame { float:right; position:relative; top:5px; width:73px; height:43px; background-image:url(number_frame.png); }
-#score_glare { position:absolute; left:3px;top:3px; z-index:2; }
-#bg_top .number { position:absolute; left:8px;top:9px;width:18px;height:29px; overflow:hidden; z-index:1 }
-#bg_top #n0 { left:50px; }
-#bg_top #n1 { left:29px; }
-#bg_top #n2 { left:8px; }
-#bg_top .top_line { float:right; height:48px; width:1px; padding-left:11px;padding-right:11px; padding-top:2px; padding-bottom:2px }
-#top_title { position:absolute; left:10px; top:8px; border:0; }
-#bg_top .top-left {float:left; background-image:url(srp_top_left.png); width:6px; height:160px}
-#bg_top .top-right {float:right; background-image:url(srp_top_right.png); width:6px; height:160px}
-
 #content {width:981px; margin:0 auto; padding:0 0 22px 0;}
-
 body.inside-fb-canvas #content {width:760px;}
-
 #footer {clear:both; margin-top:20px; padding:10px; text-align:center; border-top:1px solid #ccc; color:#ccc;}
 #footer a {color:#aaa;}
-
 #admin-nav {text-align:center;}
 
 

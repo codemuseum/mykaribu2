@@ -378,7 +378,7 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
             if not referring_page_view.is_saved():
                 referring_page_view = None
             
-            installed_at = page_view_with_user.created_at
+            installed_at = user.created_at
             if page_view_with_session_id.referrer == None or len(page_view_with_session_id.referrer) < 10:
                 url_to_parse = page_view_with_session_id.url
             else:

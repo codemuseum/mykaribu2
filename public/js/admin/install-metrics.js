@@ -43,7 +43,7 @@ var InstallMetrics = {
   },
   fetchSummaryLoop: function(cursor, currentData, callback) {
     var cursorParam = cursor == null ? {} : {'cursor': cursor};
-    $.post(null, cursorParam, function(data) {
+    $.post(this.sourceUrl, cursorParam, function(data) {
 			if (data['count'] == 0) { $('#loading-msg').fadeOut(); callback(currentData); }
 	        else {
 	            mergedData = {}

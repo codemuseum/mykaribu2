@@ -17,9 +17,11 @@ from models.pageview import PageView
 from models.query import Query
 from models.resultview import ResultView
 from models.user import User
+from models.usergraph import UserGraph
 from models.installmetric import InstallMetric
 from models.organicsearchmetric import OrganicSearchMetric
 from models.postinstallactivitymetric import PostInstallActivityMetric
+from models.kvaluemetric import KValueMetric
 
 # *** Handlers
 
@@ -55,7 +57,29 @@ class AdminHelper:
 # Admin main handler
 class AdminHandler(webapp.RequestHandler):
     def get(self):
-        h.output(self, "Admin: <a href='/admin/pageviews'>Page Views</a> | <a href='/admin/users'>Users</a>  | <a href='/admin/querys'>Searches</a> | <a href='/admin/resultviews'>Result Views</a> <br/> Calculated Metrics: <a href='/admin/installmetrics'>User Install Metrics</a> | <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> <br/> Calculated Metrics: <a href='/admin/organicsearchmetrics'>Organic Search Metrics</a> | <a href='/admin/organicsearchmetrics/summary'>Summary Organic Search Metrics</a> <br/> Calculated Metrics: <a href='/admin/postinstallactivitymetrics'>Post-Install Activity Metrics</a> | <a href='/admin/postinstallactivitymetrics/summary'>Summary Post-Install Activity Metrics</a> <br/> Beta: <a href='/admin/paths'>Navigation Paths</a> | <a href='/admin/url-analyzer'>URL Analyzer</a> |  <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>")
+        h.output(self, """
+            Admin: 
+                <a href='/admin/pageviews'>Page Views</a> | 
+                <a href='/admin/users'>Users</a> | 
+                <a href='/admin/usergraphs'>User Graphs</a> | 
+                <a href='/admin/querys'>Searches</a> | 
+                <a href='/admin/resultviews'>Result Views</a> 
+            <br/> Calculated Metrics: 
+                <a href='/admin/installmetrics'>User Install Metrics</a> | 
+                <a href='/admin/installmetrics/summary'>Summary Install Metrics</a> 
+            <br/> Calculated Metrics: 
+                <a href='/admin/organicsearchmetrics'>Organic Search Metrics</a> | 
+                <a href='/admin/organicsearchmetrics/summary'>Summary Organic Search Metrics</a> 
+            <br/> Calculated Metrics: 
+                <a href='/admin/postinstallactivitymetrics'>Post-Install Activity Metrics</a> | 
+                <a href='/admin/postinstallactivitymetrics/summary'>Summary Post-Install Activity Metrics</a> 
+            <br/> Calculated Metrics: 
+                <a href='/admin/kvaluemetrics'>7-Day K Value Metrics</a> | 
+                <a href='/admin/kvaluemetrics/summary'>7-Day K Value Metrics</a>
+            <br/> Beta: 
+                <a href='/admin/paths'>Navigation Paths</a> | 
+                <a href='/admin/url-analyzer'>URL Analyzer</a> |  
+                <a href='/admin/pageviews/normalizer'>Page View URL Normalizer</a>""")
 
 class AdminPageViewsHandler(webapp.RequestHandler):
     def get(self):
@@ -78,6 +102,17 @@ class AdminUsersHandler(webapp.RequestHandler):
 class AdminUsersDataHandler(webapp.RequestHandler):
     def post(self):
         AdminHelper.writePaginatedDataJson(self, User, self.request.get('cursor'))
+
+class AdminUserGraphsHandler(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        c['model'] = 'usergraph'
+        c['model_properties'] = sorted(UserGraph.properties())
+        h.render_out(self, 'admin.tplt', c)
+
+class AdminUserGraphsDataHandler(webapp.RequestHandler):
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, UserGraph, self.request.get('cursor'))
 
 
 class AdminQueriesHandler(webapp.RequestHandler):
@@ -325,7 +360,7 @@ class AdminInstallMetricCalculatorHandler(webapp.RequestHandler):
         if cursor != None:
             query.with_cursor(cursor)
 
-        users = query.fetch(50)
+        users = query.fetch(25)
 
         for user in users:
             page_view_with_user = PageView.gql("WHERE user = :1 ORDER BY created_at ASC", user).get() 
@@ -579,7 +614,7 @@ class AdminPostInstallActivityMetricCalculatorHandler(webapp.RequestHandler):
         if cursor != None:
             query.with_cursor(cursor)
 
-        install_metrics = query.fetch(50)
+        install_metrics = query.fetch(25)
 
         for install_metric in install_metrics:
             post_install_activity_metric = PostInstallActivityMetric.gql("WHERE user = :1", install_metric.user).get()
@@ -606,4 +641,92 @@ class AdminPostInstallActivityMetricCalculatorHandler(webapp.RequestHandler):
 
             post_install_activity_metric.put()
         
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(install_metrics) }))
+
+
+
+class AdminKValueMetricsHandler(webapp.RequestHandler):
+    def get(self):
+        c = h.context()
+        c['model'] = 'kvaluemetric'
+        c['model_properties'] = sorted(KValueMetric.properties())
+        h.render_out(self, 'admin.tplt', c)
+
+class AdminKValueMetricsDataHandler(webapp.RequestHandler):
+    def post(self):
+        AdminHelper.writePaginatedDataJson(self, KValueMetric, self.request.get('cursor'), order_by = '-updated_at')
+
+
+class AdminKValueMetricsSummaryHandler(webapp.RequestHandler):
+    def get(self):
+        span_in_days = self.request.get('span_in_days')
+        last_metric_at = KValueMetric.gql("WHERE span_in_days = :1 ORDER BY updated_at DESC", span_in_days).get()
+        if last_metric_at == None:
+            last_metric_at = "[Never]"
+        else:
+            last_metric_at = last_metric_at.updated_at
+
+        h.output(self, '<html><head><link href="/public/css/admin/admin.css" type="text/css" rel="stylesheet" /></head><body><div id="loading-msg">Loading...</div><div id="auto-fetch-k-value-metrics"></div><div>K-Value Re-Calculation Status: <span id="status">Last Run at: '+str(last_metric_at)+'</span> <a id="calculate-k-value-metrics-button" href="#">RE-CALCULATE NOW!</a></div><div>Chart for K-Value: <div id="graph">...</div></div><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" type="text/javascript"></script><script type="text/javascript" src="http://www.google.com/jsapi"></script><script src="/public/js/admin/install-metrics.js" type="text/javascript"></script><script src="/public/js/admin/k-value-metrics.js" type="text/javascript"></script></body></html>')
+
+    def post(self):
+        query = KValueMetric.all()
+        query.order('-updated_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        k_value_metrics = query.fetch(1000)
+
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'results': AdminHelper.MapToHash(k_value_metrics), 'count': len(k_value_metrics)}))
+
+
+# Runs through the system and clears out the k value metric values, which is required given the way the metrics are recalculated
+class AdminKValueMetricCalculatorClearerHandler(webapp.RequestHandler):
+    def post(self):
+        span_in_days = int(self.request.get('span_in_days'))
+        query = KValueMetric.all()
+        query.order('-updated_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        k_value_metrics = query.fetch(100)
+        for k_value_metric in k_value_metrics:
+            k_value_metric.viral_signups = 0
+            k_value_metric.total_signups = 0
+            k_value_metric.put()
+            
+        self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(k_value_metrics) }))
+
+# Runs through the system and calculates whether a single user was active within the first 7 days of install, signified by a pageview
+# Tied to that user.
+class AdminKValueMetricCalculatorHandler(webapp.RequestHandler):
+    def post(self):
+        span_in_days = int(self.request.get('span_in_days'))
+        query = InstallMetric.all()
+        query.order('-installed_at')
+        cursor = self.request.get('cursor')
+        if cursor != None:
+            query.with_cursor(cursor)
+
+        install_metrics = query.fetch(25)
+
+        # There's one kvaluemetric per day, so find all `span_in_days` of them
+        for install_metric in install_metrics:
+            for kvalue_day in range(0, span_in_days):
+                date = (install_metric.installed_at + datetime.timedelta(days=kvalue_day)).date()
+                k_value_metric = KValueMetric.gql("WHERE date = :1 AND span_in_days = :2", date, span_in_days).get()
+                if k_value_metric == None:
+                    k_value_metric = KValueMetric(span_in_days = span_in_days, date = date)
+                
+                if install_metric.installed_via_newsfeed == True:
+                    if k_value_metric.viral_signups == None:
+                        k_value_metric.viral_signups = 0
+                    k_value_metric.viral_signups += 1
+                
+                if k_value_metric.total_signups == None:
+                    k_value_metric.total_signups = 0
+                k_value_metric.total_signups +=1
+                k_value_metric.put()
+
         self.response.out.write(simplejson.dumps({'status': 'ok', 'cursor': str(query.cursor()), 'count': len(install_metrics) }))

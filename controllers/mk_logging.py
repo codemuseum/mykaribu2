@@ -77,6 +77,12 @@ class PageViewsHandler(webapp.RequestHandler):
         page_view.session_id = cookies['_pvk']
         page_view.ip_address = self.request.remote_addr
         
+        
+        try: 
+          page_view.user_agent = self.request.headers['User-Agent'][:500]
+        except:
+          page_view.user_agent = None
+        
         if previous_page_view_for_session:
             page_view.session_order = previous_page_view_for_session.session_order + 1
         else:

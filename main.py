@@ -24,6 +24,7 @@ from controllers.mk_logging import LoggingHandler, PageViewsHandler, QueryLoggin
 from controllers.framed_result import FramedResultHandler, ShareCountsHandler
 from controllers.results import ResultsHandler, QuestionUploader, ServeHandler, QuestionAdmin
 from controllers.stash import StashHandler
+from controllers.questioneer import QuestioneerHandler
 
 # *** Model imports
 from models.user import User
@@ -169,7 +170,8 @@ routing =[
     ('/stash', StashHandler),
     ('/qup',QuestionUploader),
     ('/serve/([^/]+)?',ServeHandler),
-    ('/qad',QuestionAdmin)
+    ('/qad',QuestionAdmin),
+    ('/questioneer',QuestioneerHandler)
     ]
 
 # *** Init code

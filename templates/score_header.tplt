@@ -1,0 +1,36 @@
+<link href="/public/score_header.css" media="screen" 
+      rel="stylesheet" type="text/css">
+<div id="header">
+  <div id="bg_top">
+    <div class="top-left">&nbsp;</div>
+    <a href="{{cfg.fb_url}}"><img id="top_title" 
+				  src="/public/srp_title.png"></a>
+    <div class="top-right">&nbsp;</div>
+    
+    <!-- Score Box -->      
+      <div style="display: block;" id="score_frame">
+        <img id="score_glare" src="/public/glare.png">
+        <div id="n2" class="number">
+          <div id="n2-value" style="display: none;">3</div>
+          <img src="/public/numbers_small.png">
+        </div>
+        <div id="n1" class="number">
+          <div id="n1-value" style="display: none;">1</div>
+          <img src="/public/numbers_small.png">
+        </div>
+        <div id="n0" class="number">
+          <div id="n0-value" style="display: none;">0</div>
+          <img src="/public/numbers_small.png">
+        </div>
+      </div>
+      <div id="score_text" class="top_emboss shadow">
+        Points:
+      </div>
+      <img src="/public/srp_top_line.png" class="top_line">
+      <!-- Profile Link -->
+      <div id="profile_link" class="top_emboss shadow">
+       <a href="{{fb_url}}/stash">Your Stash</a>
+     </div>
+      <img src="/public/srp_top_line.png" class="top_line">
+  </div>
+</div>

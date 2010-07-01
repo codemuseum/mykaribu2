@@ -7,6 +7,7 @@ var InstallMetrics = {
       if ($('#auto-fetch-install-metrics')[0]) { this.fetchSummaryNow(); }
   },
   calculateDataLoop: function(cursor, callback) {
+      InstallMetrics.statusCount++;
     InstallMetrics.statusEl.text(InstallMetrics.statusCount + "...");
     var cursorParam = cursor == null ? {} : {'cursor': cursor};
     $.post('/admin/installmetrics/calculator.json', cursorParam, function(data) {
@@ -42,7 +43,7 @@ var InstallMetrics = {
   },
   fetchSummaryLoop: function(cursor, currentData, callback) {
     var cursorParam = cursor == null ? {} : {'cursor': cursor};
-    $.post(this.sourceUrl, cursorParam, function(data) {
+    $.post(document.location.href, cursorParam, function(data) {
 			if (data['count'] == 0) { $('#loading-msg').fadeOut(); callback(currentData); }
 	        else {
 	            mergedData = {}

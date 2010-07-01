@@ -64,6 +64,7 @@ var KValueMetrics = {
       });
   },
   displayGraph: function(data) {
+      var maxK = 0;
         this.statusEl.text("Starting to build graph.");
       if (!this.graphReady) { 
           this.statusEl.text("Google Chart Not Loaded Yet, trying in 5 seconds"); 
@@ -73,12 +74,15 @@ var KValueMetrics = {
       var chart = new google.visualization.DataTable();
       chart.addColumn('date', 'x');
       chart.addColumn('number', '7-Day K Value');
-      for (var i in data.results) {
-         chart.addRow([data.results[i].date, data.results[i].viral_signups/data.results[i].total_signups]); 
+      for (var i in data.results) { 
+          var k = data.results[i].viral_signups/data.results[i].total_signups;
+          var date = new Date(data.results[i].date);
+          if (k > maxK) maxK = k;
+          if (date <= new Date()) chart.addRow([date, k]); 
       }
       // Create and draw the visualization.
       new google.visualization.LineChart(document.getElementById('graph')).
-        draw(chart, {curveType: "function", width: 500, height: 400, vAxis: {maxValue: 2}});
+        draw(chart, {curveType: "function", width: $(window).width() - 20, height: $(window).height() - 60, reverseCategories: true, vAxis: {maxValue: maxK}});
   },
   fetchSummaryLoop: function(cursor, currentData, callback) {
     var cursorParam = cursor == null ? {} : {'cursor': cursor};
@@ -86,13 +90,7 @@ var KValueMetrics = {
 			if (data['count'] == 0) { $('#loading-msg').fadeOut(); callback(currentData); }
       else {
           mergedData = {};
-          mergedData.total_users = currentData.total_users + data.total_users;
-          mergedData.results = currentData.results;
-          for (var key in data.results) {
-              if (mergedData.results[key] == null) { mergedData.results[key] = 0; }
-              mergedData.results[key] += data.results[key];
-          }
-                
+          mergedData.results = currentData.results.concat(data.results);
 				KValueMetrics.fetchSummaryLoop(data['cursor'], mergedData, callback);
 			}
 	}, 'json');

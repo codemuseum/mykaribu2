@@ -23,6 +23,7 @@ class QuestioneerHandler(webapp.RequestHandler):
         r += [[253,253]]
         r += [[506,253]]
         c['rects'] = r
+        c['stash_items'] = xrange(7)
         h.render_out(self, 'questioneer.tplt', c)
 
         

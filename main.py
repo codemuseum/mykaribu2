@@ -190,7 +190,7 @@ routing =[
     ('/qup',QuestionUploader),
     ('/serve/([^/]+)?',ServeHandler),
     ('/qad',QuestionAdmin),
-    ('/questioneer',QuestioneerHandler),
+    ('/questions',QuestioneerHandler),
     ('/users/tasks/fetchgraph',FetchUserGraphHandler)
     ]
 

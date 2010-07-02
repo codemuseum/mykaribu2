@@ -15,6 +15,7 @@
     </style>
   <body scrolling="no" style="margin:0; padding:0; border:0; overflow:hidden">
     {% include "score_header.tplt" %}
+    {{uid}}<br/>
     <div style="width:730px; height:90px; background-color:#000000; border:10px solid #444444; padding:5px; overflow:hidden">
       {% for i in stash_items %}
       <div id="si{{forloop.counter0}}" style="float:left; width:90px; height:90px; background-color:#222222; margin-right:5px">&nbsp;</div>

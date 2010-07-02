@@ -11,4 +11,4 @@ class PageView(db.Model):
 	ip_address = db.StringProperty(indexed=True)
 	created_at = db.DateTimeProperty(auto_now_add=True, indexed=True)
 	user = db.ReferenceProperty(User, indexed=True)
-    user_agent = db.StringProperty()
+	user_agent = db.StringProperty()

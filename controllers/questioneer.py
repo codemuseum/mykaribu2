@@ -24,6 +24,10 @@ class QuestioneerHandler(webapp.RequestHandler):
         r += [[506,253]]
         c['rects'] = r
         c['stash_items'] = xrange(7)
+        cookies = h.get_default_cookies(self)
+        u = h.get_current_user(cookies)
+        if u:
+            c['uid'] = u.fb_user_id
         h.render_out(self, 'questioneer.tplt', c)
 
         

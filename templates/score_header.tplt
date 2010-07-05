@@ -3,7 +3,7 @@
 <div id="header">
   <div id="bg_top">
     <div class="top-left">&nbsp;</div>
-    <a href="{{cfg.fb_url}}"><img id="top_title" 
+    <a href="{{cfg.direct_url}}"><img id="top_title" 
 				  src="/public/srp_title.png"></a>
     <div class="top-right">&nbsp;</div>
     
@@ -29,7 +29,7 @@
       <img src="/public/srp_top_line.png" class="top_line">
       <!-- Profile Link -->
       <div id="profile_link" class="top_emboss shadow">
-       <a href="{{fb_url}}/stash">Your Stash</a>
+       <a href="/stash">Your Stash</a>
      </div>
       <img src="/public/srp_top_line.png" class="top_line">
   </div>

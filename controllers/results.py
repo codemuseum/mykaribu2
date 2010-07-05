@@ -10,12 +10,13 @@ import helpers as h
 import urllib
 import logging
 
-def add_question(qtext, hint, img, handler):
+def add_question(qtype, qtext, hint, img, handler):
     question = Question()
     cookies = h.get_default_cookies(handler)
     current_user = h.get_current_user(cookies)
     if current_user:
         question.user = current_user
+    question.qtype = int(qtype)
     question.qtext = qtext
     question.hint = hint
     question.img = img
@@ -55,11 +56,12 @@ class QuestionUploader(blobstore_handlers.BlobstoreUploadHandler):
         c['upload_url'] = blobstore.create_upload_url('/qup')
         h.render_out(self, 'question_uploader.tplt', c)
     def post(self):
+        question_type = self.request.get("type")
         question_text = self.request.get("question")
         question_hint = self.request.get("hint")
         upload_files = self.get_uploads('image')
         blob_info = upload_files[0]
-        ent = add_question(question_text, question_hint, blob_info, self)
+        ent = add_question(question_type, question_text, question_hint, blob_info, self)
         self.redirect('/qad')
 
 class ServeHandler(blobstore_handlers.BlobstoreDownloadHandler):

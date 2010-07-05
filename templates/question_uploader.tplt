@@ -6,11 +6,12 @@
 	  enctype="multipart/form-data"
 	  method="post">
       <table>
+	<tr><td>Type :</td><td><input type="text" name="type" value="1" /></td><td>0=760x175, 1=220x220, 2=full page</td></tr>
 	<tr><td>Question :</td><td><input type="text" name="question" /></td></tr>
 	<tr><td>Hint :</td><td><input type="text" name="hint" /></td></tr>
-        <tr><td>Image :</td><td><input type="file" name="image" /><td/></tr>
+        <tr><td>Image :</td><td><input type="file" name="image" /></td></tr>
+	<tr><td></td><td style="text-align:right"><input type="submit" value='upload' /></td></tr>
      </table>
-      <input type="submit" value='upload' />
-    </form>
+   </form>
   </body>
 </html>

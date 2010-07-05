@@ -4,6 +4,7 @@ from google.appengine.ext import blobstore
 from user import User
 
 class Question(db.Model):
+	qtype = db.IntegerProperty()
 	qtext = db.TextProperty()
 	hint = db.TextProperty()
 	img = blobstore.BlobReferenceProperty()

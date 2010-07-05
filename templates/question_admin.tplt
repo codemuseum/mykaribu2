@@ -6,9 +6,10 @@
     </style>
     [Edit Current Questions] <a href="/qup">[Upload Question]</a>
     <hr/>
-    <table> <tr><td><b>question</b></td><td><b>hint</b></td><td><b>img</b></td><td><b>status</b></td><td>&nbsp;</td></tr>
+    <table> <tr><td>type</td><td><b>question</b></td><td><b>hint</b></td><td><b>img</b></td><td><b>status</b></td><td>&nbsp;</td></tr>
       {% for q in questions %}
       <tr>
+	<td>{{ q.qtype }}</td>
 	<td>{{ q.qtext }}</td>
 	<td>{{ q.hint }}</td>
 	<td><a onclick="window.open('/results?force_quest={{q.k}}','mk_qpreview');"  href="#"><img style="border:0" height="100" src="/serve/{{ q.i }}" /></a></td>

@@ -1,0 +1,140 @@
+<html>
+  <style>
+    body {margin:0; padding:0; font:13px/16px "Lucida Grande",Arial,Sans-serif; background-color:#fff; color:#dddddd; }
+    .hidden {display:none;}
+    .question_box {position:absolute;top:165px;width:210px;height:50px; text-align:center; padding:5px;z-index:0}
+    .question_dull {background-color:#000000;opacity:0.7;filter:alpha(opacity=70);} 
+    .question_highlight { background-color:#feee00;color:#000000;}
+    .question_text {position:absolute;top:165px;width:210px;height:15px;text-align:center; padding:5px;z-index:1}
+   .box 
+    {position:absolute;border:10px solid black;
+    margin:0px 0px 0px 0px; padding:5px; width:220px; height:220px;
+    overflow:hidden;}
+    .box_dull {background-color:#444444;color:white}
+    .box_highlight {background-color:#fee000;color:black}
+    </style>
+  <body scrolling="no" style="margin:0; padding:0; border:0; overflow:hidden">
+   {% include "score_header.tplt" %}
+   <div style="width:730px; height:90px; background-color:#000000; border:10px solid #444444; padding:5px; overflow:hidden">
+      {% for i in stash_items %}
+      <div id="si{{forloop.counter0}}" style="float:left; width:90px; height:90px; background-color:#222222; margin-right:5px">&nbsp;</div>
+      {% endfor %}
+      <div style= "float:left; width:65px; height:90px; background-color:#333333;opacity:0.4;filter:alpha(opacity=40);"><img src="/public/images/green_plus_rect.png" /></div>
+   </div>
+    <div style="position:relative; width:760px; height:506px; background-color:#444444">
+     {% for i in rects %}
+      <div class="box box_dull" style="left:{{i.0}}; top:{{i.1}};" > 
+	<div style="width:220px;height:220px;overflow:hidden">
+	  <img id="qi{{forloop.counter0}}" src="/public/images/indigo2.jpg" />
+	</div>
+	<div id="qb{{forloop.counter0}}" class="question_box question_dull hidden">
+	  <div style="height:20px;">&nbsp;</div>
+	  <input id="qin{{forloop.counter0}}" class="qinput" type="text" />
+	  <input class="qbtn" type="button" value="Go" />
+	</div>
+	<div class="question_text">
+	  <span id="qs{{forloop.counter0}}"
+	  style="font-size:11px;">&nbsp;</span>
+	</div>
+	</div>
+	{% endfor %}
+    </div>
+   
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"
+	    type="text/javascript"></script>
+    <script>
+      $(document).ready(function() {
+        init_questions();
+        init_answers();
+        $('.box').hover(box_hover).click(box_click);
+        $('.qinput').keypress(qinput_key);
+        $('.qbtn').click(qinput_btn_click);
+      });
+      function box_hover()
+      {
+        $(this).find(".question_box").toggleClass("question_highlight question_dull");
+        $(this).toggleClass("box_highlight box_dull");
+      }
+      function box_click()
+      {
+        $(this).find(".qinput").focus();
+      }
+      function qinput_key(e)
+      {
+        if(e.keyCode == 13) 
+          handle_answer_input($(this));
+      }
+      function qinput_btn_click(e)
+      {
+        handle_answer_input($(this).parent().find('.qinput'));
+      }
+      function handle_answer_input(jq_input)
+      {
+        value = jq_input.val();
+        var url = "{{cfg.direct_url}}/ar?a="+value+"&qk="+jq_input.attr('qk');
+        $.get(url,"",
+          function(data)
+          {
+          }
+        );
+        jq_input.val('');
+      }
+   </script>
+    <script>
+    function random_sort(l)
+    {
+      for(i in l)
+      {
+         var temp = l[i];
+         var r = Math.floor(Math.random()*l.length);
+         l[i] = l[r];
+         l[r] = temp;
+      }
+      return l;
+    }
+    function init_questions()
+    {
+      var qdata = {{questions}};
+      qdata = random_sort(qdata);
+      delta = Math.floor(Math.random()*2);
+      for(i in qdata)
+      {
+         // *2 to pick every other image; +delta to alternate between 0,2,4 and 1,3,5
+         index = i*2+delta
+         $('#qi'+index).attr('src','/serve/'+qdata[i].img);
+         $('#qs'+index).html(qdata[i].qtext);
+         $('#qb'+index).toggleClass("hidden")
+         $('#qin'+index).attr('qk',qdata[i].key); // stuff the key in on an attribute for later pickup
+      }
+      $('.qinput').val("");
+    }
+    var g_adata = [];
+    function init_answers()
+    {
+      // a global as we'll actually add to this list when the user answers
+      g_adata = {{answers}};
+      g_adata = random_sort(g_adata);
+    }
+    </script>
+    <div id="fb-root"></div>
+    <script>
+      // All FB stuff
+      window.fbAsyncInit = function() {
+      FB.init({
+      appId  : '{{cfg.app_id}}',
+      status : true, // check login status
+      cookie : true, // enable cookies to allow the server to access the session
+      xfbml  : true  // parse XFBML
+      },"/public/xd_receiver.htm");
+      FB.Canvas.setSize();
+      //setTimeout("FB.Canvas.setSize();", 1000);
+      };
+      (function() {
+      var e = document.createElement('script');
+      e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+      e.async = true;
+      document.getElementById('fb-root').appendChild(e);
+      }());
+    </script>
+  </body>
+</html
